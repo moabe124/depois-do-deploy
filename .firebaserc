@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "gestao-familiar-1c9a1"
+  },
+  "targets": {
+    "gestao-familiar-1c9a1": {
+      "hosting": {
+        "depois-do-deploy": [
+          "depois-do-deploy-moabe124"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

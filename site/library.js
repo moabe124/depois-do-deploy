@@ -1,0 +1,5 @@
+(()=>{
+const topics=[...document.querySelectorAll('[data-filter]')],all=document.getElementById('all'),cards=[...document.querySelectorAll('[data-topic]')],empty=document.getElementById('empty'),count=document.getElementById('count');
+function select(topic,updateUrl=true){const valid=topics.some(t=>t.dataset.filter===topic);if(!valid)topic=null;let visible=0;cards.forEach(card=>{card.hidden=!!topic&&card.dataset.topic!==topic;if(!card.hidden)visible++;});topics.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.filter===topic)));all.setAttribute('aria-pressed',String(!topic));empty.hidden=visible>0;count.textContent=`${visible} ${visible===1?'edição':'edições'}`;if(updateUrl){const url=new URL(location.href);if(topic)url.searchParams.set('tema',topic);else url.searchParams.delete('tema');history.replaceState(null,'',url);}}
+topics.forEach(button=>button.addEventListener('click',()=>select(button.dataset.filter)));all.addEventListener('click',()=>select(null));select(new URL(location.href).searchParams.get('tema'),false);window.addEventListener('popstate',()=>select(new URL(location.href).searchParams.get('tema'),false));
+})();
