@@ -6,6 +6,8 @@ const catalog=validate();
 if(readFileSync(path.join(root,'HISTORICO.md'),'utf8')!==historyText(catalog))throw Error('Histórico desatualizado. Execute npm run history.');
 const output=path.join(root,'dist');mkdirSync(output,{recursive:true});
 for(const file of ['styles.css','library.js','favicon.svg','404.html'])copyFileSync(path.join(root,'site',file),path.join(output,file));
+mkdirSync(path.join(output,'assets'),{recursive:true});
+for(const file of ['cafe-idempotente.gif','cafe-idempotente-poster.png'])copyFileSync(path.join(root,'site','assets',file),path.join(output,'assets',file));
 const levels={iniciante:'Iniciante',intermediario:'Intermediário',avancado:'Avançado'};
 const cards=[...catalog.lessons].sort((a,b)=>b.date.localeCompare(a.date)).map(l=>`<article class="lesson" data-topic="${h(l.topic)}"><div class="lesson-meta"><span>${h(catalog.topics.find(t=>t.id===l.topic).name)}</span><span>${h(l.date.split('-').reverse().join('/'))}</span></div><h2><a href="${h(l.url)}">${h(l.title)}</a></h2><p>${h(l.objective)}</p><div class="tags"><span>${levels[l.level]}</span><span>${l.minutes.essential}–${l.minutes.full} min</span><span>${l.status==='studied'?'Estudo confirmado':'Disponível'}</span></div><a class="read" href="${h(l.url)}">Ler edição <span aria-hidden="true">↗</span></a></article>`).join('\n');
 const topics=catalog.topics.map(t=>`<button type="button" class="topic" data-filter="${h(t.id)}" aria-pressed="false"><span class="topic-name">${h(t.name)}</span><span class="topic-count">${catalog.lessons.filter(l=>l.topic===t.id).length} ${catalog.lessons.filter(l=>l.topic===t.id).length===1?'edição':'edições'}</span><span class="topic-description">${h(t.description)}</span></button>`).join('\n');
