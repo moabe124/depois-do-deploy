@@ -1,6 +1,6 @@
 # Café idempotente
 
-Composição HTML / GSAP renderizada com HyperFrames 0.8.114. 960 × 540, 10 segundos, 15 fps, sem áudio.
+Composição HTML / GSAP renderizada com HyperFrames 0.8.114. 960 × 540, 20 segundos, timeline desacelerada em 50%, sem áudio.
 
 `npx hyperframes@0.8.114 check`
 
