@@ -2,7 +2,9 @@
 
 ## Produto e leitor
 
-O leitor é desenvolvedor sênior full stack e quer evoluir a especialista, com foco inicial em System Design. Escrever em português do Brasil, com exemplos claros, rigor técnico e baixa carga cognitiva após um dia de trabalho. Usar “System Design” para arquitetura de sistemas; “Design System” é outro assunto.
+O leitor é desenvolvedor sênior full stack e quer evoluir a especialista, estudando diferentes temas de desenvolvimento e arquitetura. Escrever em português do Brasil, com exemplos claros, rigor técnico e baixa carga cognitiva após um dia de trabalho. Usar “System Design” para arquitetura de sistemas; “Design System” é outro assunto.
+
+A rotina cobre conhecimento técnico para crescimento na carreira: System Design, Java/JVM, Angular/frontend, IA, entrevistas, certificações, dados, operação/confiabilidade e segurança. Não restringir a seleção a arquitetura ou a linguagens; considerar todas as categorias ativas do catálogo.
 
 Preservar o tema escuro, os conceitos em negrito e as frases curtas que ajudam a lembrar. Começar com o tema e o objetivo de estudo. Seguir conceito, problema e solução, nessa ordem. Não substituir conteúdo por slogans. Manter fonte técnica primária nos assuntos que exigem verificação.
 
@@ -16,9 +18,13 @@ Preservar o tema escuro, os conceitos em negrito e as frases curtas que ajudam a
 
 ## Escopo
 
-A rotina inicial produz uma edição de System Design por execução. Outras categorias estão preparadas, mas não entram automaticamente na rotina. Não criar novos agendamentos sem horário definido pelo leitor. Não gerar notícias nesta rotina.
+A rotina produz uma edição por execução e alterna entre as categorias ativas de `content/catalog.json`. Cada execução escolhe um tema diferente da anterior, um nível e um tipo de conteúdo: conceito, aplicação prática ou novidade relevante do tema. Notícias exigem consulta atual a fontes primárias e explicação do impacto técnico. Não criar novos agendamentos sem cadência e horário definidos pelo leitor.
 
-Os níveis iniciante, intermediário e avançado devem alternar com escolha aleatória entre os níveis menos presentes nas últimas seis edições da categoria. A edição identifica seu nível e pode oferecer perguntas nas três camadas. Uma edição não diagnostica o nível profissional do leitor.
+As rotinas automáticas devem executar apenas de segunda a sexta, no fuso `America/Sao_Paulo`. Cadência e horário ainda estão em definição. A seleção editorial está em `docs/ROTINA.md` e as propostas de expansão estão em `docs/PAUTA.md`; propostas ainda não aprovadas não ativam categorias ou agendamentos.
+
+Cada novo artigo deve incluir uma animação didática curta criada com HyperFrames, ligada ao objetivo de estudo. Seguir os controles, a alternativa estática e a acessibilidade definidos em `docs/FORMATO.md`.
+
+Os níveis iniciante, intermediário e avançado devem alternar dentro de cada tema. Excluir o nível da última edição da categoria e escolher aleatoriamente entre os níveis menos presentes nas últimas seis edições da categoria, dentre os restantes. A edição identifica seu nível e pode oferecer perguntas nas três camadas. Em novidades, o nível descreve a profundidade da análise. Uma edição não diagnostica o nível profissional do leitor.
 
 ## Publicação e credenciais
 

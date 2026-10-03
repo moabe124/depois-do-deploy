@@ -7,11 +7,18 @@ Leituras curtas para a jornada de desenvolvedor sênior a especialista. Um conce
 ## Biblioteca
 
 - **System Design:** arquitetura, escala, consistência, resiliência e operação. Primeira edição: idempotência e retries seguros.
-- **Conceitos de IA:** reservado para futuras edições.
-- **Entrevistas:** reservado para futuras edições.
-- **Certificações:** reservado para futuras edições.
+- **Java e JVM:** conceitos, aplicações e novidades da linguagem e da plataforma.
+- **Angular e frontend:** conceitos, arquitetura e novidades do framework.
+- **Conceitos de IA:** fundamentos, aplicações, avaliação e novidades.
+- **Entrevistas:** raciocínio, comunicação técnica e resolução de problemas.
+- **Certificações:** trilhas e conceitos com aplicação além da prova.
+- **Dados e persistência:** modelagem, consultas, transações e armazenamento.
+- **Operação e confiabilidade:** observabilidade, entrega e diagnóstico em produção.
+- **Segurança aplicada:** autorização, proteção de dados e desenvolvimento seguro.
 
-Tema escuro por padrão. Cada edição começa com o objetivo de estudo e segue **conceito → problema → solução → aprofundamento → desafio**. Leitura essencial de aproximadamente 3 minutos ou completa de aproximadamente 8 minutos. Os tempos são estimativas.
+Tema escuro por padrão. Cada edição começa com o objetivo de estudo e segue **conceito → problema → solução → aprofundamento → desafio**. Cada novo artigo inclui uma animação didática com HyperFrames, com controles de reprodução e alternativa estática. Leitura essencial de aproximadamente 3 minutos ou completa de aproximadamente 8 minutos. Os tempos são estimativas.
+
+A rotina alterna temas ativos e níveis, com uma edição por execução. O conteúdo pode ser um conceito, uma aplicação prática ou uma novidade relevante, sempre com objetivo de estudo e impacto técnico explicado. A seleção está em [docs/ROTINA.md](docs/ROTINA.md).
 
 ## Fonte da verdade e memória
 
@@ -59,7 +66,7 @@ npm run build
 firebase deploy --only hosting:depois-do-deploy
 ```
 
-Consulte [a operação da rotina](docs/ROTINA.md) e [a configuração do Firebase](docs/FIREBASE.md). A rotina diária ainda precisa ser agendada com horário e fuso definidos. GitHub Actions já valida o acervo; deploy via GitHub Actions só deve ser considerado ativo após configurar e testar a autenticação específica.
+Consulte [a operação da rotina](docs/ROTINA.md) e [a configuração do Firebase](docs/FIREBASE.md). A rotina deve executar apenas de segunda a sexta, no fuso `America/Sao_Paulo`; cadência e horário ainda estão em definição. As propostas de novos temas estão em [docs/PAUTA.md](docs/PAUTA.md). GitHub Actions já valida o acervo; deploy via GitHub Actions só deve ser considerado ativo após configurar e testar a autenticação específica.
 
 ## Acrescentar uma edição
 

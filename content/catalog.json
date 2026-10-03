@@ -1,10 +1,60 @@
 {
   "name": "Depois do Deploy",
   "topics": [
-    { "id": "system-design", "name": "System Design", "description": "Arquitetura, escala, consistência e decisões que resistem às falhas.", "status": "active" },
-    { "id": "conceitos-de-ia", "name": "Conceitos de IA", "description": "Fundamentos e escolhas para construir produtos com inteligência artificial.", "status": "planned" },
-    { "id": "entrevistas", "name": "Entrevistas", "description": "Raciocínio, comunicação técnica e resolução de problemas.", "status": "planned" },
-    { "id": "certificacoes", "name": "Certificações", "description": "Trilhas de estudo com aplicação além da prova.", "status": "planned" }
+    {
+      "id": "system-design",
+      "name": "System Design",
+      "description": "Arquitetura, escala, consistência e decisões que resistem às falhas.",
+      "status": "active"
+    },
+    {
+      "id": "java-jvm",
+      "name": "Java e JVM",
+      "description": "Conceitos, aplicações e novidades de Java e da JVM, com impacto em produção.",
+      "status": "active"
+    },
+    {
+      "id": "angular-frontend",
+      "name": "Angular e frontend",
+      "description": "Conceitos, arquitetura e novidades de Angular para aplicações web.",
+      "status": "active"
+    },
+    {
+      "id": "conceitos-de-ia",
+      "name": "Conceitos de IA",
+      "description": "Fundamentos e escolhas para construir produtos com inteligência artificial.",
+      "status": "active"
+    },
+    {
+      "id": "entrevistas",
+      "name": "Entrevistas",
+      "description": "Raciocínio, comunicação técnica e resolução de problemas.",
+      "status": "active"
+    },
+    {
+      "id": "certificacoes",
+      "name": "Certificações",
+      "description": "Trilhas de estudo com aplicação além da prova.",
+      "status": "active"
+    },
+    {
+      "id": "dados-persistencia",
+      "name": "Dados e persistência",
+      "description": "Modelagem, consultas, transações e escolhas de armazenamento.",
+      "status": "active"
+    },
+    {
+      "id": "operacao-confiabilidade",
+      "name": "Operação e confiabilidade",
+      "description": "Observabilidade, entrega, diagnóstico e operação de sistemas em produção.",
+      "status": "active"
+    },
+    {
+      "id": "seguranca-aplicada",
+      "name": "Segurança aplicada",
+      "description": "Autorização, proteção de dados e decisões de segurança no desenvolvimento.",
+      "status": "active"
+    }
   ],
   "lessons": [
     {
@@ -13,11 +63,23 @@
       "title": "Idempotência e retries seguros",
       "date": "2026-10-02",
       "level": "intermediario",
-      "minutes": { "essential": 3, "full": 8 },
+      "minutes": {
+        "essential": 3,
+        "full": 8
+      },
       "focusKey": "idempotencia-retries-pagamentos",
       "objective": "Repetir uma intenção de pagamento após timeout sem duplicar a cobrança e recuperar o estado após uma falha parcial.",
       "summary": "Timeout não confirma falha. Uma identidade estável, reserva atômica e idempotência no provedor permitem repetir tentativas com segurança. Reconciliação recupera operações pendentes; retenção e coordenação entre regiões limitam a garantia.",
-      "concepts": ["idempotência", "retry", "timeout", "chave de idempotência", "restrição única", "reconciliação", "falha parcial", "retenção"],
+      "concepts": [
+        "idempotência",
+        "retry",
+        "timeout",
+        "chave de idempotência",
+        "restrição única",
+        "reconciliação",
+        "falha parcial",
+        "retenção"
+      ],
       "source": "content/system-design/001-idempotencia.html",
       "url": "temas/system-design/001-idempotencia.html",
       "status": "presented",

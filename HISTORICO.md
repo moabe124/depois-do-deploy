@@ -18,6 +18,14 @@
 
 Timeout não confirma falha. Uma identidade estável, reserva atômica e idempotência no provedor permitem repetir tentativas com segurança. Reconciliação recupera operações pendentes; retenção e coordenação entre regiões limitam a garantia.
 
+## Java e JVM
+
+Nenhuma edição apresentada.
+
+## Angular e frontend
+
+Nenhuma edição apresentada.
+
 ## Conceitos de IA
 
 Nenhuma edição apresentada.
@@ -27,5 +35,17 @@ Nenhuma edição apresentada.
 Nenhuma edição apresentada.
 
 ## Certificações
+
+Nenhuma edição apresentada.
+
+## Dados e persistência
+
+Nenhuma edição apresentada.
+
+## Operação e confiabilidade
+
+Nenhuma edição apresentada.
+
+## Segurança aplicada
 
 Nenhuma edição apresentada.

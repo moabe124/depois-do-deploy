@@ -6,10 +6,10 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 
 ## Estrutura
 
-1. **Abertura:** nome do conceito, objetivo e aplicação. Nível, data e duração estimada.
+1. **Abertura:** tema, conceito ou novidade, objetivo e aplicação. Tipo de conteúdo (conceito, aplicação prática ou novidade), nível, data e duração estimada.
 2. **Conceito:** definição direta, termos importantes em negrito e uma analogia breve quando ajudar.
 3. **Problema:** cenário concreto; requisitos e o que acontece quando o sistema falha.
-4. **Solução:** como aplicar o conceito, escolhas e compromissos. Diagrama ou simulação apenas quando esclarece a relação de causa e efeito.
+4. **Solução:** como aplicar o conceito, escolhas e compromissos. Incluir uma animação didática que esclareça a relação de causa e efeito. Diagramas e simulações adicionais entram quando ajudam a compreender.
 5. **Aprofundamento:** detalhes recolhíveis, separados por base, aplicação e profundidade. Explicar garantias, concorrência, operação e limites.
 6. **Desafio:** pergunta curta, feedback e resposta inicialmente escondida. Sem pontuação que finja medir competência profissional.
 7. **Fecho:** uma frase memorável, seguida de fontes técnicas primárias para consulta posterior.
@@ -23,6 +23,25 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 - Celular e teclado: conteúdo sem cortes, botões legíveis e estados com texto; não depender apenas de cor.
 - Evitar introduções vagas. Informar o que será estudado no primeiro bloco.
 - Destacar conceitos e garantias, sem transformar parágrafos inteiros em negrito.
+
+## Tipos de conteúdo
+
+A mesma rotina alterna temas e níveis. Cada edição pode ensinar um **conceito**, explorar uma **aplicação prática** ou analisar uma **novidade** do tema. O nível indica a profundidade e os pré-requisitos do texto, inclusive em notícias.
+
+Para novidades, começar pela mudança e seu objetivo de estudo; explicar o conceito afetado, o problema que motivou a mudança e como ela pode ser aplicada. Incluir exemplo antes/depois quando ajudar, versão, data, disponibilidade, compatibilidade e limites. Consultar fontes técnicas primárias na execução. Não confundir proposta ou preview com recurso estável, nem transformar a edição em uma lista de manchetes sem análise.
+
+## Animação por artigo
+
+Cada novo artigo inclui uma animação curta criada com **HyperFrames**, como a do café na edição de idempotência. Ela deve mostrar o mecanismo estudado: sequência de eventos, mudança de estado, concorrência ou comparação de comportamentos. Não usar apenas uma abertura com o título em movimento.
+
+- **Ritmo:** uma ideia por animação, com tempo para ler os rótulos. Como referência inicial, cerca de 15 a 30 segundos; ajustar ao conceito.
+- **Leitura:** iniciar com uma imagem estática e reprodução por escolha do leitor. Oferecer pausa, repetição e controle de velocidade. Não manter loop infinito; usar reprodução finita, com limite explícito de ciclos.
+- **Acessibilidade:** respeitar `prefers-reduced-motion`, manter controles acessíveis por teclado, descrição textual e legenda explicativa. A leitura deve continuar completa sem reproduzir a animação e sem JavaScript.
+- **Identidade:** tema escuro, texto legível no celular e conceitos consistentes com o artigo. Se a cena simplificar o sistema, explicar suas hipóteses na legenda.
+- **Entrega:** preservar a composição editável em `motion/<identificador>/`; colocar a mídia exportada e a imagem estática em `site/assets/`. Escolher o formato pela legibilidade, tamanho e controles necessários, sem impor GIF a todas as edições.
+- **Verificação:** validar a composição com HyperFrames, inspecionar a mídia renderizada e conferir integração no build e na publicação. O build do site não substitui a validação da animação.
+
+Referência de composição: [Café idempotente](../motion/cafe-idempotente/README.md). Os controles atuais do artigo servem de referência para a experiência de reprodução.
 
 ## Novidade e encadeamento
 
