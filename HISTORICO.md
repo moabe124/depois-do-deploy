@@ -40,7 +40,17 @@ Nenhuma edição apresentada.
 
 ## Dados e persistência
 
-Nenhuma edição apresentada.
+### dados-persistencia-001 — Sharding e escala horizontal: a chave e os limites
+
+- Data: 2026-10-07
+- Nível: intermediario
+- Estado: apresentado
+- Identidade do objetivo: `sharding-chave-localidade-hotspots`
+- Objetivo: Escolher uma chave de sharding a partir das consultas e reconhecer o que fazer quando a carga se concentra ou atravessa shards.
+- Conceitos: sharding, escala horizontal, chave de sharding, colocalização, hotspot, hash, scatter-gather, rebalanceamento, transações distribuídas, réplicas de leitura
+- Edição: [HTML](content/dados-persistencia/001-sharding.html)
+
+Aplicação prática: dividir pedidos de um SaaS entre shards exige equilibrar distribuição e localidade. A edição explica hotspots, scatter-gather, colocalização, transações, unicidade e migração. Compara réplicas de leitura, cache, separação de análises, sharding e SQL distribuído pelo gargalo e pelas garantias necessárias.
 
 ## Operação e confiabilidade
 

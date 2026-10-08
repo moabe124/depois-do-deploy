@@ -1,0 +1,14 @@
+{
+  "duration": 24,
+  "assertions": [
+    {
+      "kind": "staysInFrame",
+      "selector": "#routing-target-a"
+    },
+    {
+      "kind": "before",
+      "a": "#reply-a",
+      "b": "#reply-c"
+    }
+  ]
+}

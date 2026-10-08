@@ -1,0 +1,14 @@
+{
+  "duration": 24,
+  "assertions": [
+    {
+      "kind": "staysInFrame",
+      "selector": "#hotspot-range-a"
+    },
+    {
+      "kind": "before",
+      "a": "#h901",
+      "b": "#h906"
+    }
+  ]
+}
