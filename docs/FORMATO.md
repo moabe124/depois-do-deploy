@@ -20,6 +20,7 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 - Completa: cerca de 8 minutos, com camadas opcionais. Aprofundamentos podem ultrapassar esse tempo.
 - HTML independente para cada edição, sem CDN ou APIs para a leitura básica.
 - Tema escuro como padrão; modo claro opcional. Não animar continuamente nem usar notificações intrusivas.
+- Priorizar leitura no desktop: coluna central de até 740 px, corpo em Segoe UI/Arial a 20 px com entrelinha 1,7 e cerca de 28 px entre parágrafos. Em telas menores, adaptar a coluna e usar corpo de pelo menos 18 px. Fundo escuro `#191d20`, texto `#d7d9d5` e conceitos em peso 600; manter contraste legível também em legendas e controles. Frases memoráveis usam uma borda discreta, sem caixas grandes disputando atenção com o texto.
 - Celular e teclado: conteúdo sem cortes, botões legíveis e estados com texto; não depender apenas de cor.
 - Evitar introduções vagas. Informar o que será estudado no primeiro bloco.
 - Destacar conceitos e garantias, sem transformar parágrafos inteiros em negrito.
