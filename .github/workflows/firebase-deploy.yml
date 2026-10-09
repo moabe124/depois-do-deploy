@@ -1,0 +1,118 @@
+name: Publicar Firebase
+
+on:
+  workflow_run:
+    workflows: [Validar acervo]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-depois-do-deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: >-
+      github.repository == 'moabe124/depois-do-deploy' &&
+      ((github.event_name == 'workflow_run' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        github.event.workflow_run.head_branch == 'main') ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      revision: ${{ steps.revision.outputs.sha }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Identificar a revisão validada
+        id: revision
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - run: npm ci
+      - run: npm run test --if-present
+      - run: npm run check
+      - run: npm run build
+      - run: node --test tests/deploy.test.mjs
+      - name: Conferir destino e registrar arquivos do build
+        run: node scripts/deploy.mjs prepare "${{ steps.revision.outputs.sha }}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: firebase-hosting-${{ github.run_id }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://depois-do-deploy-moabe124.web.app
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.build.outputs.revision }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: firebase-hosting-${{ github.run_id }}
+          path: dist/
+      - name: Instalar CLI com versão fixa
+        run: npm install --global firebase-tools@15.33.0
+      - name: Publicar somente a revisão atual de main
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ needs.build.outputs.revision }}
+        run: |
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')
+          if [ "$latest" = "$REVISION" ]; then
+            echo 'publish=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'publish=false' >> "$GITHUB_OUTPUT"
+            echo 'Revisão ultrapassada; o pipeline da main mais recente fará a publicação.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Conferir target e integridade do artefato
+        if: steps.current.outputs.publish == 'true'
+        run: node scripts/deploy.mjs check "${{ needs.build.outputs.revision }}"
+      - name: Autenticar com credenciais temporárias do GitHub
+        if: steps.current.outputs.publish == 'true'
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          project_id: gestao-familiar-1c9a1
+          workload_identity_provider: ${{ vars.FIREBASE_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.FIREBASE_DEPLOY_SERVICE_ACCOUNT }}
+      - name: Publicar o site dedicado
+        if: steps.current.outputs.publish == 'true'
+        run: >-
+          firebase deploy --only hosting:depois-do-deploy
+          --project gestao-familiar-1c9a1 --non-interactive
+          --message "GitHub ${{ needs.build.outputs.revision }}"
+      - name: Verificar a revisão e todos os arquivos na URL real
+        if: steps.current.outputs.publish == 'true'
+        run: node scripts/deploy.mjs verify "${{ needs.build.outputs.revision }}"
+      - name: Registrar publicação
+        if: steps.current.outputs.publish == 'true'
+        env:
+          REVISION: ${{ needs.build.outputs.revision }}
+        run: |
+          echo "Publicado: $REVISION" >> "$GITHUB_STEP_SUMMARY"
+          echo 'Site: https://depois-do-deploy-moabe124.web.app' >> "$GITHUB_STEP_SUMMARY"

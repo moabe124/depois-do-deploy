@@ -53,7 +53,7 @@ site/                         biblioteca e identidade visual
 scripts/                      validação, histórico, build e preview
 docs/                         formato editorial e operação da rotina
 firebase.json                 configuração do site de Hosting dedicado
-.github/workflows/            validação a cada push/PR
+.github/workflows/            validação e deploy automático após CI na main
 ```
 
 ## Publicação
@@ -66,7 +66,7 @@ npm run build
 firebase deploy --only hosting:depois-do-deploy
 ```
 
-Consulte [a operação da rotina](docs/ROTINA.md) e [a configuração do Firebase](docs/FIREBASE.md). A rotina deve executar apenas de segunda a sexta, no fuso `America/Sao_Paulo`; cadência e horário ainda estão em definição. As propostas de novos temas estão em [docs/PAUTA.md](docs/PAUTA.md). GitHub Actions já valida o acervo; deploy via GitHub Actions só deve ser considerado ativo após configurar e testar a autenticação específica.
+Consulte [a operação da rotina](docs/ROTINA.md) e [a configuração do Firebase](docs/FIREBASE.md). A rotina deve executar apenas de segunda a sexta, no fuso `America/Sao_Paulo`; cadência e horário ainda estão em definição. As propostas de novos temas estão em [docs/PAUTA.md](docs/PAUTA.md). GitHub Actions valida o acervo e publica no site dedicado após o CI de `main` passar, usando credenciais temporárias. Operação e recuperação estão em [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## Acrescentar uma edição
 

@@ -10,3 +10,4 @@ firebase-debug*.log
 work/
 playwright-report/
 test-results/
+gha-creds-*.json

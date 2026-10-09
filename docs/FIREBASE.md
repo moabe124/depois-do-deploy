@@ -20,10 +20,10 @@ firebase deploy --only hosting:depois-do-deploy --project gestao-familiar-1c9a1
 
 Se a CLI não estiver no PATH, usar o caminho da instalação local. Não commitar esse caminho pessoal no código.
 
-## Deploy pelo GitHub Actions (opcional)
+## Deploy pelo GitHub Actions
 
-A validação do acervo está em `.github/workflows/validate.yml`. Ela não publica o site. O fluxo diário local pode fazer push e deploy pela CLI já autenticada.
+A validação do acervo está em `.github/workflows/validate.yml`. Após sucesso em um push para `main`, `.github/workflows/firebase-deploy.yml` publica automaticamente no **target exclusivo** `depois-do-deploy` e verifica o commit e os arquivos na URL real. Pull requests apenas validam.
 
-Para publicação em nuvem, configurar posteriormente a autenticação dedicada e um workflow que faça build e deploy no **target exclusivo** `depois-do-deploy`. A integração oficial do Firebase pode criar o workflow e armazenar a credencial no GitHub como secret. Nunca salvar a credencial em arquivos versionados. Usar as permissões mínimas adequadas ao destino.
+O CD usa credenciais temporárias via OIDC, com conta de serviço dedicada e sem chave JSON permanente. Para os próximos artigos, basta validar, fazer commit/push e acompanhar os dois workflows. Consulte [DEPLOY.md](DEPLOY.md) para operação, permissões e recuperação.
 
 Referência: [Deploy via GitHub](https://firebase.google.com/docs/hosting/github-integration).
