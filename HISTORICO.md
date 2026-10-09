@@ -52,7 +52,7 @@ Nenhuma edição apresentada.
 
 ## Dados e persistência
 
-### dados-persistencia-001 — Sharding e escala horizontal: a chave e os limites
+### dados-persistencia-001 — Sharding: como dividir dados entre servidores
 
 - Data: 2026-10-07
 - Nível: intermediario
@@ -62,7 +62,7 @@ Nenhuma edição apresentada.
 - Conceitos: sharding, escala horizontal, chave de sharding, colocalização, hotspot, hash, scatter-gather, rebalanceamento, transações distribuídas, réplicas de leitura
 - Edição: [HTML](content/dados-persistencia/001-sharding.html)
 
-Aplicação prática: dividir pedidos de um SaaS entre shards exige equilibrar distribuição e localidade. A edição explica hotspots, scatter-gather, colocalização, transações, unicidade e migração. Compara réplicas de leitura, cache, separação de análises, sharding e SQL distribuído pelo gargalo e pelas garantias necessárias.
+Aplicação prática: acompanhar um sistema de pedidos para entender shard, tenant e chave de distribuição. Explica passo a passo a consulta dirigida, a colocalização, o hotspot de uma empresa e o relatório global. Aprofundamentos mostram hash, buckets, transações e migração, sempre ligados ao mesmo exemplo.
 
 ## Operação e confiabilidade
 
