@@ -33,6 +33,15 @@ export function validate(catalog = readCatalog()) {
     assert(!urls.has(lesson.url) && !sources.has(lesson.source), `Arquivo ou URL repetidos: ${lesson.id}`);
     assert(existsSync(path.join(root, lesson.source)), `HTML ausente: ${lesson.source}`);
     const html = readFileSync(path.join(root,lesson.source),'utf8');
+    if(lesson.quiz){
+      assert(typeof lesson.quiz.version==='string' && lesson.quiz.questions.length>0 && lesson.quiz.questions.length<=50, `Questionário inválido: ${lesson.id}`);
+      const questions=new Set();
+      for(const q of lesson.quiz.questions){
+        assert(slug.test(q.id) && !questions.has(q.id) && q.options.includes(q.correct), `Pergunta inválida: ${lesson.id}/${q.id}`);
+        assert(html.includes(`data-question-id="${q.id}"`) && q.options.every(option=>html.includes(`data-answer="${option}"`)), `Pergunta sem controles no HTML: ${lesson.id}/${q.id}`);
+        questions.add(q.id);
+      }
+    }
     assert(/<html lang="pt-BR">/.test(html) && /<title>.+<\/title>/.test(html), `Metadados ausentes: ${lesson.id}`);
     assert(!/sk_live_|BEGIN PRIVATE KEY|ghp_[A-Za-z0-9]{20}/.test(html), `Possível credencial no HTML: ${lesson.id}`);
     ids.add(lesson.id); focuses.add(`${lesson.topic}/${lesson.focusKey}`); urls.add(lesson.url); sources.add(lesson.source);

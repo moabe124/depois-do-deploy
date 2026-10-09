@@ -30,7 +30,9 @@ A rotina alterna temas ativos e níveis, com uma edição por execução. O cont
 - `focusKey` identifica o objetivo da edição dentro da categoria. Objetivos iguais são rejeitados na validação.
 - Conceitos podem reaparecer como pré-requisitos ou em aplicações mais avançadas. O agente precisa comparar objetivos e resumos; chaves diferentes não comprovam novidade semântica.
 
-Para confirmar estudo, atualizar o registro no catálogo e executar `npm run history`. O site não registra leitura automaticamente e não oferece sincronização de progresso entre dispositivos.
+O leitor pode marcar uma edição como **lida ou não lida** na biblioteca ou no artigo, após entrar com Google. Resultados do questionário são salvos na conta e aparecem no card da edição. O login sincroniza o progresso entre dispositivos. Abertura da página e resposta ao desafio não marcam leitura automaticamente.
+
+O catálogo público é memória editorial. O progresso individual fica no Firestore em `depoisDoDeploy/{uid}/lessons/{lessonId}`, separado das coleções familiares e restrito ao dono. Ele não é publicado no GitHub. Os projetos compartilham banco, cotas e serviço de Authentication; é isolamento lógico por caminhos e regras, não um segundo banco.
 
 ## Desenvolvimento
 
@@ -39,11 +41,12 @@ Requer Node.js 22 ou superior. O build não depende de bibliotecas externas.
 ```sh
 npm ci
 npm run check
+npm test
 npm run build
 npm run dev
 ```
 
-O servidor local abre em `http://127.0.0.1:4173`. O Firebase publica apenas `dist/`; instruções, arquivos de trabalho e credenciais não entram nesse diretório.
+O servidor local abre em `http://127.0.0.1:4173`. O Firebase publica apenas `dist/`; instruções, arquivos de trabalho e credenciais não entram nesse diretório. A leitura é estática; login e progresso carregam o SDK do Firebase. Sua configuração web é pública, enquanto regras Firestore protegem os registros pessoais.
 
 ```text
 content/catalog.json          catálogo canônico

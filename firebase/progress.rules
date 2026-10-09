@@ -1,0 +1,29 @@
+// Fragmento a integrar nas regras compartilhadas, dentro de /databases/{database}/documents.
+// Não substituir as regras do projeto por este arquivo isolado.
+match /depoisDoDeploy/{uid}/lessons/{lessonId} {
+  function owner() {
+    return request.auth != null && request.auth.uid == uid
+      && request.auth.token.email_verified == true;
+  }
+  function validQuiz(q) {
+    return q == null || (q is map
+      && q.keys().hasAll(['version','answers','score','total','attempts'])
+      && q.keys().hasOnly(['version','answers','score','total','attempts'])
+      && q.version is string && q.version.size() <= 40
+      && q.answers is map && q.answers.size() <= 50
+      && q.score is int && q.total is int && q.attempts is int
+      && q.total >= 1 && q.total <= 50 && q.score >= 0 && q.score <= q.total
+      && q.attempts >= 1 && q.attempts <= 100000);
+  }
+  function validProgress() {
+    let d = request.resource.data;
+    return d.keys().hasAll(['read','readAt','quiz','updatedAt'])
+      && d.keys().hasOnly(['read','readAt','quiz','updatedAt'])
+      && d.read is bool && (d.readAt == null || d.readAt is timestamp)
+      && (d.read ? d.readAt is timestamp : d.readAt == null)
+      && d.updatedAt == request.time && validQuiz(d.quiz);
+  }
+  allow read: if owner();
+  allow create, update: if owner() && validProgress();
+  allow delete: if owner();
+}

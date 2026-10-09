@@ -30,7 +30,9 @@ Os níveis iniciante, intermediário e avançado devem alternar dentro de cada t
 
 O repositório é público. Não incluir chaves, tokens, dados pessoais privados, exemplos com credenciais nem logs de autenticação. Nunca copiar o diretório de configuração do Firebase ou GitHub para o projeto.
 
-Usar apenas o target `hosting:depois-do-deploy` configurado em `.firebaserc`. Não publicar no site padrão do projeto de gestão familiar. Não alterar Firestore, Functions, Auth ou outros serviços desse projeto para publicar o acervo estático.
+Usar apenas o target `hosting:depois-do-deploy` configurado em `.firebaserc`. Não publicar no site padrão do projeto de gestão familiar. O progresso privado usa exclusivamente `depoisDoDeploy/{uid}/lessons/{lessonId}` no Firestore compartilhado e o app web dedicado. Não acessar nem alterar dados familiares. Regras do Firestore e Firebase Auth são compartilhados: mudanças devem preservar as regras familiares e os provedores/domínios existentes. Nunca publicar `firebase/progress.rules` isoladamente como regras de todo o projeto.
+
+Questionários precisam de versão e perguntas em `content/catalog.json`, com controles `data-question-id` e `data-answer` na edição. O build injeta login/progresso. Não armazenar resultados individuais no catálogo público. Resultado de desafio é uma ferramenta de estudo, não certificação. Nova versão do questionário invalida a interpretação dos resultados anteriores.
 
 Antes de executar uma rotina, confirmar checkout limpo na branch `main` e atualizar com `git pull --ff-only`. Se houver trabalho local alheio, conflitos ou concorrência, parar a publicação e reportar. Nunca fazer force push, reset destrutivo ou apagar edições anteriores.
 

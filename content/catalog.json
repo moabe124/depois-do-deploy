@@ -87,7 +87,21 @@
       "references": [
         "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
         "https://docs.stripe.com/api/idempotent_requests"
-      ]
+      ],
+      "quiz": {
+        "version": "1",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "new",
+              "reconcile",
+              "wait"
+            ],
+            "correct": "reconcile"
+          }
+        ]
+      }
     },
     {
       "id": "dados-persistencia-001",
@@ -127,69 +141,69 @@
     {
       "id": "system-design-002",
       "topic": "system-design",
-      "title": "Back-of-the-envelope: compare cache com números",
+      "title": "Back-of-the-envelope: estime antes de decidir",
       "date": "2026-10-09",
       "level": "avancado",
       "minutes": {
         "essential": 3,
         "full": 10
       },
-      "focusKey": "estimativa-cache-latencia-carga-memoria",
-      "objective": "Estimar latência, carga e memória para comparar uma leitura com cache e uma leitura direta, explicitando hipóteses e limites que precisam de medição.",
-      "summary": "Aplicação prática: calcular a média ponderada de hits e misses, chamadas à origem, memória e ponto de equilíbrio de um cache. Distingue cache no cliente e no backend; testa a sensibilidade do acerto, os percentis e a carga com cache frio para defender uma escolha com números condicionais.",
+      "focusKey": "estimativa-ordem-grandeza-hipoteses-unidades",
+      "objective": "Transformar uma pergunta de System Design em uma estimativa de carga e armazenamento, usando hipóteses explícitas, unidades e cenários para orientar a próxima medição.",
+      "summary": "Aplicação prática: ensinar o método de back-of-the-envelope com uma estimativa guiada de eventos por segundo e armazenamento. Explicita fronteira, hipóteses, unidades e arredondamento; testa sensibilidade, réplicas, pico e falha. Cache aparece como exemplo opcional de média ponderada, não como objetivo da edição.",
       "concepts": [
         "back-of-the-envelope",
         "ordem de grandeza",
+        "hipóteses",
         "fronteira de medição",
-        "taxa de acerto",
-        "hit",
-        "miss",
-        "latência média",
-        "p99",
-        "dimensionamento de memória",
-        "ponto de equilíbrio",
+        "análise dimensional",
+        "arredondamento",
+        "taxa média e pico",
+        "retenção",
+        "análise de sensibilidade",
+        "planejamento de capacidade",
         "Lei de Little",
-        "cache frio"
+        "média ponderada"
       ],
       "source": "content/system-design/002-back-of-the-envelope.html",
       "url": "temas/system-design/002-back-of-the-envelope.html",
       "status": "presented",
       "studiedAt": null,
       "references": [
-        "https://aws.amazon.com/builders-library/caching-challenges-and-strategies/",
-        "https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside",
+        "https://sre.google/workbook/non-abstract-design/",
         "https://sre.google/sre-book/monitoring-distributed-systems/",
-        "https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/resources/lecture-22-sliding-window-analysis-littles-law/"
+        "https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/resources/lecture-22-sliding-window-analysis-littles-law/",
+        "https://aws.amazon.com/builders-library/caching-challenges-and-strategies/"
       ],
       "quiz": {
-        "version": "1",
+        "version": "2",
         "questions": [
           {
             "id": "q1",
             "options": [
-              "13",
-              "17",
-              "53"
+              "4",
+              "120",
+              "3600"
             ],
-            "correct": "17"
+            "correct": "120"
           },
           {
             "id": "q2",
             "options": [
-              "http100-db100",
-              "http1000-db100",
-              "http1000-db1000"
+              "120",
+              "600",
+              "3000"
             ],
-            "correct": "http1000-db100"
+            "correct": "600"
           },
           {
             "id": "q3",
             "options": [
-              "2",
-              "14",
-              "122"
+              "guaranteed",
+              "validate",
+              "precision"
             ],
-            "correct": "122"
+            "correct": "validate"
           }
         ]
       }

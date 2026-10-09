@@ -5,6 +5,7 @@
   "type": "module",
   "engines": { "node": ">=22" },
   "scripts": {
+    "test": "node --test",
     "check": "node scripts/check.mjs",
     "build": "node scripts/build.mjs",
     "history": "node scripts/history.mjs",
