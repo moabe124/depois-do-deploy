@@ -1,0 +1,33 @@
+{
+  "duration": 24,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#direct-reads .read:nth-child(10)",
+      "bySec": 2
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#cache-reads .read:nth-child(9)",
+      "bySec": 11
+    },
+    {
+      "kind": "before",
+      "a": "#cache-reads .read:nth-child(9)",
+      "b": ".miss"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#cache-mean",
+      "bySec": 21
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#direct-column"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#cached-column"
+    }
+  ]
+}

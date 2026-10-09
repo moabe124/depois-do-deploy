@@ -6,6 +6,18 @@
 
 ## System Design
 
+### system-design-002 — Back-of-the-envelope: compare cache com números
+
+- Data: 2026-10-09
+- Nível: avancado
+- Estado: apresentado
+- Identidade do objetivo: `estimativa-cache-latencia-carga-memoria`
+- Objetivo: Estimar latência, carga e memória para comparar uma leitura com cache e uma leitura direta, explicitando hipóteses e limites que precisam de medição.
+- Conceitos: back-of-the-envelope, ordem de grandeza, fronteira de medição, taxa de acerto, hit, miss, latência média, p99, dimensionamento de memória, ponto de equilíbrio, Lei de Little, cache frio
+- Edição: [HTML](content/system-design/002-back-of-the-envelope.html)
+
+Aplicação prática: calcular a média ponderada de hits e misses, chamadas à origem, memória e ponto de equilíbrio de um cache. Distingue cache no cliente e no backend; testa a sensibilidade do acerto, os percentis e a carga com cache frio para defender uma escolha com números condicionais.
+
 ### system-design-001 — Idempotência e retries seguros
 
 - Data: 2026-10-02

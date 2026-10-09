@@ -1,0 +1,1 @@
+Explicar a comparação solicitada: nove leituras encontram o cache e custam 2 ms cada; uma não encontra e custa 2 + 120 = 122 ms. A média é (9 × 2 + 1 × 122) ÷ 10 = 14 ms. Sem cache, cada leitura custa 120 ms. As chamadas à origem caem de dez para uma. Os valores são hipóteses didáticas, não benchmarks. A soma dos tempos individuais não representa o tempo de um lote concorrente.

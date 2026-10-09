@@ -123,6 +123,76 @@
         "version": "1",
         "questions": [{ "id": "q1", "options": ["more-nodes", "split-tenant", "another-hash"], "correct": "split-tenant" }]
       }
+    },
+    {
+      "id": "system-design-002",
+      "topic": "system-design",
+      "title": "Back-of-the-envelope: compare cache com números",
+      "date": "2026-10-09",
+      "level": "avancado",
+      "minutes": {
+        "essential": 3,
+        "full": 10
+      },
+      "focusKey": "estimativa-cache-latencia-carga-memoria",
+      "objective": "Estimar latência, carga e memória para comparar uma leitura com cache e uma leitura direta, explicitando hipóteses e limites que precisam de medição.",
+      "summary": "Aplicação prática: calcular a média ponderada de hits e misses, chamadas à origem, memória e ponto de equilíbrio de um cache. Distingue cache no cliente e no backend; testa a sensibilidade do acerto, os percentis e a carga com cache frio para defender uma escolha com números condicionais.",
+      "concepts": [
+        "back-of-the-envelope",
+        "ordem de grandeza",
+        "fronteira de medição",
+        "taxa de acerto",
+        "hit",
+        "miss",
+        "latência média",
+        "p99",
+        "dimensionamento de memória",
+        "ponto de equilíbrio",
+        "Lei de Little",
+        "cache frio"
+      ],
+      "source": "content/system-design/002-back-of-the-envelope.html",
+      "url": "temas/system-design/002-back-of-the-envelope.html",
+      "status": "presented",
+      "studiedAt": null,
+      "references": [
+        "https://aws.amazon.com/builders-library/caching-challenges-and-strategies/",
+        "https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside",
+        "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/resources/lecture-22-sliding-window-analysis-littles-law/"
+      ],
+      "quiz": {
+        "version": "1",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "13",
+              "17",
+              "53"
+            ],
+            "correct": "17"
+          },
+          {
+            "id": "q2",
+            "options": [
+              "http100-db100",
+              "http1000-db100",
+              "http1000-db1000"
+            ],
+            "correct": "http1000-db100"
+          },
+          {
+            "id": "q3",
+            "options": [
+              "2",
+              "14",
+              "122"
+            ],
+            "correct": "122"
+          }
+        ]
+      }
     }
   ]
 }
