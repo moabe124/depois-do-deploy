@@ -32,7 +32,17 @@ Timeout não confirma falha. Uma identidade estável, reserva atômica e idempot
 
 ## Java e JVM
 
-Nenhuma edição apresentada.
+### java-jvm-001 — Threads virtuais: libere a espera, controle a concorrência
+
+- Data: 2026-10-13
+- Nível: intermediario
+- Estado: apresentado
+- Identidade do objetivo: `threads-virtuais-carriers-limite-dependencia`
+- Objetivo: Entender como threads virtuais liberam a carrier durante I/O compatível e separar esse mecanismo do controle de chamadas simultâneas a uma API com semáforo compartilhado e espera limitada.
+- Conceitos: thread virtual, thread de plataforma, carrier, I/O bloqueante, concorrência, paralelismo, semáforo, controle de admissão, timeout, pinning
+- Edição: [HTML](content/java-jvm/001-threads-virtuais.html)
+
+Conceito: acompanhar uma consulta de cotações para distinguir thread virtual, carrier e permissão. Explica desmontagem durante I/O, executor por tarefa, semáforo compartilhado, espera limitada, timeouts e orçamento local versus global. Aprofundamentos tratam CPU, ciclo de vida do executor e pinning conforme a versão da JVM.
 
 ## Angular e frontend
 

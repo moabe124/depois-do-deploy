@@ -1,0 +1,66 @@
+<template>
+<style>
+*{box-sizing:border-box}[data-composition-id="01-carrier-permissao"]{position:relative;width:100%;height:100%;overflow:hidden;font-family:sans-serif;color:#d7d9d5}.clip{position:absolute;inset:0;width:100%;height:100%}.ground{background:#191d20}.stage{position:absolute;inset:0}#phase-permits,#phase-release{opacity:0}#phase-permits,#phase-release{opacity:0}.heading{position:absolute;left:42px;top:32px;width:880px;margin:0;font-size:42px;line-height:1.22;font-weight:600;letter-spacing:-1px}.subhead{position:absolute;left:42px;top:94px;width:860px;margin:0;font-size:28px;line-height:1.4;color:#a6cdbb}.panel{position:absolute;background:#22292b;border:2px solid #697a74;border-radius:12px}.label{position:absolute;font-size:30px;line-height:1.3;margin:0;font-weight:500}.task{position:absolute;width:270px;height:72px;background:#293631;color:#d7d9d5;border:2px solid #a6cdbb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:30px;line-height:1.3;white-space:nowrap}.waiting{border-color:#e7b28c;background:#352c26}.note{position:absolute;left:42px;top:552px;width:880px;margin:0;font-size:28px;line-height:1.4;color:#a6cdbb}.footline{position:absolute;left:42px;top:607px;width:880px;margin:0;font-size:20px;line-height:1.3}.connector{position:absolute;inset:0;width:960px;height:640px;pointer-events:none}.connector path{fill:none;stroke:#a6cdbb;stroke-width:3;stroke-linecap:round}.carrier-panel{left:42px;top:209px;width:358px;height:178px}.api-panel{left:544px;top:209px;width:374px;height:306px}.permit-panel{left:544px;top:206px;width:374px;height:288px}.slot{position:absolute;left:565px;width:330px;height:96px;border:2px dashed #697a74;border-radius:10px}.slot1{top:277px}.slot2{top:385px}.permit-task{left:580px;width:300px;height:70px}.permit-a{top:290px}.permit-b{top:398px}.outside{left:42px;top:305px;width:292px}.carrier-bar{position:absolute;left:42px;top:452px;width:370px;height:50px;border-top:2px solid #697a74;font-size:27px;padding-top:10px}.badge{position:absolute;left:562px;top:220px;font-size:28px;margin:0;line-height:1.4}.done{position:absolute;left:42px;top:188px;color:#a6cdbb;font-size:30px;line-height:1.4}.divider{position:absolute;left:439px;top:217px;width:2px;height:212px;background:#697a74}.slot-label{position:absolute;left:350px;top:318px;font-size:26px;margin:0;line-height:1.4;color:#e7b28c}
+</style>
+<div data-hf-id="hf-peap" id="carrier-diagram" data-composition-id="01-carrier-permissao" data-width="960" data-height="640" data-duration="24">
+<div data-hf-id="hf-8h8o" id="diagram-ground" class="clip ground" data-start="0" data-duration="24" data-track-index="0"></div>
+<div data-hf-id="hf-kicw" id="diagram-events" class="clip" data-start="0" data-duration="24" data-track-index="1">
+<section data-hf-id="hf-4o6g" class="stage" id="phase-execution">
+<h1 data-hf-id="hf-q6rh" class="heading">A espera. A carrier executa B.</h1><p data-hf-id="hf-d5zt" class="subhead">Uma thread virtual pode liberar sua executora.</p>
+<div data-hf-id="hf-2wgf" class="panel carrier-panel"></div><div data-hf-id="hf-blwb" class="panel api-panel"></div>
+<p data-hf-id="hf-zzwd" class="label" style="left:62px;top:225px">Carrier</p><p data-hf-id="hf-voke" class="label" style="left:565px;top:225px">API externa</p>
+<svg data-hf-id="hf-111j" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-dwtp" id="io-line" d="M400 342 L540 342" /></svg>
+<div data-hf-id="hf-2vz6" class="task" id="task-a" style="left:82px;top:287px">A · executando</div>
+<div data-hf-id="hf-uw9w" class="task" id="task-b" style="left:82px;top:438px">B · pronta</div>
+<p data-hf-id="hf-ewm1" class="label" id="a-pending" style="left:565px;top:424px;width:310px">A segue pendente</p>
+<p data-hf-id="hf-ycwq" class="note" id="execution-note">A inicia a consulta de cotações.</p>
+</section>
+<section data-hf-id="hf-65v6" class="stage" id="phase-permits">
+<h1 data-hf-id="hf-3nup" class="heading">Carrier livre. API ocupada.</h1><p data-hf-id="hf-pgof" class="subhead">A e B esperam I/O; C espera uma permissão.</p>
+<div data-hf-id="hf-jk23" class="divider"></div><div data-hf-id="hf-te1y" class="panel permit-panel"></div>
+<p data-hf-id="hf-msao" class="label" style="left:42px;top:234px">Fora da API</p><p data-hf-id="hf-ml8z" class="badge">2 de 2 ocupadas</p>
+<div data-hf-id="hf-1hmp" class="slot slot1"></div><div data-hf-id="hf-5fqq" class="slot slot2"></div>
+<div data-hf-id="hf-73s0" class="task permit-task permit-a">A · espera I/O</div><div data-hf-id="hf-51n4" class="task permit-task permit-b">B · espera I/O</div>
+<div data-hf-id="hf-p7ix" class="task waiting outside" id="waiting-c">C · espera vaga</div>
+<div data-hf-id="hf-j6fk" class="carrier-bar">Carrier: livre</div>
+<p data-hf-id="hf-0z3h" class="note">Esperar I/O mantém a permissão ocupada.</p>
+</section>
+<section data-hf-id="hf-u81d" class="stage" id="phase-release">
+<h1 data-hf-id="hf-lf0f" class="heading">A termina. A vaga volta.</h1><p data-hf-id="hf-2k60" class="subhead">C só entra depois que uma permissão é devolvida.</p>
+<div data-hf-id="hf-mh0r" class="divider"></div><div data-hf-id="hf-6l0q" class="panel permit-panel"></div>
+<p data-hf-id="hf-bl9d" class="done" id="a-done">A · concluída</p><p data-hf-id="hf-kv4t" class="badge" id="permit-count">1 de 2 ocupadas</p>
+<div data-hf-id="hf-enit" class="slot slot1"></div><div data-hf-id="hf-7gl2" class="slot slot2"></div>
+<div data-hf-id="hf-w5m0" class="task permit-task permit-b">B · espera I/O</div>
+<svg data-hf-id="hf-9mef" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-a82u" id="entry-line" d="M336 342 L561 342" /></svg>
+<div data-hf-id="hf-9htd" class="task waiting outside" id="entering-c">C · obtém vaga</div>
+<div data-hf-id="hf-unno" class="carrier-bar">Carrier reutilizável</div>
+<p data-hf-id="hf-ypaz" class="note" id="release-note">A devolve sua permissão.</p>
+</section>
+<p data-hf-id="hf-08kt" class="footline">Uma instância · duas permissões · I/O compatível · ordem ilustrativa</p>
+</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+
+tl.fromTo('#task-a',{x:0,y:0},{x:487,y:14,duration:1.1,ease:'power2.inOut'},2);
+tl.fromTo('#task-b',{y:0},{y:-151,duration:1.1,ease:'power2.inOut'},4);
+tl.fromTo('#a-pending',{opacity:0},{opacity:1,duration:0.5,ease:'power1.out'},3.2);
+for(const [id,time] of [['#io-line',2.3],['#entry-line',18]]){const p=document.querySelector(id);const n=p.getTotalLength();p.style.strokeDasharray=String(n);tl.fromTo(p,{strokeDashoffset:n},{strokeDashoffset:0,duration:0.7,ease:'none'},time);}
+tl.set('#phase-execution',{opacity:0},8);tl.set('#phase-permits',{opacity:1},8);
+tl.fromTo('#waiting-c',{x:0},{x:35,duration:1,ease:'power2.out'},10);
+tl.fromTo('#waiting-c',{x:35},{x:0,duration:0.65,ease:'power2.inOut',immediateRender:false},13);
+tl.set('#phase-permits',{opacity:0},16);tl.set('#phase-release',{opacity:1},16);
+tl.fromTo('#a-done',{opacity:0},{opacity:1,duration:0.65,ease:'power1.out'},16);
+tl.fromTo('#entering-c',{x:0,y:0},{x:538,y:-15,duration:1.2,ease:'power2.inOut'},19);
+tl.to('#entering-c',{backgroundColor:'#293631',borderColor:'#a6cdbb',duration:0.3,ease:'none'},20.2);
+const sequence=[
+{t:0,a:'A · executando',b:'B · pronta',execution:'A inicia a consulta de cotações.',count:'1 de 2 ocupadas',c:'C · obtém vaga',release:'A devolve sua permissão.'},
+{t:3.1,a:'A · espera I/O',b:'B · pronta',execution:'A espera I/O; a carrier fica livre.',count:'1 de 2 ocupadas',c:'C · obtém vaga',release:'A devolve sua permissão.'},
+{t:5.1,a:'A · espera I/O',b:'B · executando',execution:'A segue pendente; a carrier executa B.',count:'1 de 2 ocupadas',c:'C · obtém vaga',release:'A devolve sua permissão.'},
+{t:18,a:'A · espera I/O',b:'B · executando',execution:'A segue pendente; a carrier executa B.',count:'1 de 2 ocupadas',c:'C · obtém vaga',release:'Uma permissão está disponível para C.'},
+{t:20.3,a:'A · espera I/O',b:'B · executando',execution:'A segue pendente; a carrier executa B.',count:'2 de 2 ocupadas',c:'C · espera I/O',release:'A terminou → C pode entrar.'}
+];
+const driver={time:0};tl.to(driver,{time:24,duration:24,ease:'none',onUpdate:()=>{const s=[...sequence].reverse().find(item=>driver.time>=item.t)||sequence[0];for(const [id,key] of [['task-a','a'],['task-b','b'],['execution-note','execution'],['permit-count','count'],['entering-c','c'],['release-note','release']])document.getElementById(id).textContent=s[key];}},0);
+window.__timelines['01-carrier-permissao']=tl;
+</script>
+</template>

@@ -201,6 +201,77 @@
           }
         ]
       }
+    },
+    {
+      "id": "java-jvm-001",
+      "topic": "java-jvm",
+      "title": "Threads virtuais: libere a espera, controle a concorrência",
+      "date": "2026-10-13",
+      "level": "intermediario",
+      "minutes": {
+        "essential": 3,
+        "full": 8
+      },
+      "focusKey": "threads-virtuais-carriers-limite-dependencia",
+      "objective": "Entender como threads virtuais liberam a carrier durante I/O compatível e separar esse mecanismo do controle de chamadas simultâneas a uma API com semáforo compartilhado e espera limitada.",
+      "summary": "Conceito: acompanhar uma consulta de cotações para distinguir thread virtual, carrier e permissão. Explica desmontagem durante I/O, executor por tarefa, semáforo compartilhado, espera limitada, timeouts e orçamento local versus global. Aprofundamentos tratam CPU, ciclo de vida do executor e pinning conforme a versão da JVM.",
+      "concepts": [
+        "thread virtual",
+        "thread de plataforma",
+        "carrier",
+        "I/O bloqueante",
+        "concorrência",
+        "paralelismo",
+        "semáforo",
+        "controle de admissão",
+        "timeout",
+        "pinning"
+      ],
+      "source": "content/java-jvm/001-threads-virtuais.html",
+      "url": "temas/java-jvm/001-threads-virtuais.html",
+      "status": "presented",
+      "studiedAt": null,
+      "references": [
+        "https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html",
+        "https://openjdk.org/jeps/444",
+        "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Executors.html",
+        "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Semaphore.html",
+        "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html",
+        "https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html",
+        "https://docs.oracle.com/en/java/javase/24/migrate/significant-changes-jdk-24.html"
+      ],
+      "quiz": {
+        "version": "1",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "independent",
+              "release-on-wait",
+              "same-resource"
+            ],
+            "correct": "independent"
+          },
+          {
+            "id": "q2",
+            "options": [
+              "per-request",
+              "shared-boundary",
+              "more-carriers"
+            ],
+            "correct": "shared-boundary"
+          },
+          {
+            "id": "q3",
+            "options": [
+              "global-semaphore",
+              "coordinate-budget",
+              "fairness"
+            ],
+            "correct": "coordinate-budget"
+          }
+        ]
+      }
     }
   ]
 }

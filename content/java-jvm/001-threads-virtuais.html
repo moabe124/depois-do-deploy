@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Entenda como threads virtuais liberam a thread de execução durante I/O e controle a concorrência de uma API com semáforo e espera limitada.">
+<title>Depois do Deploy · Threads virtuais: libere a espera, controle a concorrência</title>
+<style>
+
+:root{color-scheme:dark;--paper:#191d20;--ink:#d7d9d5;--muted:#aab1b4;--line:#394146;--card:#22292b;--green:#a6cdbb;--soft:#293631;--orange:#e7b28c}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--paper);color:var(--ink);font:20px/1.7 'Segoe UI',Arial,sans-serif}body.light{color-scheme:light;--paper:#f5f2e9;--ink:#262c28;--muted:#62685f;--line:#d6d8ca;--card:#fffdf7;--green:#375746;--soft:#e4ebdf;--orange:#98532e}a{color:var(--green);text-underline-offset:4px}button,select,input{font:inherit}button,select,input[type=number]{color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:8px 12px}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:4px}.wrap{width:min(1060px,calc(100% - 64px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-bottom:1px solid var(--line)}.brand{font-size:18px;font-weight:650}.brand i{display:inline-block;width:13px;height:13px;background:var(--green);border-radius:50%;margin-right:10px}.theme{font-size:14px;border-radius:28px}.hero{padding:52px 0 34px;max-width:850px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(36px,4.8vw,56px);line-height:1.12;letter-spacing:-1.8px;margin:18px 0 24px;font-weight:650}h1 em{font-style:normal;color:var(--green)}.dek{font-size:21px;line-height:1.6;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:13px;margin-top:22px}.draft{font-size:13px;color:var(--muted);margin:18px 0 0}.reading{border-block:1px solid var(--line);padding:16px 0;display:flex;gap:18px;align-items:center;justify-content:space-between;font-size:14px}.reading p{margin:0;color:var(--muted)}.switch{display:flex;gap:6px;flex-shrink:0}.switch button{font-size:14px}.switch button[aria-pressed=true]{background:var(--green);color:var(--paper);border-color:var(--green)}.article{max-width:740px;margin:auto;padding-top:38px}.chapter{border-bottom:1px solid var(--line);padding-bottom:30px;margin-bottom:34px}h2{font-size:28px;line-height:1.35;letter-spacing:-.5px;font-weight:600;margin:10px 0 20px}h3{font-size:22px;line-height:1.4}p{margin:0 0 28px}strong{font-weight:600}code,pre,.number{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}code{font-size:.88em;overflow-wrap:anywhere}pre{font-size:16px;line-height:1.8;background:var(--card);padding:20px;white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:7px}.takeaway{border-left:2px solid var(--green);padding-left:18px;margin-top:28px}.caption,figcaption,.motion-status{font-size:14px;line-height:1.65;color:var(--muted)}figure{margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}video,.static-frame{display:block;width:100%;height:auto;aspect-ratio:3/2;background:#191d20}.motion-copy{padding:18px 20px}.motion-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0 10px;font-size:14px}.motion-controls label{display:flex;align-items:center;gap:8px}.motion-status{margin:0}.static-option{padding:0 20px}.static-option img{margin:10px 0 20px}details{border-top:1px solid var(--line);padding:15px 0}summary{font-size:18px;line-height:1.55;cursor:pointer;min-height:44px;padding-block:7px}summary::marker{color:var(--green)}.level{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);display:block}.detail-body{padding-top:15px;font-size:19px}.table-wrap{overflow-x:auto;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:16px;line-height:1.65;text-align:left}caption{text-align:left;color:var(--muted);font-size:14px;margin-bottom:12px}th,td{border-bottom:1px solid var(--line);padding:12px 10px;vertical-align:top}thead th{color:var(--green)}tbody th{font-weight:600}.steps{padding-left:24px}.steps li{padding-left:6px;margin-bottom:16px}.choices{display:grid;gap:9px;margin:18px 0}.choice{text-align:left;font-size:17px;padding:12px 16px}.choice[aria-pressed=true]{background:var(--soft);border-color:var(--green)}.feedback{font-size:17px;background:var(--soft);padding:16px;margin-bottom:20px}.calculator{border:1px solid var(--line);border-radius:8px;padding:20px;background:var(--card)}.inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px}.inputs label{font-size:15px;display:flex;flex-direction:column;gap:6px}.inputs input{width:100%}.inputs input[type=range]{accent-color:var(--green);min-height:44px}.results{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}.results p{margin:0;font-size:14px}.results output{display:block;font:600 28px/1.4 'Segoe UI',Arial,sans-serif;color:var(--green);font-variant-numeric:tabular-nums}.sources{font-size:15px;line-height:1.7;padding-bottom:28px}.sources li{margin-bottom:14px}.closing{border-left:2px solid var(--green);padding-left:18px;font-size:25px;line-height:1.45}.essential .full-only{display:none}footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:13px}blockquote{margin:20px 0;padding-left:18px;border-left:2px solid var(--green)}blockquote p{font-size:19px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:700px){.wrap{width:calc(100% - 36px)}.hero{padding-top:34px}body{font-size:18px}.dek{font-size:19px}h1{letter-spacing:-1px}h2{font-size:25px}.reading{display:block}.switch{margin-top:12px;flex-wrap:wrap}.article{padding-top:30px}.detail-body{font-size:18px}.motion-copy{padding:16px}.motion-controls label{flex-wrap:wrap}pre{font-size:15px;padding:16px}table{font-size:14px}th,td{padding:10px 7px}.inputs,.results{grid-template-columns:1fr}.calculator{padding:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{--paper:#fff;--ink:#202820;--muted:#505850;--line:#ddd;--card:#fff;--green:#284f38;font-size:11pt}.wrap{width:100%}.theme,.reading,.motion-controls,video,.choices,.feedback,.calculator{display:none!important}.essential .full-only{display:block}.article{max-width:100%}.hero{padding-top:20px}h1{font-size:28pt}.sources a{overflow-wrap:anywhere}}
+
+.quiz-question+.quiz-question{margin-top:36px;padding-top:22px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><i aria-hidden="true"></i>Depois do Deploy</div><button class="theme" id="theme" type="button" aria-pressed="false" hidden>Modo claro</button></header>
+<section class="hero" aria-labelledby="title">
+<div class="eyebrow">Java e JVM / conceito</div>
+<h1 id="title">Threads virtuais: <em>libere a espera, controle a concorrência.</em></h1>
+<p class="dek"><strong>Objetivo:</strong> entender o que a JVM libera quando uma thread virtual espera por I/O e separar esse ganho do limite de chamadas simultâneas a uma API.</p>
+<div class="meta"><span>Intermediário · pré-requisito: threads e I/O</span><span>13 de outubro de 2026</span><span>Essencial · 3 min</span><span>Completa · 8 min + animação</span></div>
+</section>
+<section class="reading" aria-label="Preferência de leitura" hidden><p><strong>Escolha o ritmo de hoje.</strong> O essencial explica o mecanismo, a decisão e o desafio.</p><div class="switch" role="group" aria-label="Tempo disponível"><button id="short" type="button" aria-pressed="false">Essencial · 3 min</button><button id="full" type="button" aria-pressed="true">Completa · 8 min</button></div></section>
+<noscript><p class="caption">A leitura e as respostas recolhíveis funcionam sem JavaScript. A animação tem controles nativos e uma imagem estática.</p></noscript>
+<main class="article">
+<section class="chapter" id="concept">
+<div class="eyebrow">01 / conceito</div>
+<h2>Uma thread pode esperar sem ocupar sua executora</h2>
+<p>Uma <strong>thread de plataforma</strong> corresponde a uma thread do sistema operacional. Uma <strong>thread virtual</strong> é gerenciada pela JVM e usa uma thread de plataforma para executar código. Essa executora recebe o nome de <strong>carrier</strong>.</p>
+<p>Ao esperar por um I/O compatível, como uma operação de rede do JDK, a thread virtual pode ser <strong>desmontada</strong> da carrier. A tarefa continua pendente, mas a carrier fica disponível para outra tarefa. Quando o I/O termina, a JVM pode retomar a thread virtual em outra carrier. <a href="https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html">[1]</a></p>
+<p>Isso permite manter muitas tarefas concorrentes com código sequencial. <strong>Concorrência</strong> é ter tarefas em andamento; <strong>paralelismo</strong> é executar mais de uma ao mesmo tempo. A quantidade de núcleos ainda limita o trabalho de CPU. <a href="https://openjdk.org/jeps/444">[2]</a></p>
+<p>Threads virtuais são estáveis desde o <strong>Java 21</strong>. A proposta é ampliar a capacidade de lidar com espera; uma chamada lenta não passa a terminar mais rápido só por trocar de thread. <a href="https://openjdk.org/jeps/444">[2]</a></p>
+</section>
+<section class="chapter" id="problem">
+<div class="eyebrow">02 / problema</div>
+<h2>A fila sumiu do pool. Para onde ela foi?</h2>
+<p>Um serviço consulta uma API de cotações. Cada requisição faz pouco cálculo e espera pela rede. Um <strong>pool de 20 threads de plataforma</strong> deixa apenas 20 tarefas executando por vez; as demais ficam na fila do executor.</p>
+<p>A equipe troca o pool por <code>Executors.newVirtualThreadPerTaskExecutor()</code>. Esse executor cria uma thread virtual por tarefa e <strong>não impõe um limite de threads</strong>. <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Executors.html#newVirtualThreadPerTaskExecutor()">[3]</a></p>
+<p>Agora o serviço consegue iniciar muito mais consultas. Porém, no nosso cenário hipotético, a API só tolera <strong>20 chamadas simultâneas por instância cliente</strong>. A troca pode aumentar a pressão sobre a dependência e provocar mais timeouts. Ter carriers disponíveis não significa que a API tenha capacidade disponível.</p>
+</section>
+<section class="chapter" id="solution">
+<div class="eyebrow">03 / solução</div>
+<h2>Separe execução de permissão para chamar</h2>
+<p>Use <strong>uma thread virtual por tarefa</strong> e um <strong>semáforo compartilhado</strong> na fronteira da API. Cada chamada precisa obter uma permissão; ao terminar, devolve essa permissão. Não crie um pool de threads virtuais para representar a capacidade da dependência. <a href="https://openjdk.org/jeps/444">[2]</a></p>
+<p>No exemplo, há 20 permissões. Se todas estiverem ocupadas, a tarefa espera <strong>no máximo 100 ms</strong> para entrar. Sem vaga nesse prazo, o serviço retorna uma falha controlada. Esse tempo e o limite 20 são escolhas didáticas, a validar com medição. <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Semaphore.html">[4]</a></p>
+<p>Uma chamada que já entrou mantém a permissão enquanto espera pela API. Ela pode liberar sua <strong>carrier</strong> durante o I/O e ainda ocupar uma <strong>permissão</strong>: são recursos diferentes. A permissão só volta quando a operação termina ou falha.</p>
+<figure aria-labelledby="threads-caption">
+<video id="threads-video" controls preload="none" playsinline poster="../../assets/threads-virtuais-limite-poster.png" width="960" height="640" aria-describedby="threads-caption"><source src="../../assets/threads-virtuais-limite.mp4" type="video/mp4"><p>Consulte a imagem estática e a descrição abaixo.</p></video>
+<div class="motion-copy"><figcaption id="threads-caption"><strong>Carrier livre, permissão ocupada.</strong> A consulta A inicia I/O e libera a carrier; B usa essa executora. Com duas permissões, A e B podem estar na API ao mesmo tempo. C aguarda fora da API até A terminar e devolver sua permissão. <strong>Hipóteses:</strong> I/O de rede compatível, sem pinning, um semáforo por instância, duas permissões para facilitar a leitura. A animação ilustra uma ordem possível; não promete FIFO nem representa tempos reais.</figcaption>
+<div class="motion-controls" hidden><button id="play" type="button" aria-controls="threads-video" aria-pressed="false">Reproduzir</button><button id="restart" type="button" aria-controls="threads-video">Repetir do início</button><label>Velocidade <select id="speed" aria-label="Velocidade da animação"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option><option value="2">2×</option></select></label></div><p class="motion-status" id="motion-status" role="status">24 segundos · reprodução manual · uma passagem por vez.</p></div>
+<details class="static-option"><summary>Ver a explicação estática</summary><img class="static-frame" src="../../assets/threads-virtuais-limite-poster.png" width="960" height="640" loading="lazy" alt="Duas permissões: A e B aguardam I/O dentro da API. C aguarda uma permissão fora da API. A carrier está livre para outra tarefa, embora as duas permissões estejam ocupadas."></details>
+</figure>
+<p><strong>O semáforo limita chamadas em andamento, não requisições por segundo.</strong> Também não limita sozinho quantas tarefas aguardam por uma vaga. Combine-o com controle de admissão, espera limitada e timeout de I/O.</p>
+<p class="takeaway"><strong>Libere a thread que executa. Preserve o limite do recurso que espera.</strong></p>
+</section>
+<section class="chapter full-only" id="depth">
+<div class="eyebrow">04 / aprofundamento opcional</div>
+<h2>Como levar o mecanismo para o código</h2>
+<details><summary><span class="level">Base</span>O que muda quando o trabalho usa CPU?</summary><div class="detail-body">
+<p>Comprimir um arquivo ou processar uma imagem pode ocupar a CPU por muito tempo. Nessa fase, a thread virtual precisa continuar executando em uma carrier. Criar milhares delas não cria milhares de núcleos. <a href="https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html">[1]</a></p>
+<p>Se CPU é o gargalo, meça a demanda e controle o paralelismo do trabalho pesado. A vantagem das threads virtuais aparece principalmente quando há muitas tarefas com períodos de espera por I/O.</p>
+<p>O mesmo cuidado vale para memória. Tarefas suspensas continuam mantendo estado, objetos e contexto de execução. Um grande número de threads virtuais pode consumir heap relevante.</p>
+</div></details>
+<details><summary><span class="level">Aplicação</span>Adquirir, chamar e devolver — inclusive na falha</summary><div class="detail-body">
+<p>O trecho abaixo pertence a <strong>uma instância compartilhada</strong> de cliente da API. <code>chamada</code> é uma operação síncrona com seus próprios timeouts de conexão e resposta. O método é chamado de dentro de uma thread virtual.</p>
+<pre><code>private final Semaphore vagasApi = new Semaphore(20);
+
+public &lt;T&gt; T consultar(Callable&lt;T&gt; chamada) throws Exception {
+    if (!vagasApi.tryAcquire(100, TimeUnit.MILLISECONDS)) {
+        throw new TimeoutException("API sem vaga no prazo");
+    }
+    try {
+        return chamada.call();
+    } finally {
+        vagasApi.release();
+    }
+}</code></pre>
+<p>Importe <code>Callable</code>, <code>Semaphore</code>, <code>TimeUnit</code> e <code>TimeoutException</code> de <code>java.util.concurrent</code>. O <code>finally</code> só é alcançado depois da aquisição bem-sucedida. Assim, uma falha antes de obter vaga não inventa uma permissão; uma falha da chamada devolve a vaga.</p>
+<p>Se a aquisição for interrompida, o método propaga <code>InterruptedException</code>. Quem capturar essa exceção deve respeitar o cancelamento; não continuar a operação como se tivesse adquirido uma vaga. <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Semaphore.html">[4]</a></p>
+<pre><code>try (var tarefas = Executors.newVirtualThreadPerTaskExecutor()) {
+    var resultado = tarefas.submit(() -&gt;
+        clienteCompartilhado.consultar(() -&gt; buscarCotacao()));
+    System.out.println(resultado.get());
+}</code></pre>
+<p>Esse segundo trecho demonstra um lote finito. Em um servidor, gerencie o executor no ciclo de vida da aplicação. A saída do <code>try</code> aguarda a conclusão das tarefas: fechar o executor não cria um deadline. <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close()">[5]</a></p>
+</div></details>
+<details><summary><span class="level">Aplicação</span>Três limites que não se substituem</summary><div class="detail-body">
+<div class="table-wrap"><table><caption>Exemplo local: números hipotéticos por instância</caption><thead><tr><th scope="col">Controle</th><th scope="col">O que limita</th><th scope="col">O que ainda precisa de cuidado</th></tr></thead><tbody>
+<tr><th scope="row">20 permissões</th><td>Chamadas simultâneas à API</td><td>Quantidade de tarefas aguardando uma permissão</td></tr>
+<tr><th scope="row">100 ms de espera</th><td>Tempo para obter uma vaga</td><td>Tempo gasto depois que a chamada começa</td></tr>
+<tr><th scope="row">Timeout de I/O</th><td>Espera da operação de rede, conforme a biblioteca</td><td>Prazo total da requisição e cancelamento de todo o trabalho</td></tr>
+</tbody></table></div>
+<p>No HTTP Client do JDK, <code>HttpRequest.Builder.timeout(...)</code> limita a espera pela resposta da requisição. O timeout de conexão é configurado no cliente. Confira as garantias da biblioteca que seu serviço usa. <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html#timeout(java.time.Duration)">[6]</a></p>
+<p>Se chegarem tarefas mais rápido do que terminam, elas ainda podem se acumular antes do semáforo. Controle a admissão na entrada do serviço e monitore tarefas pendentes, espera, recusas, duração das chamadas e uso de memória.</p>
+<p>Dez instâncias com 20 permissões cada podem manter <strong>até 200 chamadas em andamento</strong>. Um contrato global de 20 não é protegido por dez semáforos locais. Distribua o orçamento ou use um controle coordenado. Evite criar um semáforo novo por requisição.</p>
+</div></details>
+<details><summary><span class="level">Profundidade</span>Pinning: a versão da JVM muda o diagnóstico</summary><div class="detail-body">
+<p><strong>Pinning</strong> ocorre quando uma thread virtual não consegue se desmontar da carrier durante uma operação bloqueante. Esse período reduz a capacidade de reutilizar a executora. <a href="https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html">[1]</a></p>
+<p>No <strong>JDK 21</strong>, bloquear enquanto mantém um monitor de <code>synchronized</code> pode causar pinning. O <strong>JDK 24</strong> removeu o pinning associado a esses monitores. Por isso, uma recomendação de migração escrita para Java 21 não deve ser aplicada automaticamente a uma JVM mais nova. <a href="https://docs.oracle.com/en/java/javase/24/migrate/significant-changes-jdk-24.html">[7]</a></p>
+<p>Chamadas nativas e funções estrangeiras ainda merecem investigação. Além disso, evitar pinning não remove exclusão mútua: uma seção crítica longa continua serializando acesso. Investigue o caminho real de I/O e a versão do driver antes de atribuir o gargalo ao scheduler.</p>
+<p>JDK Flight Recorder permite observar eventos como <code>jdk.VirtualThreadPinned</code>. Use os eventos disponíveis na sua versão e combine-os com latência, throughput e saturação da dependência. <a href="https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html">[1]</a></p>
+</div></details>
+</section>
+<section class="chapter" id="challenge">
+<div class="eyebrow">05 / desafio</div>
+<h2>O que você protegeria primeiro?</h2>
+<p class="caption">Três camadas para estudo. As respostas começam escondidas; o desafio não diagnostica seu nível profissional.</p>
+<div class="quiz-question" data-question-id="q1"><h3>Base — A aguarda a resposta da API</h3><p>A liberou sua carrier, mas ainda mantém uma permissão. Isso é possível?</p><div class="choices" role="group" aria-label="Respostas da pergunta 1" hidden><button class="choice" type="button" data-answer="independent" aria-pressed="false">Sim. Carrier e permissão controlam recursos diferentes.</button><button class="choice" type="button" data-answer="release-on-wait" aria-pressed="false">Não. Iniciar a espera devolve a permissão.</button><button class="choice" type="button" data-answer="same-resource" aria-pressed="false">Não. Cada permissão é uma carrier.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da base</summary><div class="detail-body"><p><strong>Sim.</strong> A carrier executa código; a permissão representa uma chamada ainda em andamento. A deve manter a permissão enquanto espera pela API.</p></div></details></div>
+<div class="quiz-question full-only" data-question-id="q2"><h3>Aplicação — O executor deixou de limitar a concorrência</h3><p>Mil tarefas consultam uma API com orçamento local de 20 chamadas simultâneas. Qual decisão atende a esse limite?</p><div class="choices" role="group" aria-label="Respostas da pergunta 2" hidden><button class="choice" type="button" data-answer="per-request" aria-pressed="false">Criar um semáforo de 20 permissões em cada requisição.</button><button class="choice" type="button" data-answer="shared-boundary" aria-pressed="false">Compartilhar um semáforo de 20 na fronteira da API e limitar a espera.</button><button class="choice" type="button" data-answer="more-carriers" aria-pressed="false">Aumentar a quantidade de carriers.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da aplicação</summary><div class="detail-body"><p><strong>Compartilhe o semáforo.</strong> Toda chamada dessa instância deve atravessar o mesmo controle. Um semáforo por requisição não mantém o limite agregado. Limite também admissão e duração da operação.</p></div></details></div>
+<div class="quiz-question full-only" data-question-id="q3"><h3>Profundidade — A frota cresceu</h3><p>Há cinco instâncias, cada uma com 20 permissões. A API impõe limite global de 20. O limite está protegido?</p><div class="choices" role="group" aria-label="Respostas da pergunta 3" hidden><button class="choice" type="button" data-answer="global-semaphore" aria-pressed="false">Sim. Os semáforos da JVM são globais.</button><button class="choice" type="button" data-answer="coordinate-budget" aria-pressed="false">Não. O total local pode chegar a 100; é preciso repartir ou coordenar o orçamento.</button><button class="choice" type="button" data-answer="fairness" aria-pressed="false">Sim, se todos os semáforos usarem fairness.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da profundidade</summary><div class="detail-body"><p><strong>O limite local não protege o contrato global.</strong> Cinco vezes 20 permite até 100 chamadas. Fairness altera a ordem de aquisição local, não coordena instâncias.</p></div></details></div>
+</section>
+<section class="sources" aria-labelledby="sources-title"><p class="closing">A espera ficou mais barata. A capacidade da dependência continua finita.</p><h2 id="sources-title">Fontes para voltar depois</h2><ol>
+<li><a href="https://docs.oracle.com/en/java/javase/25/core/virtual-threads.html">Oracle · Threads virtuais e guia de adoção, Java 25</a> — carriers, I/O, observação e limites.</li>
+<li><a href="https://openjdk.org/jeps/444">OpenJDK · JEP 444</a> — recurso entregue no Java 21; uma thread virtual por tarefa e controle separado de concorrência.</li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Executors.html#newVirtualThreadPerTaskExecutor()">Java 21 · Executors</a> — contrato do executor por tarefa.</li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Semaphore.html">Java 21 · Semaphore</a> — permissões, espera limitada, interrupção e fairness.</li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close()">Java 21 · ExecutorService.close()</a> — fechamento e conclusão de tarefas.</li>
+<li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html#timeout(java.time.Duration)">Java 21 · HttpRequest.Builder.timeout()</a> — timeout da requisição HTTP.</li>
+<li><a href="https://docs.oracle.com/en/java/javase/24/migrate/significant-changes-jdk-24.html">Oracle · Mudanças do JDK 24</a> — sincronização de threads virtuais sem pinning de monitores.</li>
+</ol><p class="caption">Fontes consultadas em 13/10/2026. Edição conceitual, não anúncio de uma nova versão. Valores do cenário são hipotéticos.</p></section>
+</main><footer>Depois do Deploy · Uma ideia por vez, com as garantias à vista.</footer>
+</div>
+<script>
+document.getElementById('theme').hidden=false;
+document.querySelector('.reading').hidden=false;
+document.querySelector('.motion-controls').hidden=false;
+document.querySelectorAll('.choices').forEach(el=>el.hidden=false);
+const theme=document.getElementById('theme');
+theme.addEventListener('click',()=>{const light=document.body.classList.toggle('light');theme.textContent=light?'Modo escuro':'Modo claro';theme.setAttribute('aria-pressed',String(light));});
+for(const id of ['short','full'])document.getElementById(id).addEventListener('click',()=>{document.body.classList.toggle('essential',id==='short');document.getElementById('short').setAttribute('aria-pressed',String(id==='short'));document.getElementById('full').setAttribute('aria-pressed',String(id==='full'));});
+const video=document.getElementById('threads-video'),play=document.getElementById('play'),status=document.getElementById('motion-status'),motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+// Os controles nativos mantêm seek e tela cheia, inclusive no celular.
+video.controls=true;
+function playbackState(){const active=!video.paused&&!video.ended;play.textContent=active?'Pausar':'Reproduzir';play.setAttribute('aria-pressed',String(active));}
+function staticStatus(){status.textContent=motionPreference.matches?'Movimento reduzido: imagem inicial mantida; reprodução somente por escolha. Uma passagem por vez.':'24 segundos · reprodução manual · uma passagem por vez.';}
+staticStatus();motionPreference.addEventListener('change',()=>{if(motionPreference.matches)video.pause();staticStatus();});
+play.addEventListener('click',async()=>{if(video.paused){if(video.ended)video.currentTime=0;try{await video.play();}catch{status.textContent='Não foi possível reproduzir. Consulte a explicação estática.';}}else video.pause();});
+document.getElementById('restart').addEventListener('click',()=>{video.pause();video.currentTime=0;status.textContent='Reiniciada e pausada. Escolha Reproduzir para uma nova passagem.';});
+document.getElementById('speed').addEventListener('change',event=>{video.playbackRate=Number(event.target.value);status.textContent='Velocidade '+event.target.selectedOptions[0].textContent+'. Uma passagem por vez.';});
+video.addEventListener('play',playbackState);video.addEventListener('pause',playbackState);video.addEventListener('ended',()=>{playbackState();status.textContent='Passagem concluída. A reprodução não se repete automaticamente.';});
+video.addEventListener('error',()=>{status.textContent='A mídia não carregou. Abra a explicação estática abaixo.';play.disabled=true;});
+const feedback={q1:{correct:'independent',right:'Isso. A carrier pode executar outra tarefa; a chamada pendente ainda ocupa sua permissão.',wrong:'A permissão protege a API até a chamada terminar. Desmontar a thread não devolve essa vaga.'},q2:{correct:'shared-boundary',right:'Isso. Um controle compartilhado limita as chamadas desta instância; a espera também precisa de prazo.',wrong:'O orçamento precisa ser compartilhado. Nem mais carriers nem um semáforo por requisição limitam o total.'},q3:{correct:'coordinate-budget',right:'Isso. Cinco limites locais de 20 podem somar 100 chamadas. Reparta ou coordene o orçamento global.',wrong:'Semaphore e fairness atuam localmente. Eles não compartilham permissões entre instâncias.'}};
+document.querySelectorAll('.quiz-question').forEach(question=>{const info=feedback[question.dataset.questionId];question.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{question.querySelectorAll('[data-answer]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));const output=question.querySelector('.feedback');output.hidden=false;output.textContent=button.dataset.answer===info.correct?info.right:info.wrong;}));});
+</script>
+</body></html>
