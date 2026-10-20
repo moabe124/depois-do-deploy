@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=960, height=640">
+    <script src="gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 960px;
+        height: 640px;
+        overflow: hidden;
+        background: #191d20;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #191d20;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-tr01" id="root" data-composition-id="main" data-start="0" data-duration="24" data-width="960" data-height="640">
+      <div data-hf-id="hf-tr02" id="el-01-propagacao-waterfall" class="scene" data-composition-id="01-propagacao-waterfall" data-composition-src="compositions/frames/01-propagacao-waterfall.html" data-start="0" data-duration="24" data-track-index="1"></div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

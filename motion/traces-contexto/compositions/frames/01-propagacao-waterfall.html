@@ -1,0 +1,80 @@
+<template>
+<style>
+*{box-sizing:border-box}[data-composition-id="01-propagacao-waterfall"]{position:relative;width:100%;height:100%;overflow:hidden;font-family:sans-serif;color:#d7d9d5}.clip{position:absolute;inset:0;width:100%;height:100%}.ground{background:#191d20}.stage{position:absolute;inset:0}#phase-propagated,#phase-waterfall{opacity:0}.heading{position:absolute;left:42px;top:32px;width:876px;margin:0;font-size:42px;line-height:1.22;font-weight:600;letter-spacing:-1px}.subhead{position:absolute;left:42px;top:94px;width:876px;margin:0;font-size:28px;line-height:1.38;color:#a6cdbb}.panel{position:absolute;background:#22292b;border:2px solid #697a74;border-radius:12px}.label{position:absolute;font-size:28px;line-height:1.3;margin:0;font-weight:600}.sublabel{position:absolute;font-size:24px;line-height:1.35;margin:0;color:#d7d9d5}.warn-text{color:#e7b28c}.accent-text{color:#a6cdbb}.task{position:absolute;height:74px;background:#293631;color:#d7d9d5;border:2px solid #a6cdbb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1.3;white-space:nowrap;font-weight:500}.waiting{border-color:#e7b28c;background:#352c26}.note{position:absolute;left:42px;top:548px;width:876px;margin:0;font-size:28px;line-height:1.35;color:#a6cdbb}.footline{position:absolute;left:42px;top:604px;width:876px;margin:0;font-size:20px;line-height:1.3}.connector{position:absolute;inset:0;width:960px;height:640px;pointer-events:none}.connector path{fill:none;stroke:#a6cdbb;stroke-width:3;stroke-linecap:round}.connector path.warn-stroke{stroke:#e7b28c}.left-broken{left:42px;top:186px;width:380px;height:324px}.right-broken{left:538px;top:186px;width:380px;height:324px}.barrier{position:absolute;left:478px;top:210px;width:4px;height:276px;background:#e7b28c}.left-prop{left:42px;top:186px;width:360px;height:324px}.right-prop{left:558px;top:186px;width:360px;height:324px}.header-pill{position:absolute;left:250px;top:430px;width:460px;height:62px;background:#293631;border:2px solid #a6cdbb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;white-space:nowrap}.wf-panel{left:42px;top:176px;width:876px;height:348px}.wf-row-label{position:absolute;left:64px;width:250px;font-size:25px;line-height:1.3;margin:0;font-weight:600}.wf-bar{position:absolute;height:54px;background:#293631;border:2px solid #a6cdbb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:500;white-space:nowrap}.wf-gap{background:#352c26;border:2px dashed #e7b28c}
+</style>
+<div data-hf-id="hf-tc00" id="trace-diagram" data-composition-id="01-propagacao-waterfall" data-width="960" data-height="640" data-duration="24">
+<div data-hf-id="hf-tc01" id="diagram-ground" class="clip ground" data-start="0" data-duration="24" data-track-index="0"></div>
+<div data-hf-id="hf-tc02" id="diagram-events" class="clip" data-start="0" data-duration="24" data-track-index="1">
+<section data-hf-id="hf-tc10" class="stage" id="phase-broken">
+<h1 data-hf-id="hf-tc11" class="heading">Sem contexto, o rastro se parte.</h1>
+<p data-hf-id="hf-tc12" class="subhead">A fila recebe o payload, mas não recebe o traceparent.</p>
+<div data-hf-id="hf-tc13" class="panel left-broken"></div>
+<div data-hf-id="hf-tc14" class="panel right-broken"></div>
+<div data-hf-id="hf-tc15" class="barrier"></div>
+<p data-hf-id="hf-tc16" class="label" style="left:64px;top:206px">Pedidos · produtor</p>
+<p data-hf-id="hf-tc17" class="label" style="left:560px;top:206px">Estoque · consumidor</p>
+<svg data-hf-id="hf-tc18" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-tc19" id="broken-line" class="warn-stroke" d="M400 305 L474 305" /></svg>
+<div data-hf-id="hf-tc20" class="task" id="span-b2" style="left:64px;top:268px;width:336px">trace 4bf9 · span b2</div>
+<p data-hf-id="hf-tc21" class="sublabel" style="left:64px;top:366px">140 ms · envia sem header</p>
+<div data-hf-id="hf-tc22" class="task waiting" id="orphan-span" style="left:560px;top:268px;width:336px">trace 9c10 · span raiz</div>
+<p data-hf-id="hf-tc23" class="sublabel warn-text" id="orphan-caption" style="left:560px;top:366px">Outro trace · fila oculta</p>
+<p data-hf-id="hf-tc24" class="note" id="broken-note">Pedidos publica a reserva na fila sem metadados.</p>
+</section>
+<section data-hf-id="hf-tc30" class="stage" id="phase-propagated">
+<h1 data-hf-id="hf-tc31" class="heading">Propague traceparent na fronteira.</h1>
+<p data-hf-id="hf-tc32" class="subhead">O trace-id continua 4bf9; o parent-id aponta para c3.</p>
+<div data-hf-id="hf-tc33" class="panel left-prop"></div>
+<div data-hf-id="hf-tc34" class="panel right-prop"></div>
+<p data-hf-id="hf-tc35" class="label" style="left:64px;top:206px">Pedidos · inject</p>
+<p data-hf-id="hf-tc36" class="label" style="left:580px;top:206px">Estoque · extract</p>
+<svg data-hf-id="hf-tc37" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-tc38" id="prop-line" d="M380 305 L580 305" /></svg>
+<div data-hf-id="hf-tc39" class="task" style="left:64px;top:268px;width:316px">trace 4bf9 · span c3</div>
+<p data-hf-id="hf-tc40" class="sublabel" style="left:64px;top:364px">Injeta contexto no header</p>
+<div data-hf-id="hf-tc41" class="task waiting" id="consumer-span" style="left:580px;top:268px;width:316px">Aguardando extract</div>
+<p data-hf-id="hf-tc42" class="sublabel accent-text" id="parent-link-label" style="left:580px;top:364px">parent-id = c3</p>
+<div data-hf-id="hf-tc43" class="header-pill" id="header-pill">traceparent: 00-4bf9-c3-01</div>
+<p data-hf-id="hf-tc44" class="note" id="prop-note">Pedidos injeta trace-id 4bf9 e span c3 nos cabeçalhos.</p>
+</section>
+<section data-hf-id="hf-tc50" class="stage" id="phase-waterfall">
+<h1 data-hf-id="hf-tc51" class="heading">Mesmo trace: a espera aparece.</h1>
+<p data-hf-id="hf-tc52" class="subhead">1.800 ms = 140 ms na API + 1.260 ms em fila + 400 ms no worker.</p>
+<div data-hf-id="hf-tc53" class="panel wf-panel"></div>
+<p data-hf-id="hf-tc54" class="wf-row-label" style="top:208px">a1 · BFF</p>
+<div data-hf-id="hf-tc55" class="wf-bar" style="left:330px;top:196px;width:564px">trace 4bf9 · 1.800 ms totais</div>
+<p data-hf-id="hf-tc56" class="wf-row-label" style="top:280px">b2–c3 · Pedidos</p>
+<div data-hf-id="hf-tc57" class="wf-bar" style="left:330px;top:268px;width:148px">140 ms</div>
+<p data-hf-id="hf-tc58" class="wf-row-label warn-text" style="top:352px">Fila · espera</p>
+<div data-hf-id="hf-tc59" class="wf-bar wf-gap" id="queue-gap-bar" style="left:478px;top:340px;width:266px">1.260 ms em fila</div>
+<p data-hf-id="hf-tc60" class="wf-row-label" style="top:424px">d4 · Estoque</p>
+<div data-hf-id="hf-tc61" class="wf-bar" id="worker-bar" style="left:744px;top:412px;width:150px">400 ms</div>
+<p data-hf-id="hf-tc62" class="sublabel accent-text" style="left:64px;top:480px;width:830px">c3 → d4 preserva a causalidade e separa execução de fila</p>
+<p data-hf-id="hf-tc63" class="note" id="waterfall-note">Todos os trechos compartilham o trace 4bf9.</p>
+</section>
+<p data-hf-id="hf-tc70" class="footline">Cenário didático · IDs abreviados · relógios sincronizados · sem escala real</p>
+</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+for(const [id,time] of [['#broken-line',1.8],['#prop-line',10.2]]){const p=document.querySelector(id);const n=p.getTotalLength();p.style.strokeDasharray=String(n);tl.fromTo(p,{strokeDashoffset:n},{strokeDashoffset:0,duration:0.8,ease:'none'},time);}
+tl.fromTo('#orphan-span',{opacity:0,y:14},{opacity:1,y:0,duration:0.7,ease:'power2.out'},3.4);
+tl.fromTo('#orphan-caption',{opacity:0},{opacity:1,duration:0.5,ease:'power1.out'},4.0);
+tl.set('#phase-broken',{opacity:0},8);tl.set('#phase-propagated',{opacity:1},8);
+tl.fromTo('#header-pill',{x:-110},{x:110,duration:1.4,ease:'power2.inOut'},9.4);
+tl.to('#header-pill',{x:0,duration:0.8,ease:'power2.inOut'},12.6);
+tl.to('#consumer-span',{backgroundColor:'#293631',borderColor:'#a6cdbb',duration:0.35,ease:'none'},11.4);
+tl.fromTo('#parent-link-label',{opacity:0},{opacity:1,duration:0.5,ease:'power1.out'},11.5);
+tl.set('#phase-propagated',{opacity:0},16);tl.set('#phase-waterfall',{opacity:1},16);
+tl.fromTo('#queue-gap-bar',{opacity:0},{opacity:1,duration:0.7,ease:'power1.out'},17.6);
+tl.fromTo('#worker-bar',{opacity:0,x:-18},{opacity:1,x:0,duration:0.7,ease:'power2.out'},19.2);
+const sequence=[
+{t:0,brokenNote:'Pedidos publica a reserva na fila sem metadados.',consumer:'Aguardando extract',propNote:'Pedidos injeta trace-id 4bf9 e span c3 nos cabeçalhos.',wfNote:'Todos os trechos compartilham o trace 4bf9.'},
+{t:3.4,brokenNote:'Sem traceparent, o consumidor inicia outro trace (9c10).',consumer:'Aguardando extract',propNote:'Pedidos injeta trace-id 4bf9 e span c3 nos cabeçalhos.',wfNote:'Todos os trechos compartilham o trace 4bf9.'},
+{t:5.6,brokenNote:'Resultado: dois traces soltos; o atraso na fila fica invisível.',consumer:'Aguardando extract',propNote:'Pedidos injeta trace-id 4bf9 e span c3 nos cabeçalhos.',wfNote:'Todos os trechos compartilham o trace 4bf9.'},
+{t:11.4,brokenNote:'Resultado: dois traces soltos; o atraso na fila fica invisível.',consumer:'trace 4bf9 · span d4',propNote:'Estoque extrai 4bf9 e cria o span d4 ligado a c3.',wfNote:'Todos os trechos compartilham o trace 4bf9.'},
+{t:17.6,brokenNote:'Resultado: dois traces soltos; o atraso na fila fica invisível.',consumer:'trace 4bf9 · span d4',propNote:'Estoque extrai 4bf9 e cria o span d4 ligado a c3.',wfNote:'O intervalo entre c3 e d4 expõe 1.260 ms de espera em fila.'},
+{t:20.2,brokenNote:'Resultado: dois traces soltos; o atraso na fila fica invisível.',consumer:'trace 4bf9 · span d4',propNote:'Estoque extrai 4bf9 e cria o span d4 ligado a c3.',wfNote:'Gargalo localizado: fila atrasada antes do consumidor.'}
+];
+const driver={time:0};tl.to(driver,{time:24,duration:24,ease:'none',onUpdate:()=>{const s=[...sequence].reverse().find(item=>driver.time>=item.t)||sequence[0];for(const [id,key] of [['broken-note','brokenNote'],['consumer-span','consumer'],['prop-note','propNote'],['waterfall-note','wfNote']])document.getElementById(id).textContent=s[key];}},0);
+window.__timelines['01-propagacao-waterfall']=tl;
+</script>
+</template>

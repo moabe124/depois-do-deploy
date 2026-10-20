@@ -76,7 +76,17 @@ Aplicação prática: acompanhar um sistema de pedidos para entender shard, tena
 
 ## Operação e confiabilidade
 
-Nenhuma edição apresentada.
+### operacao-confiabilidade-001 — Traces distribuídos: siga a requisição sem perder o contexto
+
+- Data: 2026-10-20
+- Nível: avancado
+- Estado: apresentado
+- Identidade do objetivo: `traces-propagacao-contexto-spans-amostragem`
+- Objetivo: Diagnosticar onde uma requisição gasta tempo entre serviços e filas, preservando a propagação do cabeçalho W3C traceparent, escolhendo entre hierarquia pai-filho e span links e reconhecendo o impacto da amostragem.
+- Conceitos: rastreamento distribuído, trace, span, propagação de contexto, traceparent, tracestate, injeção e extração, span link, head sampling, tail sampling
+- Edição: [HTML](content/operacao-confiabilidade/001-traces-contexto.html)
+
+Aplicação prática: seguir uma compra lenta entre BFF, API de Pedidos e Worker de Estoque para reconstruir a cascata com W3C Trace Context (traceparent). Explica injeção e extração nos cabeçalhos da fila, diferença entre execução e espera em fila, escolha entre parent_id e Span Links em lotes e o compromisso entre head sampling e tail sampling.
 
 ## Segurança aplicada
 
