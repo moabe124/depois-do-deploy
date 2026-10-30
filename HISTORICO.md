@@ -50,7 +50,17 @@ Nenhuma edição apresentada.
 
 ## Conceitos de IA
 
-Nenhuma edição apresentada.
+### conceitos-de-ia-001 — Avaliação de RAG: descubra se o erro está na busca ou na resposta
+
+- Data: 2026-10-30
+- Nível: avancado
+- Estado: apresentado
+- Identidade do objetivo: `avaliacao-rag-recuperacao-geracao-erro-padrao`
+- Objetivo: Diagnosticar se as respostas erradas de um assistente com RAG nascem na recuperação ou na geração, medindo recall@k e correção separadamente, calibrando o juiz LLM e usando erro padrão pareado antes de decidir trocar o modelo.
+- Conceitos: RAG, recuperação, geração, trecho-ouro, recall@k, precision@k, fidelidade, correção, juiz LLM, viés de posição, erro padrão, análise pareada, erro padrão clusterizado
+- Edição: [HTML](content/conceitos-de-ia/001-avaliacao-rag.html)
+
+Aplicação prática: acompanhar um assistente de políticas com 19% de erro em 400 perguntas e a proposta de trocar o modelo. Separa recuperação (trecho-ouro no top-k, recall@k) e geração (correção e fidelidade) em uma matriz 2×2: 54 erros de recuperação, 22 de geração e 34 acertos sem evidência. Aprofundamentos tratam precision@k e escolha de k, fidelidade versus correção, calibração e viés de posição do juiz LLM, e erro padrão pareado e clusterizado ao comparar versões.
 
 ## Entrevistas
 

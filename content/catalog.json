@@ -343,6 +343,79 @@
           }
         ]
       }
+    },
+    {
+      "id": "conceitos-de-ia-001",
+      "topic": "conceitos-de-ia",
+      "title": "Avaliação de RAG: descubra se o erro está na busca ou na resposta",
+      "date": "2026-10-30",
+      "level": "avancado",
+      "minutes": {
+        "essential": 3,
+        "full": 10
+      },
+      "focusKey": "avaliacao-rag-recuperacao-geracao-erro-padrao",
+      "objective": "Diagnosticar se as respostas erradas de um assistente com RAG nascem na recuperação ou na geração, medindo recall@k e correção separadamente, calibrando o juiz LLM e usando erro padrão pareado antes de decidir trocar o modelo.",
+      "summary": "Aplicação prática: acompanhar um assistente de políticas com 19% de erro em 400 perguntas e a proposta de trocar o modelo. Separa recuperação (trecho-ouro no top-k, recall@k) e geração (correção e fidelidade) em uma matriz 2×2: 54 erros de recuperação, 22 de geração e 34 acertos sem evidência. Aprofundamentos tratam precision@k e escolha de k, fidelidade versus correção, calibração e viés de posição do juiz LLM, e erro padrão pareado e clusterizado ao comparar versões.",
+      "concepts": [
+        "RAG",
+        "recuperação",
+        "geração",
+        "trecho-ouro",
+        "recall@k",
+        "precision@k",
+        "fidelidade",
+        "correção",
+        "juiz LLM",
+        "viés de posição",
+        "erro padrão",
+        "análise pareada",
+        "erro padrão clusterizado"
+      ],
+      "source": "content/conceitos-de-ia/001-avaliacao-rag.html",
+      "url": "temas/conceitos-de-ia/001-avaliacao-rag.html",
+      "status": "presented",
+      "studiedAt": null,
+      "references": [
+        "https://arxiv.org/abs/2005.11401",
+        "https://www.anthropic.com/engineering/contextual-retrieval",
+        "https://arxiv.org/abs/2309.15217",
+        "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+        "https://arxiv.org/abs/2306.05685",
+        "https://arxiv.org/abs/2411.00640"
+      ],
+      "quiz": {
+        "version": "1",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "swap-model",
+              "fix-retrieval",
+              "longer-prompt"
+            ],
+            "correct": "fix-retrieval"
+          },
+          {
+            "id": "q2",
+            "options": [
+              "trust-first-run",
+              "swap-and-tie",
+              "bigger-judge"
+            ],
+            "correct": "swap-and-tie"
+          },
+          {
+            "id": "q3",
+            "options": [
+              "unpaired-noise",
+              "paired-significant",
+              "bigger-set-only"
+            ],
+            "correct": "paired-significant"
+          }
+        ]
+      }
     }
   ]
 }
