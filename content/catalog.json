@@ -347,72 +347,68 @@
     {
       "id": "conceitos-de-ia-001",
       "topic": "conceitos-de-ia",
-      "title": "Avaliação de RAG: descubra se o erro está na busca ou na resposta",
+      "title": "RAG: o assistente consulta seus documentos antes de responder",
       "date": "2026-10-30",
-      "level": "avancado",
+      "level": "iniciante",
       "minutes": {
         "essential": 3,
-        "full": 10
+        "full": 7
       },
-      "focusKey": "avaliacao-rag-recuperacao-geracao-erro-padrao",
-      "objective": "Diagnosticar se as respostas erradas de um assistente com RAG nascem na recuperação ou na geração, medindo recall@k e correção separadamente, calibrando o juiz LLM e usando erro padrão pareado antes de decidir trocar o modelo.",
-      "summary": "Aplicação prática: acompanhar um assistente de políticas com 19% de erro em 400 perguntas e a proposta de trocar o modelo. Separa recuperação (trecho-ouro no top-k, recall@k) e geração (correção e fidelidade) em uma matriz 2×2: 54 erros de recuperação, 22 de geração e 34 acertos sem evidência. Aprofundamentos tratam precision@k e escolha de k, fidelidade versus correção, calibração e viés de posição do juiz LLM, e erro padrão pareado e clusterizado ao comparar versões.",
+      "focusKey": "rag-fundamentos-busca-resposta",
+      "objective": "Entender o que é RAG e por que ele existe: como um assistente busca trechos dos seus documentos e responde com base neles, e por que uma resposta errada pode nascer na busca ou na resposta.",
+      "summary": "Conceito: um assistente de RH ligado direto ao modelo inventa o valor do auxílio home office, porque o modelo nunca leu a política interna. Apresenta RAG como consultar antes de responder: preparar trechos em um índice, buscar os mais relacionados, montar o contexto com instrução para responder só com base neles e devolver a resposta com a fonte. Ensina a perguntar em qual etapa o erro nasceu (busca ou resposta) antes de trocar o modelo. Aprofundamentos opcionais tratam embeddings e busca por palavra-chave, trechos que perdem o contexto, quando dispensar a busca e como começar a testar as duas etapas.",
       "concepts": [
         "RAG",
-        "recuperação",
-        "geração",
-        "trecho-ouro",
-        "recall@k",
-        "precision@k",
-        "fidelidade",
-        "correção",
-        "juiz LLM",
-        "viés de posição",
-        "erro padrão",
-        "análise pareada",
-        "erro padrão clusterizado"
+        "modelo de linguagem",
+        "alucinação",
+        "busca (recuperação)",
+        "resposta (geração)",
+        "trecho",
+        "índice",
+        "contexto",
+        "fonte da resposta",
+        "embedding",
+        "busca por palavra-chave"
       ],
-      "source": "content/conceitos-de-ia/001-avaliacao-rag.html",
-      "url": "temas/conceitos-de-ia/001-avaliacao-rag.html",
+      "source": "content/conceitos-de-ia/001-rag-busca-resposta.html",
+      "url": "temas/conceitos-de-ia/001-rag-busca-resposta.html",
       "status": "presented",
       "studiedAt": null,
       "references": [
         "https://arxiv.org/abs/2005.11401",
+        "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
         "https://www.anthropic.com/engineering/contextual-retrieval",
-        "https://arxiv.org/abs/2309.15217",
-        "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
-        "https://arxiv.org/abs/2306.05685",
-        "https://arxiv.org/abs/2411.00640"
+        "https://arxiv.org/abs/2309.15217"
       ],
       "quiz": {
-        "version": "1",
+        "version": "2",
         "questions": [
           {
             "id": "q1",
             "options": [
-              "swap-model",
-              "fix-retrieval",
-              "longer-prompt"
+              "retrain",
+              "lookup-first",
+              "bigger-memory"
             ],
-            "correct": "fix-retrieval"
+            "correct": "lookup-first"
           },
           {
             "id": "q2",
             "options": [
-              "trust-first-run",
-              "swap-and-tie",
-              "bigger-judge"
+              "swap-model",
+              "fix-index",
+              "ask-carefully"
             ],
-            "correct": "swap-and-tie"
+            "correct": "fix-index"
           },
           {
             "id": "q3",
             "options": [
-              "unpaired-noise",
-              "paired-significant",
-              "bigger-set-only"
+              "search-step",
+              "answer-step",
+              "no-error"
             ],
-            "correct": "paired-significant"
+            "correct": "answer-step"
           }
         ]
       }

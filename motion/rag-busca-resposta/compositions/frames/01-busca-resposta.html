@@ -1,0 +1,80 @@
+<template>
+<style>
+*{box-sizing:border-box}[data-composition-id="01-busca-resposta"]{position:relative;width:100%;height:100%;overflow:hidden;font-family:sans-serif;color:#d7d9d5}.clip{position:absolute;inset:0;width:100%;height:100%}.ground{background:#191d20}.stage{position:absolute;inset:0}#phase-rag,#phase-wrong{opacity:0}.heading{position:absolute;left:42px;top:32px;width:876px;margin:0;font-size:42px;line-height:1.22;font-weight:600;letter-spacing:-1px}.subhead{position:absolute;left:42px;top:94px;width:876px;margin:0;font-size:28px;line-height:1.38;color:#a6cdbb}.chip{position:absolute;height:74px;background:#293631;color:#d7d9d5;border:2px solid #a6cdbb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1.3;white-space:nowrap;font-weight:500}.warn{border-color:#e7b28c;background:#352c26}.model{height:122px;font-weight:600;background:#22292b;border-color:#697a74}.sublabel{position:absolute;font-size:24px;line-height:1.35;margin:0}.warn-text{color:#e7b28c}.muted-text{color:#aab1b4}.col-title{position:absolute;left:42px;top:176px;margin:0;font-size:26px;font-weight:600;color:#a6cdbb}.trecho{position:absolute;left:42px;width:380px;height:58px;background:#22292b;border:2px solid #697a74;border-radius:8px;display:flex;align-items:center;padding:0 18px;font-size:24px;line-height:1.3;white-space:nowrap}.box{position:absolute;left:500px;width:418px;background:#22292b;border:2px solid #697a74;border-radius:10px;padding:12px 20px}.box p{margin:0;font-size:24px;line-height:1.45}.box .box-title{font-size:26px;font-weight:600;color:#a6cdbb;margin-bottom:4px}.answer{background:#293631;border-color:#a6cdbb}.answer.warn{background:#352c26;border-color:#e7b28c}.answer .answer-text{font-size:28px;font-weight:600;line-height:1.3}.answer .answer-source{font-size:22px;line-height:1.35}.note{position:absolute;left:42px;top:548px;width:876px;margin:0;font-size:28px;line-height:1.35;color:#a6cdbb}.footline{position:absolute;left:42px;top:604px;width:876px;margin:0;font-size:20px;line-height:1.3;color:#aab1b4}.connector{position:absolute;inset:0;width:960px;height:640px;pointer-events:none}.connector path{fill:none;stroke:#a6cdbb;stroke-width:3;stroke-linecap:round}.connector path.warn-stroke{stroke:#e7b28c}
+</style>
+<div data-hf-id="hf-rb00" id="rag-diagram" data-composition-id="01-busca-resposta" data-width="960" data-height="640" data-duration="23">
+<div data-hf-id="hf-rb01" id="diagram-ground" class="clip ground" data-start="0" data-duration="23" data-track-index="0"></div>
+<div data-hf-id="hf-rb02" id="diagram-events" class="clip" data-start="0" data-duration="23" data-track-index="1">
+<section data-hf-id="hf-rb10" class="stage" id="phase-memory">
+<h1 data-hf-id="hf-rb11" class="heading">Sem RAG, o modelo responde de memória.</h1>
+<p data-hf-id="hf-rb12" class="subhead">Ele nunca leu os documentos internos da empresa.</p>
+<svg data-hf-id="hf-rb13" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-rb14" id="arrow-ask" d="M342 287 L400 287" /><path data-hf-id="hf-rb15" id="arrow-guess" class="warn-stroke" d="M570 287 L630 287" /></svg>
+<div data-hf-id="hf-rb16" class="chip" id="ask" style="left:42px;top:250px;width:300px">Auxílio home office?</div>
+<div data-hf-id="hf-rb17" class="chip model" id="model" style="left:400px;top:226px;width:170px">Modelo</div>
+<div data-hf-id="hf-rb18" class="chip warn" id="guess" style="left:630px;top:250px;width:288px">“R$ 80 por mês”</div>
+<p data-hf-id="hf-rb19" class="sublabel warn-text" id="no-source" style="left:630px;top:340px">sem fonte</p>
+<p data-hf-id="hf-rb20" class="note" id="memory-note">Uma pergunta sobre uma regra interna da empresa.</p>
+</section>
+<section data-hf-id="hf-rb30" class="stage" id="phase-rag">
+<h1 data-hf-id="hf-rb31" class="heading">Com RAG: primeiro busca, depois responde.</h1>
+<p data-hf-id="hf-rb32" class="subhead">A busca escolhe poucos trechos. O modelo lê só esses.</p>
+<p data-hf-id="hf-rb33" class="col-title">Índice de trechos</p>
+<svg data-hf-id="hf-rb34" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-rb35" id="link-b1" d="M422 319 C462 319 462 236 500 236" /><path data-hf-id="hf-rb36" id="link-b2" d="M422 455 C474 455 466 262 500 262" /><path data-hf-id="hf-rb37" id="arrow-model-b" d="M709 336 L709 388" /></svg>
+<div data-hf-id="hf-rb38" class="trecho" id="b-t1" style="top:222px">Férias · seção 2</div>
+<div data-hf-id="hf-rb39" class="trecho" id="b-t2" style="top:290px">Home office · seção 3</div>
+<div data-hf-id="hf-rb40" class="trecho" id="b-t3" style="top:358px">Reembolso · seção 1</div>
+<div data-hf-id="hf-rb41" class="trecho" id="b-t4" style="top:426px">Home office · seção 4</div>
+<div data-hf-id="hf-rb42" class="box" id="b-context" style="top:176px;height:160px"><p data-hf-id="hf-rb43" class="box-title">Contexto enviado</p><p data-hf-id="hf-rb44">pergunta + 2 trechos</p><p data-hf-id="hf-rb45">“responda só com base neles”</p></div>
+<p data-hf-id="hf-rb46" class="sublabel muted-text" id="b-model" style="left:726px;top:344px">modelo</p>
+<div data-hf-id="hf-rb47" class="box answer" id="b-answer" style="top:392px;height:92px"><p data-hf-id="hf-rb48" class="answer-text">“R$ 150 por mês”</p><p data-hf-id="hf-rb49" class="answer-source">fonte: Home office · seção 3</p></div>
+<p data-hf-id="hf-rb50" class="note" id="rag-note">1 · Busca: encontra os trechos relacionados.</p>
+</section>
+<section data-hf-id="hf-rb60" class="stage" id="phase-wrong">
+<h1 data-hf-id="hf-rb61" class="heading">Se a busca errar, a resposta erra junto.</h1>
+<p data-hf-id="hf-rb62" class="subhead">O índice ainda guarda a política antiga, de 2024.</p>
+<p data-hf-id="hf-rb63" class="col-title">Índice de trechos</p>
+<svg data-hf-id="hf-rb64" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-rb65" id="link-c1" class="warn-stroke" d="M422 319 C462 319 462 236 500 236" /><path data-hf-id="hf-rb66" id="arrow-model-c" class="warn-stroke" d="M709 336 L709 388" /></svg>
+<div data-hf-id="hf-rb67" class="trecho" id="c-t1" style="top:222px">Férias · seção 2</div>
+<div data-hf-id="hf-rb68" class="trecho" id="c-t2" style="top:290px">Home office · 2024</div>
+<div data-hf-id="hf-rb69" class="trecho" id="c-t3" style="top:358px">Reembolso · seção 1</div>
+<div data-hf-id="hf-rb70" class="trecho" id="c-t4" style="top:426px">Home office · seção 3</div>
+<div data-hf-id="hf-rb71" class="box" id="c-context" style="top:176px;height:160px"><p data-hf-id="hf-rb72" class="box-title">Contexto enviado</p><p data-hf-id="hf-rb73">pergunta + trecho de 2024</p><p data-hf-id="hf-rb74">“responda só com base nele”</p></div>
+<p data-hf-id="hf-rb75" class="sublabel muted-text" id="c-model" style="left:726px;top:344px">modelo</p>
+<div data-hf-id="hf-rb76" class="box answer warn" id="c-answer" style="top:392px;height:92px"><p data-hf-id="hf-rb77" class="answer-text">“R$ 100 por mês”</p><p data-hf-id="hf-rb78" class="answer-source">fonte: Home office · 2024</p></div>
+<p data-hf-id="hf-rb79" class="note" id="wrong-note">A busca escolhe o trecho de 2024.</p>
+</section>
+<p data-hf-id="hf-rb90" class="footline">Cenário didático · documentos e valores fictícios</p>
+</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+const enter=(target,time,x=-18)=>tl.fromTo(target,{opacity:0,x},{opacity:1,x:0,duration:0.6,ease:'power2.out'},time);
+const draw=(id,time)=>{const p=document.querySelector(id);const n=p.getTotalLength();p.style.strokeDasharray=String(n);tl.fromTo(p,{strokeDashoffset:n},{strokeDashoffset:0,duration:0.6,ease:'none'},time);};
+// Estado 1: sem consulta, a resposta vem só da memória do treino
+enter('#ask',0.3);draw('#arrow-ask',1.0);enter('#model',1.4,0);draw('#arrow-guess',2.2);enter('#guess',2.6);
+tl.fromTo('#no-source',{opacity:0},{opacity:1,duration:0.5,ease:'power1.out'},3.0);
+tl.set('#phase-memory',{opacity:0},7);tl.set('#phase-rag',{opacity:1},7);
+// Estado 2: busca seleciona dois trechos, o contexto é montado e o modelo responde com fonte
+['#b-t1','#b-t2','#b-t3','#b-t4'].forEach((id,i)=>enter(id,7.3+i*0.15));
+tl.to('#b-t2,#b-t4',{borderColor:'#a6cdbb',backgroundColor:'#293631',duration:0.5,ease:'power1.out'},8.6);
+tl.to('#b-t1,#b-t3',{opacity:0.4,duration:0.5,ease:'power1.out'},8.6);
+draw('#link-b1',10.0);draw('#link-b2',10.0);enter('#b-context',10.5,18);
+draw('#arrow-model-b',12.4);tl.fromTo('#b-model',{opacity:0},{opacity:1,duration:0.5},12.4);enter('#b-answer',13.0,18);
+tl.set('#phase-rag',{opacity:0},16);tl.set('#phase-wrong',{opacity:1},16);
+// Estado 3: a busca traz o trecho desatualizado e a resposta herda o erro
+tl.to('#c-t2',{borderColor:'#e7b28c',backgroundColor:'#352c26',duration:0.5,ease:'power1.out'},16.8);
+tl.to('#c-t1,#c-t3,#c-t4',{opacity:0.4,duration:0.5,ease:'power1.out'},16.8);
+draw('#link-c1',17.8);enter('#c-context',18.2,18);
+draw('#arrow-model-c',18.8);tl.fromTo('#c-model',{opacity:0},{opacity:1,duration:0.5},18.8);enter('#c-answer',19.2,18);
+const sequence=[
+{t:0,memory:'Uma pergunta sobre uma regra interna da empresa.',rag:'1 · Busca: encontra os trechos relacionados.',wrong:'A busca escolhe o trecho de 2024.'},
+{t:3.4,memory:'Resposta convincente, mas inventada: alucinação.',rag:'1 · Busca: encontra os trechos relacionados.',wrong:'A busca escolhe o trecho de 2024.'},
+{t:10.5,memory:'Resposta convincente, mas inventada: alucinação.',rag:'2 · Contexto: pergunta, trechos e instrução.',wrong:'A busca escolhe o trecho de 2024.'},
+{t:13.0,memory:'Resposta convincente, mas inventada: alucinação.',rag:'3 · Resposta: baseada nos trechos, com a fonte.',wrong:'A busca escolhe o trecho de 2024.'},
+{t:18.2,memory:'Resposta convincente, mas inventada: alucinação.',rag:'3 · Resposta: baseada nos trechos, com a fonte.',wrong:'A regra atual está no índice, mas não foi enviada.'},
+{t:20.4,memory:'Resposta convincente, mas inventada: alucinação.',rag:'3 · Resposta: baseada nos trechos, com a fonte.',wrong:'O modelo só pode usar o que recebeu.'}
+];
+const driver={time:0};tl.to(driver,{time:23,duration:23,ease:'none',onUpdate:()=>{const s=[...sequence].reverse().find(item=>driver.time>=item.t)||sequence[0];for(const [id,key] of [['memory-note','memory'],['rag-note','rag'],['wrong-note','wrong']])document.getElementById(id).textContent=s[key];}},0);
+window.__timelines['01-busca-resposta']=tl;
+</script>
+</template>

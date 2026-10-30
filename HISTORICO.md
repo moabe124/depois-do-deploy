@@ -50,17 +50,17 @@ Nenhuma edição apresentada.
 
 ## Conceitos de IA
 
-### conceitos-de-ia-001 — Avaliação de RAG: descubra se o erro está na busca ou na resposta
+### conceitos-de-ia-001 — RAG: o assistente consulta seus documentos antes de responder
 
 - Data: 2026-10-30
-- Nível: avancado
+- Nível: iniciante
 - Estado: apresentado
-- Identidade do objetivo: `avaliacao-rag-recuperacao-geracao-erro-padrao`
-- Objetivo: Diagnosticar se as respostas erradas de um assistente com RAG nascem na recuperação ou na geração, medindo recall@k e correção separadamente, calibrando o juiz LLM e usando erro padrão pareado antes de decidir trocar o modelo.
-- Conceitos: RAG, recuperação, geração, trecho-ouro, recall@k, precision@k, fidelidade, correção, juiz LLM, viés de posição, erro padrão, análise pareada, erro padrão clusterizado
-- Edição: [HTML](content/conceitos-de-ia/001-avaliacao-rag.html)
+- Identidade do objetivo: `rag-fundamentos-busca-resposta`
+- Objetivo: Entender o que é RAG e por que ele existe: como um assistente busca trechos dos seus documentos e responde com base neles, e por que uma resposta errada pode nascer na busca ou na resposta.
+- Conceitos: RAG, modelo de linguagem, alucinação, busca (recuperação), resposta (geração), trecho, índice, contexto, fonte da resposta, embedding, busca por palavra-chave
+- Edição: [HTML](content/conceitos-de-ia/001-rag-busca-resposta.html)
 
-Aplicação prática: acompanhar um assistente de políticas com 19% de erro em 400 perguntas e a proposta de trocar o modelo. Separa recuperação (trecho-ouro no top-k, recall@k) e geração (correção e fidelidade) em uma matriz 2×2: 54 erros de recuperação, 22 de geração e 34 acertos sem evidência. Aprofundamentos tratam precision@k e escolha de k, fidelidade versus correção, calibração e viés de posição do juiz LLM, e erro padrão pareado e clusterizado ao comparar versões.
+Conceito: um assistente de RH ligado direto ao modelo inventa o valor do auxílio home office, porque o modelo nunca leu a política interna. Apresenta RAG como consultar antes de responder: preparar trechos em um índice, buscar os mais relacionados, montar o contexto com instrução para responder só com base neles e devolver a resposta com a fonte. Ensina a perguntar em qual etapa o erro nasceu (busca ou resposta) antes de trocar o modelo. Aprofundamentos opcionais tratam embeddings e busca por palavra-chave, trechos que perdem o contexto, quando dispensar a busca e como começar a testar as duas etapas.
 
 ## Entrevistas
 
