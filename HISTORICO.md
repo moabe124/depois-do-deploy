@@ -50,7 +50,17 @@ Nenhuma edição apresentada.
 
 ## Conceitos de IA
 
-Nenhuma edição apresentada.
+### conceitos-de-ia-001 — RAG: o assistente consulta seus documentos antes de responder
+
+- Data: 2026-10-30
+- Nível: iniciante
+- Estado: apresentado
+- Identidade do objetivo: `rag-fundamentos-busca-resposta`
+- Objetivo: Entender o que é RAG e por que ele existe: como um assistente busca trechos dos seus documentos e responde com base neles, e por que uma resposta errada pode nascer na busca ou na resposta.
+- Conceitos: RAG, modelo de linguagem, alucinação, busca (recuperação), resposta (geração), trecho, índice, contexto, fonte da resposta, embedding, busca por palavra-chave
+- Edição: [HTML](content/conceitos-de-ia/001-rag-busca-resposta.html)
+
+Conceito: um assistente de RH ligado direto ao modelo inventa o valor do auxílio home office, porque o modelo nunca leu a política interna. Apresenta RAG como consultar antes de responder: preparar trechos em um índice, buscar os mais relacionados, montar o contexto com instrução para responder só com base neles e devolver a resposta com a fonte. Ensina a perguntar em qual etapa o erro nasceu (busca ou resposta) antes de trocar o modelo. Aprofundamentos opcionais tratam embeddings e busca por palavra-chave, trechos que perdem o contexto, quando dispensar a busca e como começar a testar as duas etapas.
 
 ## Entrevistas
 

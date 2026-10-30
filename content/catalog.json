@@ -343,6 +343,75 @@
           }
         ]
       }
+    },
+    {
+      "id": "conceitos-de-ia-001",
+      "topic": "conceitos-de-ia",
+      "title": "RAG: o assistente consulta seus documentos antes de responder",
+      "date": "2026-10-30",
+      "level": "iniciante",
+      "minutes": {
+        "essential": 3,
+        "full": 7
+      },
+      "focusKey": "rag-fundamentos-busca-resposta",
+      "objective": "Entender o que é RAG e por que ele existe: como um assistente busca trechos dos seus documentos e responde com base neles, e por que uma resposta errada pode nascer na busca ou na resposta.",
+      "summary": "Conceito: um assistente de RH ligado direto ao modelo inventa o valor do auxílio home office, porque o modelo nunca leu a política interna. Apresenta RAG como consultar antes de responder: preparar trechos em um índice, buscar os mais relacionados, montar o contexto com instrução para responder só com base neles e devolver a resposta com a fonte. Ensina a perguntar em qual etapa o erro nasceu (busca ou resposta) antes de trocar o modelo. Aprofundamentos opcionais tratam embeddings e busca por palavra-chave, trechos que perdem o contexto, quando dispensar a busca e como começar a testar as duas etapas.",
+      "concepts": [
+        "RAG",
+        "modelo de linguagem",
+        "alucinação",
+        "busca (recuperação)",
+        "resposta (geração)",
+        "trecho",
+        "índice",
+        "contexto",
+        "fonte da resposta",
+        "embedding",
+        "busca por palavra-chave"
+      ],
+      "source": "content/conceitos-de-ia/001-rag-busca-resposta.html",
+      "url": "temas/conceitos-de-ia/001-rag-busca-resposta.html",
+      "status": "presented",
+      "studiedAt": null,
+      "references": [
+        "https://arxiv.org/abs/2005.11401",
+        "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+        "https://www.anthropic.com/engineering/contextual-retrieval",
+        "https://arxiv.org/abs/2309.15217"
+      ],
+      "quiz": {
+        "version": "2",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "retrain",
+              "lookup-first",
+              "bigger-memory"
+            ],
+            "correct": "lookup-first"
+          },
+          {
+            "id": "q2",
+            "options": [
+              "swap-model",
+              "fix-index",
+              "ask-carefully"
+            ],
+            "correct": "fix-index"
+          },
+          {
+            "id": "q3",
+            "options": [
+              "search-step",
+              "answer-step",
+              "no-error"
+            ],
+            "correct": "answer-step"
+          }
+        ]
+      }
     }
   ]
 }
