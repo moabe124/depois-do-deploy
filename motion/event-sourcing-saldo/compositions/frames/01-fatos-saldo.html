@@ -1,0 +1,85 @@
+<template>
+<style>
+*{box-sizing:border-box}[data-composition-id="01-fatos-saldo"]{position:relative;width:100%;height:100%;overflow:hidden;font-family:sans-serif;color:#d7d9d5}.clip{position:absolute;inset:0;width:100%;height:100%}.ground{background:#191d20}.stage{position:absolute;inset:0}#phase-events,#phase-fix{opacity:0}.heading{position:absolute;left:42px;top:32px;width:876px;margin:0;font-size:42px;line-height:1.22;font-weight:600;letter-spacing:-1px}.subhead{position:absolute;left:42px;top:94px;width:876px;margin:0;font-size:28px;line-height:1.38;color:#a6cdbb}.col-title{position:absolute;left:42px;top:162px;margin:0;font-size:26px;font-weight:600;color:#a6cdbb}.op{position:absolute;left:42px;width:380px;height:64px;background:#22292b;border:2px solid #697a74;border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:26px;line-height:1.3;white-space:nowrap}.event{position:absolute;left:42px;width:520px;height:48px;background:#22292b;border:2px solid #697a74;border-radius:8px;display:flex;align-items:center;gap:14px;padding:0 16px;font-size:24px;line-height:1.3;white-space:nowrap}.event .n{color:#aab1b4;font-size:22px;min-width:30px}.event .amt{margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums}.event.fix{border-color:#a6cdbb;background:#293631}.box{position:absolute;background:#22292b;border:2px solid #697a74;border-radius:10px;padding:12px 20px}.box p{margin:0}.box-title{font-size:26px;line-height:1.4;font-weight:600;color:#a6cdbb}.box-row{font-size:24px;line-height:1.4;color:#aab1b4}.value{font-size:52px;line-height:1.2;font-weight:600;font-variant-numeric:tabular-nums}.lost{font-size:22px;line-height:1.35;color:#e7b28c}#a-lost{opacity:0}.ask{position:absolute;left:42px;top:428px;width:876px;height:68px;background:#352c26;border:2px solid #e7b28c;border-radius:8px;display:flex;align-items:center;padding:0 20px;font-size:26px;line-height:1.3;white-space:nowrap}.sublabel{position:absolute;margin:0;font-size:22px;line-height:1.35}.muted-text{color:#aab1b4}.note{position:absolute;left:42px;top:548px;width:876px;margin:0;font-size:28px;line-height:1.35;color:#a6cdbb}.footline{position:absolute;left:42px;top:604px;width:876px;margin:0;font-size:20px;line-height:1.3;color:#aab1b4}.connector{position:absolute;inset:0;width:960px;height:640px;pointer-events:none}.connector path{fill:none;stroke:#a6cdbb;stroke-width:3;stroke-linecap:round}.connector path.warn-stroke{stroke:#e7b28c}
+</style>
+<div data-hf-id="hf-es00" id="es-diagram" data-composition-id="01-fatos-saldo" data-width="960" data-height="640" data-duration="24">
+<div data-hf-id="hf-es01" id="diagram-ground" class="clip ground" data-start="0" data-duration="24" data-track-index="0"></div>
+<div data-hf-id="hf-es02" id="diagram-events" class="clip" data-start="0" data-duration="24" data-track-index="1">
+<section data-hf-id="hf-es10" class="stage" id="phase-crud">
+<h1 data-hf-id="hf-es11" class="heading">Uma tabela guarda só o saldo atual.</h1>
+<p data-hf-id="hf-es12" class="subhead">Cada atualização sobrescreve o valor anterior.</p>
+<p data-hf-id="hf-es13" class="col-title">Operações</p>
+<svg data-hf-id="hf-es14" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-es15" id="a-arrow1" class="warn-stroke" d="M422 246 C462 246 462 286 498 286" /><path data-hf-id="hf-es16" id="a-arrow2" class="warn-stroke" d="M422 332 C462 332 462 306 498 306" /></svg>
+<div data-hf-id="hf-es17" class="op" id="a-op1" style="top:214px"><span data-hf-id="hf-es18">Resgate</span><span data-hf-id="hf-es19">−400</span></div>
+<div data-hf-id="hf-es20" class="op" id="a-op2" style="top:300px"><span data-hf-id="hf-es21">Expiração</span><span data-hf-id="hf-es22">−500</span></div>
+<div data-hf-id="hf-es23" class="box" id="a-box" style="left:500px;top:196px;width:418px;height:196px"><p data-hf-id="hf-es24" class="box-title">Tabela carteiras</p><p data-hf-id="hf-es25" class="box-row">cliente 42 · saldo</p><p data-hf-id="hf-es26" class="value" id="a-value">1.200</p><p data-hf-id="hf-es27" class="lost" id="a-lost">valor anterior apagado</p></div>
+<div data-hf-id="hf-es28" class="ask" id="a-ask">Cliente: “Eu tinha 1.200. Cadê meus pontos?”</div>
+<p data-hf-id="hf-es29" class="note" id="a-note">A tabela guarda só o número mais recente.</p>
+</section>
+<section data-hf-id="hf-es40" class="stage" id="phase-events">
+<h1 data-hf-id="hf-es41" class="heading">Event sourcing guarda os fatos.</h1>
+<p data-hf-id="hf-es42" class="subhead">Cada mudança é um evento novo, anexado ao fim.</p>
+<p data-hf-id="hf-es43" class="col-title">Eventos da carteira 42</p>
+<svg data-hf-id="hf-es44" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-es45" id="b-arrow" d="M570 222 L584 222 L584 428 L570 428 M584 311 L614 311 M606 303 L614 311 L606 319" /></svg>
+<div data-hf-id="hf-es46" class="event" id="b-e1" style="top:214px"><span data-hf-id="hf-es47" class="n">#1</span><span data-hf-id="hf-es48">PontosCreditados</span><span data-hf-id="hf-es49" class="amt">+1.000</span></div>
+<div data-hf-id="hf-es50" class="event" id="b-e2" style="top:272px"><span data-hf-id="hf-es51" class="n">#2</span><span data-hf-id="hf-es52">PontosCreditados</span><span data-hf-id="hf-es53" class="amt">+200</span></div>
+<div data-hf-id="hf-es54" class="event" id="b-e3" style="top:330px"><span data-hf-id="hf-es55" class="n">#3</span><span data-hf-id="hf-es56">PontosResgatados</span><span data-hf-id="hf-es57" class="amt">−400</span></div>
+<div data-hf-id="hf-es58" class="event" id="b-e4" style="top:388px"><span data-hf-id="hf-es59" class="n">#4</span><span data-hf-id="hf-es60">PontosExpirados</span><span data-hf-id="hf-es61" class="amt">−500</span></div>
+<div data-hf-id="hf-es62" class="box" id="b-box" style="left:620px;top:236px;width:298px;height:150px"><p data-hf-id="hf-es63" class="box-title">Saldo</p><p data-hf-id="hf-es64" class="box-row">projeção</p><p data-hf-id="hf-es65" class="value" id="b-value">0</p></div>
+<p data-hf-id="hf-es66" class="sublabel muted-text" id="b-derived" style="left:620px;top:398px;width:298px">calculado a partir dos eventos</p>
+<p data-hf-id="hf-es67" class="note" id="b-note">Evento: um fato que já aconteceu. Não se edita.</p>
+</section>
+<section data-hf-id="hf-es80" class="stage" id="phase-fix">
+<h1 data-hf-id="hf-es81" class="heading">Errou? Registre a correção.</h1>
+<p data-hf-id="hf-es82" class="subhead">Os eventos anteriores continuam como estão.</p>
+<p data-hf-id="hf-es83" class="col-title">Eventos da carteira 42</p>
+<svg data-hf-id="hf-es84" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-es85" id="c-arrow" d="M570 222 L584 222 L584 428 L570 428 M584 311 L614 311 M606 303 L614 311 L606 319" /><path data-hf-id="hf-es112" id="c-arrow-ext" style="opacity:0" d="M570 222 L584 222 L584 486 L570 486 M584 311 L614 311 M606 303 L614 311 L606 319" /></svg>
+<div data-hf-id="hf-es86" class="event" id="c-e1" style="top:214px"><span data-hf-id="hf-es87" class="n">#1</span><span data-hf-id="hf-es88">PontosCreditados</span><span data-hf-id="hf-es89" class="amt">+1.000</span></div>
+<div data-hf-id="hf-es90" class="event" id="c-e2" style="top:272px"><span data-hf-id="hf-es91" class="n">#2</span><span data-hf-id="hf-es92">PontosCreditados</span><span data-hf-id="hf-es93" class="amt">+200</span></div>
+<div data-hf-id="hf-es94" class="event" id="c-e3" style="top:330px"><span data-hf-id="hf-es95" class="n">#3</span><span data-hf-id="hf-es96">PontosResgatados</span><span data-hf-id="hf-es97" class="amt">−400</span></div>
+<div data-hf-id="hf-es98" class="event" id="c-e4" style="top:388px"><span data-hf-id="hf-es99" class="n">#4</span><span data-hf-id="hf-es100">PontosExpirados</span><span data-hf-id="hf-es101" class="amt">−500</span></div>
+<div data-hf-id="hf-es102" class="event fix" id="c-e5" style="top:446px"><span data-hf-id="hf-es103" class="n">#5</span><span data-hf-id="hf-es104">ExpiracaoEstornada</span><span data-hf-id="hf-es105" class="amt">+500</span></div>
+<div data-hf-id="hf-es106" class="box" id="c-box" style="left:620px;top:236px;width:298px;height:150px"><p data-hf-id="hf-es107" class="box-title">Saldo</p><p data-hf-id="hf-es108" class="box-row">projeção</p><p data-hf-id="hf-es109" class="value" id="c-value">300</p></div>
+<p data-hf-id="hf-es110" class="sublabel muted-text" id="c-derived" style="left:620px;top:398px;width:298px">calculado a partir dos eventos</p>
+<p data-hf-id="hf-es111" class="note" id="c-note">A expiração de 500 pontos foi indevida.</p>
+</section>
+<p data-hf-id="hf-es120" class="footline">Cenário didático · programa de pontos fictício</p>
+</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+const enter=(target,time,x=-18,y=0)=>tl.fromTo(target,{opacity:0,x,y},{opacity:1,x:0,y:0,duration:0.6,ease:'power2.out'},time);
+const draw=(id,time)=>{const p=document.querySelector(id);const n=p.getTotalLength();p.style.strokeDasharray=String(n);tl.fromTo(p,{strokeDashoffset:n,opacity:0},{strokeDashoffset:0,opacity:1,duration:0.6,ease:'none'},time);};
+const pulse=(target,color,time)=>tl.fromTo(target,{borderColor:color},{borderColor:'#697a74',duration:0.9,ease:'power1.out',immediateRender:false},time);
+// Estado 1: cada UPDATE troca o número e apaga o motivo da mudança
+enter('#a-box',0.3,18);
+enter('#a-op1',1.2);draw('#a-arrow1',1.8);pulse('#a-box','#e7b28c',2.4);tl.fromTo('#a-lost',{opacity:0},{opacity:1,duration:0.5,ease:'power1.out'},2.4);tl.to('#a-op1',{opacity:0.35,duration:0.5,ease:'power1.out'},3.0);
+enter('#a-op2',3.4);draw('#a-arrow2',4.0);pulse('#a-box','#e7b28c',4.6);tl.to('#a-op2',{opacity:0.35,duration:0.5,ease:'power1.out'},5.2);
+enter('#a-ask',5.6,0,18);
+tl.set('#phase-crud',{opacity:0},8);tl.set('#phase-events',{opacity:1},8);
+// Estado 2: os eventos são anexados em ordem e o saldo é derivado deles
+draw('#b-arrow',8.6);
+[['#b-e1',8.6],['#b-e2',9.8],['#b-e3',11.0],['#b-e4',12.2]].forEach(([id,time])=>{enter(id,time,0,18);pulse(id,'#a6cdbb',time+0.4);pulse('#b-box','#a6cdbb',time+0.4);});
+tl.set('#phase-events',{opacity:0},16.5);tl.set('#phase-fix',{opacity:1},16.5);
+// Estado 3: a correção entra como evento novo; o evento 4 permanece no histórico
+tl.to('#c-e4',{borderColor:'#e7b28c',backgroundColor:'#352c26',duration:0.5,ease:'power1.out'},17.2);
+enter('#c-e5',18.4,0,18);tl.set('#c-arrow',{opacity:0},18.4);tl.set('#c-arrow-ext',{opacity:1},18.4);pulse('#c-box','#a6cdbb',18.9);
+const sequence=[
+{t:0,aNote:'A tabela guarda só o número mais recente.',aValue:'1.200',bNote:'Evento: um fato que já aconteceu. Não se edita.',bValue:'0',cNote:'A expiração de 500 pontos foi indevida.',cValue:'300'},
+{t:2.4,aNote:'Cada atualização substitui o valor anterior.',aValue:'800'},
+{t:4.6,aValue:'300'},
+{t:5.6,aNote:'O motivo de cada mudança não foi guardado.'},
+{t:9.0,bValue:'1.000'},
+{t:10.2,bValue:'1.200'},
+{t:11.4,bValue:'800'},
+{t:12.6,bValue:'300',bNote:'Saldo = eventos aplicados em ordem.'},
+{t:14.4,bNote:'O histórico explica o 300: resgate e expiração.'},
+{t:18.4,cNote:'O evento 4 continua lá. Entra o evento 5.'},
+{t:18.9,cValue:'800'},
+{t:20.6,cNote:'O passado não se edita: a correção é um fato novo.'}
+];
+const fields=[['a-note','aNote'],['a-value','aValue'],['b-note','bNote'],['b-value','bValue'],['c-note','cNote'],['c-value','cValue']];
+const driver={time:0};tl.to(driver,{time:24,duration:24,ease:'none',onUpdate:()=>{const s={};for(const item of sequence)if(driver.time>=item.t)Object.assign(s,item);for(const [id,key] of fields)document.getElementById(id).textContent=s[key];}},0);
+window.__timelines['01-fatos-saldo']=tl;
+</script>
+</template>

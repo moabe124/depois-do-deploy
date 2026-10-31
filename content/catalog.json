@@ -412,6 +412,78 @@
           }
         ]
       }
+    },
+    {
+      "id": "system-design-003",
+      "topic": "system-design",
+      "title": "Event sourcing: guarde os fatos, derive o estado",
+      "date": "2026-10-30",
+      "level": "iniciante",
+      "minutes": {
+        "essential": 3,
+        "full": 8
+      },
+      "focusKey": "event-sourcing-fatos-estado-projecoes",
+      "objective": "Entender o que é event sourcing: guardar cada mudança como um evento imutável, calcular o estado atual a partir desses eventos e criar projeções para leitura, reconhecendo quando o padrão compensa e quando é custo desnecessário.",
+      "summary": "Conceito: uma carteira de pontos em CRUD sobrescreve o saldo e não explica para onde foram 900 pontos; uma tabela de histórico paralela diverge do saldo. Apresenta event sourcing como anexar fatos imutáveis ao fluxo de cada carteira e derivar o saldo aplicando-os em ordem; separa comando, evento e projeção; corrige uma expiração indevida com evento compensatório; e compara quando o padrão compensa e quando o CRUD basta. Aprofundamentos opcionais tratam a diferença para mensageria e CQRS, projeções com atraso e idempotentes, concorrência otimista com versão esperada, snapshots, versionamento de eventos, replay com sistemas externos e dados pessoais.",
+      "concepts": [
+        "event sourcing",
+        "evento",
+        "armazenamento de eventos",
+        "append-only",
+        "fluxo de eventos",
+        "comando",
+        "projeção",
+        "evento compensatório",
+        "consistência eventual",
+        "concorrência otimista",
+        "snapshot",
+        "versionamento de eventos",
+        "CQRS"
+      ],
+      "source": "content/system-design/003-event-sourcing.html",
+      "url": "temas/system-design/003-event-sourcing.html",
+      "status": "presented",
+      "studiedAt": null,
+      "references": [
+        "https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing",
+        "https://martinfowler.com/eaaDev/EventSourcing.html",
+        "https://martinfowler.com/articles/201701-event-driven.html",
+        "https://martinfowler.com/bliki/CQRS.html",
+        "https://docs.kurrent.io/clients/node/v1.3/appending-events"
+      ],
+      "quiz": {
+        "version": "1",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "edit-event",
+              "compensate",
+              "delete-event"
+            ],
+            "correct": "compensate"
+          },
+          {
+            "id": "q2",
+            "options": [
+              "new-projection",
+              "start-now",
+              "add-column"
+            ],
+            "correct": "new-projection"
+          },
+          {
+            "id": "q3",
+            "options": [
+              "expected-version",
+              "check-projection",
+              "append-both"
+            ],
+            "correct": "expected-version"
+          }
+        ]
+      }
     }
   ]
 }
