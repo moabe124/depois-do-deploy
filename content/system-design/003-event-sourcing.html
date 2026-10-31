@@ -14,6 +14,18 @@
 @media print{body{--paper:#fff;--ink:#202820;--muted:#505850;--line:#ddd;--card:#fff;--green:#284f38;font-size:11pt}.wrap{width:100%}.theme,.reading,.motion-controls,video,.choices,.feedback,.calculator{display:none!important}.essential .full-only{display:block}.article{max-width:100%}.hero{padding-top:20px}h1{font-size:28pt}.sources a{overflow-wrap:anywhere}}
 
 .quiz-question+.quiz-question{margin-top:36px;padding-top:22px;border-top:1px solid var(--line)}td.number,th.number{text-align:right;white-space:nowrap}
+.lab-card{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:20px 22px;margin:28px 0}.lab-card p{margin:0 0 16px;font-size:18px}.lab-open,.lab-primary{background:var(--green);color:var(--paper);border-color:var(--green);font-weight:600}body.lab-lock{overflow:hidden}
+.lab{width:min(1240px,calc(100vw - 32px));max-width:none;max-height:calc(100vh - 32px);overflow:auto;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.55}.lab::backdrop{background:rgba(8,10,12,.75)}.lab p{margin:0 0 10px}.lab button,.lab select{font-size:15px}.lab-head{position:sticky;top:0;z-index:1;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line)}.lab-title{margin:0;font-size:19px;font-weight:600;letter-spacing:0}.lab-title span{color:var(--muted);font-weight:400;font-size:15px}.lab-title:focus,.lab-caption:focus{outline:none}.lab-actions,.lab-row,.lab-nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.lab-row{margin:0 0 14px}
+.lab-pres{display:grid;gap:12px;padding:16px 20px;background:var(--soft);border-bottom:1px solid var(--line)}.lab-step{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:700}.lab-caption{font-size:21px;line-height:1.5;margin:0!important;min-height:3em}.lab-hint{font-size:13px;color:var(--muted)}
+.lab-body{padding:18px 20px 22px}.lab-grid{display:grid;grid-template-columns:minmax(230px,.9fr) minmax(300px,1.25fr) minmax(260px,1fr);gap:16px;align-items:start}.lab-panel{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:14px 16px;min-width:0}.lab-panel h3{font-size:12px;line-height:1.5;letter-spacing:1.3px;text-transform:uppercase;color:var(--green);margin:0 0 10px}.lab-panel h3+h3,.lab-explore+h3,.lab-panel .lab-row+h3{margin-top:16px}.lab-field{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px}.lab-check{display:flex;align-items:center;gap:8px;min-height:44px;font-size:15px}.lab-check input{width:20px;height:20px;accent-color:var(--green)}.lab-note{font-size:14px;color:var(--muted)}
+.lab-mode{border:1px solid var(--line);border-radius:8px;padding:6px 12px 8px;margin:0 0 12px;font-size:15px}.lab-mode legend{font-size:13px;color:var(--muted);padding:0 4px}.lab-mode label{display:inline-flex;align-items:center;gap:6px;min-height:40px;margin-right:14px}.lab-mode input{accent-color:var(--green)}
+.lab-events{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}.lab-event{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:0 10px;text-align:left;padding:7px 12px}.lab-v{color:var(--muted);font-variant-numeric:tabular-nums}.lab-type{font-family:ui-monospace,Consolas,monospace;font-size:.92em;overflow-wrap:anywhere}.lab-amt{font-weight:600;font-variant-numeric:tabular-nums}.lab-meta{grid-column:2/4;color:var(--muted);font-size:.85em}.lab-event[aria-pressed=true]{background:var(--soft);border-color:var(--green)}.lab-fresh{box-shadow:inset 3px 0 0 var(--green)}.lab-new{animation:lab-in .45s ease-out}@keyframes lab-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.lab-empty{font-size:14px;color:var(--muted);padding:8px 0}
+.lab-detail pre{font-size:13px;line-height:1.6;margin:8px 0 10px;padding:12px}.lab-saldo{font:600 42px/1.15 'Segoe UI',Arial,sans-serif;font-variant-numeric:tabular-nums;margin:0 0 4px!important}.lab-neg{color:var(--orange)}.lab-status{font-size:14px;color:var(--muted)}.lab-status.lab-lag{color:var(--orange)}.lab-extrato{list-style:none;padding:0;margin:0 0 4px;font-size:14px;max-height:250px;overflow:auto}.lab-extrato li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:5px 0}.lab-extrato span:last-child{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.lab-totals table{font-size:14px;margin:0}.lab-totals th,.lab-totals td{padding:6px 8px}
+.lab-log{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5;max-height:330px;overflow:auto}.lab-log li{padding:4px 0 4px 10px;border-left:3px solid var(--line);margin-bottom:6px;color:var(--muted)}.lab-log li.lab-latest{color:var(--ink)}.lab-log .lab-ok{border-color:var(--green)}.lab-log .lab-refused,.lab-log .lab-conflict,.lab-log .lab-warn{border-color:var(--orange)}.lab-who{display:inline-block;min-width:22px;margin-right:6px;padding:0 5px;border:1px solid var(--line);border-radius:4px;text-align:center;font-weight:700;font-size:12px}
+.lab-presenting{width:100vw;height:100vh;max-height:none;border:0;border-radius:0;font-size:19px}.lab-presenting .lab-explore{display:none}.lab-presenting .lab-explore+h3{margin-top:0}.lab-presenting .lab-caption{font-size:28px}.lab-presenting .lab-log,.lab-presenting .lab-extrato,.lab-presenting .lab-status,.lab-presenting .lab-note{font-size:17px}.lab-presenting .lab-saldo{font-size:60px}.lab-presenting .lab-detail pre{font-size:15px}.lab-presenting .lab-log{max-height:none}
+@media(max-width:900px){.lab{width:100vw;height:100vh;max-height:none;border:0;border-radius:0}.lab-grid{grid-template-columns:1fr}.lab-body,.lab-head,.lab-pres{padding-inline:14px}.lab-presenting .lab-caption{font-size:22px}.lab-presenting .lab-saldo{font-size:44px}.lab-presenting .lab-grid>.lab-panel:first-child{order:3}}
+@media(prefers-reduced-motion:reduce){.lab-new{animation:none}}
+@media print{.lab-card,.lab{display:none!important}}
 </style>
 </head>
 <body>
@@ -23,7 +35,7 @@
 <div class="eyebrow">System Design / conceito</div>
 <h1 id="title">Event sourcing: <em>guarde os fatos, derive o estado.</em></h1>
 <p class="dek"><strong>Objetivo:</strong> entender o que é event sourcing: guardar cada mudança como um evento imutável, calcular o estado atual a partir desses eventos e criar projeções para leitura, reconhecendo quando o padrão compensa e quando é custo desnecessário.</p>
-<div class="meta"><span>Iniciante · parte do CRUD que você já conhece</span><span>30 de outubro de 2026</span><span>Essencial · 3 min</span><span>Completa · 8 min + animação</span></div>
+<div class="meta"><span>Iniciante · parte do CRUD que você já conhece</span><span>30 de outubro de 2026</span><span>Essencial · 3 min</span><span>Completa · 8 min + animação e laboratório</span></div>
 </section>
 <section class="reading" aria-label="Preferência de leitura" hidden><p><strong>Escolha o ritmo de hoje.</strong> O essencial cobre o conceito, o exemplo dos pontos e a primeira pergunta.</p><div class="switch" role="group" aria-label="Tempo disponível"><button id="short" type="button" aria-pressed="false">Essencial · 3 min</button><button id="full" type="button" aria-pressed="true">Completa · 8 min</button></div></section>
 <noscript><p class="caption">A leitura e as respostas recolhíveis funcionam sem JavaScript. A animação tem controles nativos e uma imagem estática.</p></noscript>
@@ -104,6 +116,37 @@ async function resgatar(carteiraId, pontos) {
 <tr><th scope="row">Protótipo ou MVP de vida curta</th><td><strong>Normalmente não</strong></td><td>O investimento em eventos e projeções não se paga a tempo</td></tr>
 </tbody></table></div>
 <p>Também não precisa ser tudo ou nada. Dá para usar event sourcing só na carteira de pontos e manter o cadastro do cliente em CRUD. <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing">[1]</a></p>
+<div class="lab-card" id="lab-card" hidden><p><strong>Laboratório: o event store da carteira 42.</strong> Envie comandos e veja o fluxo crescer, consulte o saldo em qualquer ponto do histórico, atrase a projeção e simule dois resgates ao mesmo tempo. O modo apresentação percorre seis cenários, passo a passo.</p><button class="lab-open" id="lab-open" type="button" aria-haspopup="dialog" aria-controls="lab">Abrir laboratório</button></div>
+<dialog class="lab" id="lab" aria-labelledby="lab-title">
+<div class="lab-head"><h2 class="lab-title" id="lab-title" tabindex="-1">Laboratório · event store <span>simulação didática</span></h2><div class="lab-actions"><button id="lab-present" type="button" aria-pressed="false">Modo apresentação</button><button id="lab-reset" type="button">Recomeçar</button><button id="lab-close" type="button">Fechar</button></div></div>
+<section class="lab-pres" id="lab-pres" aria-label="Roteiro da apresentação" hidden>
+<div class="lab-nav"><label class="lab-field">Cenário <select id="lab-scenario"></select></label><span class="lab-step" id="lab-step"></span></div>
+<p class="lab-caption" id="lab-caption" tabindex="-1" aria-live="polite"></p>
+<div class="lab-nav"><button id="lab-prev" type="button">Passo anterior</button><button class="lab-primary" id="lab-next" type="button">Próximo passo</button><button id="lab-next-scenario" type="button" hidden>Próximo cenário</button><span class="lab-hint">Teclado ou passador: ← →, PageUp, PageDown</span></div>
+</section>
+<div class="lab-body"><div class="lab-grid">
+<section class="lab-panel" aria-labelledby="lab-h-activity">
+<div class="lab-explore"><h3>Comandos</h3><label class="lab-field">Pontos <select id="lab-points"><option value="100">100</option><option value="200" selected>200</option><option value="400">400</option><option value="500">500</option><option value="1000">1.000</option></select></label><div class="lab-row"><button type="button" data-cmd="creditar">Creditar</button><button type="button" data-cmd="resgatar">Resgatar</button><button type="button" data-cmd="expirar">Expirar</button><button type="button" data-cmd="estornar">Estornar última expiração</button></div><h3>Concorrência</h3><label class="lab-check"><input type="checkbox" id="lab-verify" checked> Gravar com versão esperada</label><div class="lab-row"><button type="button" id="lab-race">Dois resgates ao mesmo tempo</button></div></div>
+<h3 id="lab-h-activity">Atividade</h3>
+<ol class="lab-log" id="lab-log"></ol>
+<p class="sr-only" id="lab-live" aria-live="polite"></p>
+</section>
+<section class="lab-panel" aria-labelledby="lab-h-stream">
+<h3 id="lab-h-stream">Fluxo <span id="lab-stream"></span> · versão <span id="lab-version"></span></h3>
+<p class="lab-note">Só se acrescenta no fim. Selecione um evento para ver o que foi gravado.</p>
+<ol class="lab-events" id="lab-events"></ol>
+<div class="lab-detail" id="lab-detail"></div>
+</section>
+<section class="lab-panel" aria-labelledby="lab-h-projection">
+<h3 id="lab-h-projection">Projeção · saldo e extrato</h3>
+<p class="lab-saldo" id="lab-saldo"></p>
+<p class="lab-status" id="lab-status"></p>
+<div class="lab-explore"><fieldset class="lab-mode"><legend>Atualização da projeção</legend><label><input type="radio" name="lab-mode" value="sync" checked> Na hora</label><label><input type="radio" name="lab-mode" value="async"> Por outro processo</label></fieldset><div class="lab-row"><button type="button" id="lab-process">Processar próximo evento</button><button type="button" id="lab-redeliver">Reentregar último evento</button><button type="button" id="lab-rebuild">Reconstruir do zero</button><button type="button" id="lab-totals">Criar projeção: totais por tipo</button></div></div>
+<ol class="lab-extrato" id="lab-extrato"></ol>
+<div class="lab-totals" id="lab-totals-box" hidden><h3>Projeção nova · totais por tipo</h3><table><caption id="lab-totals-status"></caption><tbody id="lab-totals-body"></tbody></table></div>
+</section>
+</div></div>
+</dialog>
 </section>
 <section class="chapter full-only" id="depth">
 <div class="eyebrow">04 / aprofundamento opcional</div>
@@ -168,5 +211,144 @@ video.addEventListener('play',playbackState);video.addEventListener('pause',play
 video.addEventListener('error',()=>{status.textContent='A mídia não carregou. Abra a explicação estática abaixo.';play.disabled=true;});
 const feedback={q1:{correct:'compensate',right:'Isso. O evento errado fica no histórico, e o estorno é um fato novo que corrige o saldo.',wrong:'Em event sourcing, eventos não são editados nem apagados. A correção entra como um evento novo, que desfaz o efeito do anterior.'},q2:{correct:'new-projection',right:'Isso. Os eventos de expiração já existem; uma projeção nova lê o histórico desde o início e responde também pelo passado.',wrong:'O passado não está perdido: os eventos PontosExpirados guardam quanto e quando expirou. Basta uma projeção nova que os processe desde o primeiro.'},q3:{correct:'expected-version',right:'Isso. Com a versão esperada, só uma das gravações vence; a outra relê os fatos e recusa o resgate.',wrong:'A projeção pode estar atrasada e não participa da gravação; anexar os dois deixaria o saldo negativo. Quem protege é a gravação com versão esperada.'}};
 document.querySelectorAll('.quiz-question').forEach(question=>{const info=feedback[question.dataset.questionId];question.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{question.querySelectorAll('[data-answer]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));const output=question.querySelector('.feedback');output.hidden=false;output.textContent=button.dataset.answer===info.correct?info.right:info.wrong;}));});
+</script>
+<script>
+(()=>{
+const dialog=document.getElementById('lab');
+if(!dialog||typeof dialog.showModal!=='function')return;
+document.getElementById('lab-card').hidden=false;
+const $=id=>document.getElementById(id);
+const fmt=n=>(n<0?'−':'')+Math.abs(n).toLocaleString('pt-BR');
+const signed=n=>(n>0?'+':'')+fmt(n);
+const data=iso=>iso.slice(8,10)+'/'+iso.slice(5,7);
+const TIPOS={PontosCreditados:{sinal:1,nome:'Compra',total:'Creditado'},PontosResgatados:{sinal:-1,nome:'Resgate',total:'Resgatado'},PontosExpirados:{sinal:-1,nome:'Expiração',total:'Expirado'},ExpiracaoEstornada:{sinal:1,nome:'Estorno',total:'Estornado'}};
+const delta=e=>TIPOS[e.tipo].sinal*e.pontos;
+const ev=(tipo,pontos,detalhe,em,extra)=>({tipo,pontos,detalhe,em,...extra});
+const ARTIGO=[ev('PontosCreditados',1000,'compra 7781','2026-03-15'),ev('PontosCreditados',200,'compra 7802','2026-04-02'),ev('PontosResgatados',400,'vale-presente','2026-09-12'),ev('PontosExpirados',500,'lote de março','2026-10-01')];
+const ESTORNO=ev('ExpiracaoEstornada',500,'estorno da #4','2026-10-05',{estorna:4});
+const RESGATE=ev('PontosResgatados',200,'vale-presente','2026-10-20');
+const CARTEIRA_73=[ev('PontosCreditados',300,'compra 8120','2026-05-04'),ev('PontosCreditados',400,'compra 8233','2026-06-18'),ev('PontosResgatados',400,'vale-presente','2026-08-02'),ev('PontosCreditados',200,'compra 8391','2026-09-27')];
+// Cada projeção é um fold sobre o fluxo e guarda até qual versão já processou.
+const PROJECOES={saldo:{inicio:()=>({saldo:0,linhas:[]}),aplicar:(s,e)=>{s.saldo+=delta(e);s.linhas.push(e);}},totais:{inicio:()=>({}),aplicar:(s,e)=>{s[e.tipo]=(s[e.tipo]||0)+e.pontos;}}};
+const projecao=tipo=>({tipo,versao:0,estado:PROJECOES[tipo].inicio()});
+let st;
+function iniciar(stream,eventos,assincrona=false){st={stream,events:eventos.map((e,i)=>({...e,versao:i+1})),async:assincrona,projs:{saldo:projecao('saldo')},log:[],selected:null,race:null,newFrom:eventos.length,logFrom:0};emDia();}
+function processar(p){const e=st.events[p.versao];if(!e)return null;PROJECOES[p.tipo].aplicar(p.estado,e);p.versao=e.versao;return e;}
+function emDia(){for(const p of Object.values(st.projs))while(processar(p));}
+const saldoAte=v=>st.events.slice(0,v).reduce((s,e)=>s+delta(e),0);
+const saldoAtual=()=>saldoAte(st.events.length);
+function registrar(tipo,texto,quem){st.log.push({tipo,texto,quem});}
+function marcar(){st.newFrom=st.events.length;st.logFrom=st.log.length;}
+function proximaData(){const ultimo=st.events.at(-1);const d=new Date((ultimo?ultimo.em:'2026-10-01')+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+3);return d.toISOString().slice(0,10);}
+function anexar(e,{esperada,verificar=true,quem}={}){
+  const atual=st.events.length;
+  if(verificar&&esperada!==undefined&&esperada!==atual){registrar('conflict',`Gravação rejeitada: versão esperada ${esperada}, mas o fluxo já está na ${atual}.`,quem);return null;}
+  const novo={...e,em:e.em||proximaData(),versao:atual+1};
+  st.events.push(novo);
+  registrar('ok',`Evento #${novo.versao} ${novo.tipo} ${signed(delta(novo))} anexado.`,quem);
+  if(!st.async)emDia();
+  return novo;
+}
+function creditar(pontos,detalhe=`compra ${8400+st.events.length}`,em){registrar('cmd',`Comando: creditar ${fmt(pontos)} pontos.`);return anexar(ev('PontosCreditados',pontos,detalhe,em),{esperada:st.events.length});}
+function resgatar(pontos,detalhe='vale-presente',em){const saldo=saldoAtual();registrar('cmd',`Comando: resgatar ${fmt(pontos)}. Saldo calculado pelos eventos: ${fmt(saldo)}.`);if(saldo<pontos){registrar('refused',`Recusado: saldo insuficiente (${fmt(saldo)} < ${fmt(pontos)}). Nenhum evento anexado.`);return null;}return anexar(ev('PontosResgatados',pontos,detalhe,em),{esperada:st.events.length});}
+function expirar(pontos,detalhe='lote vencido',em){const saldo=saldoAtual();registrar('cmd',`Comando: expirar ${fmt(pontos)} pontos.`);if(saldo<pontos){registrar('refused',`Recusado: só há ${fmt(saldo)} pontos para expirar.`);return null;}return anexar(ev('PontosExpirados',pontos,detalhe,em),{esperada:st.events.length});}
+function estornar(em){registrar('cmd','Comando: estornar a última expiração.');const alvo=[...st.events].reverse().find(e=>e.tipo==='PontosExpirados'&&!st.events.some(x=>x.estorna===e.versao));if(!alvo){registrar('refused','Recusado: não há expiração para estornar.');return null;}return anexar(ev('ExpiracaoEstornada',alvo.pontos,`estorno da #${alvo.versao}`,em,{estorna:alvo.versao}),{esperada:st.events.length});}
+function processarProximo(){let algum=false;for(const p of Object.values(st.projs)){const e=processar(p);if(!e)continue;algum=true;registrar('ok',p.tipo==='saldo'?`Projeção processou o evento #${e.versao}: saldo ${fmt(p.estado.saldo)}.`:`Totais processaram o evento #${e.versao}.`);}if(!algum)registrar('info','Projeções em dia: não há evento pendente.');}
+function reentregar(){const v=st.projs.saldo.versao;if(!v){registrar('info','Nenhum evento foi processado ainda.');return;}registrar('info',`A fila entrega de novo o evento #${v}.`);registrar('ok',`A projeção já está na versão ${v}: o repetido é ignorado (idempotência).`);}
+function reconstruir(){for(const k of Object.keys(st.projs))st.projs[k]=projecao(k);registrar('info',`Projeções apagadas. Os ${st.events.length} eventos continuam no fluxo.`);if(!st.async){emDia();registrar('ok',`${st.events.length} eventos reprocessados em ordem: saldo ${fmt(st.projs.saldo.estado.saldo)}.`);}}
+function criarTotais(){if(st.projs.totais){registrar('info','A projeção de totais já existe.');return;}const p=projecao('totais');while(processar(p));st.projs.totais=p;registrar('ok',`Projeção nova: totais por tipo, montada a partir dos ${p.versao} eventos já gravados.`);}
+function corridaLer(pontos){const versao=st.events.length,saldo=saldoAtual();st.race={pontos,versao,saldo};for(const quem of ['A','B'])registrar('cmd',`Lê a versão ${versao}: saldo ${fmt(saldo)}. ${saldo>=pontos?'Aprova':'Recusa'} o resgate de ${fmt(pontos)}.`,quem);}
+function corridaGravar(quem,verificar){const r=st.race;if(r.saldo<r.pontos){registrar('refused','Recusado: saldo insuficiente.',quem);return null;}registrar('cmd',verificar?`Grava esperando a versão ${r.versao}.`:'Grava sem verificar a versão.',quem);return anexar(ev('PontosResgatados',r.pontos,`resgate ${quem}`),{esperada:r.versao,verificar,quem});}
+function corridaReler(){const r=st.race,versao=st.events.length,saldo=saldoAtual();registrar('cmd',`Relê a versão ${versao}: saldo ${fmt(saldo)}.`,'B');if(saldo<r.pontos){registrar('refused',`Recusado: ${fmt(saldo)} < ${fmt(r.pontos)}. Saldo final: ${fmt(saldo)}.`,'B');return null;}return anexar(ev('PontosResgatados',r.pontos,'resgate B'),{esperada:versao,quem:'B'});}
+function alertaNegativo(){const s=saldoAtual();if(s<0)registrar('warn',`Saldo ${fmt(s)}: os dois eventos entraram. É um fato errado, que agora exige compensação.`);}
+function corrida(pontos,verificar){corridaLer(pontos);corridaGravar('A',verificar);if(!corridaGravar('B',verificar)&&verificar&&st.race.saldo>=pontos)corridaReler();alertaNegativo();}
+const CENARIOS=[
+{titulo:'Fatos, não saldo',inicio:()=>iniciar('carteira-42',[]),passos:[
+{texto:'Uma carteira nova. O fluxo de eventos está vazio, e o saldo é 0.'},
+{texto:'Uma compra vira o fato PontosCreditados, anexado ao fim do fluxo na versão 1.',fazer:()=>creditar(1000,'compra 7781','2026-03-15')},
+{texto:'Outra compra, outro fato. Nada foi sobrescrito: o evento #1 continua lá.',fazer:()=>creditar(200,'compra 7802','2026-04-02')},
+{texto:'O comando “resgatar 400” é validado com os fatos: saldo 1.200. Aceito, ele vira o evento #3.',fazer:()=>resgatar(400,'vale-presente','2026-09-12')},
+{texto:'A expiração também é um fato. O saldo, 300, é só a soma dos eventos em ordem.',fazer:()=>expirar(500,'lote de março','2026-10-01')},
+{texto:'Consulta temporal: selecionando o evento #3, vemos o saldo naquele ponto, 800. O histórico explica o 300 ao cliente.',fazer:()=>{st.selected=3;}}]},
+{titulo:'Comando pode ser recusado',inicio:()=>iniciar('carteira-42',ARTIGO),passos:[
+{texto:'A carteira 42 tem 300 pontos, na versão 4.'},
+{texto:'O cliente pede um resgate de 400. A regra é checada com os eventos: 300 < 400. Recusado, e nada entra no fluxo.',fazer:()=>resgatar(400)},
+{texto:'Um resgate de 200 passa na regra e vira o evento #5. Comando é pedido; evento é fato.',fazer:()=>resgatar(200,'vale-presente','2026-10-08')}]},
+{titulo:'Corrigir sem apagar',inicio:()=>iniciar('carteira-42',ARTIGO),passos:[
+{texto:'A expiração #4 foi indevida: o lote de março ainda valia.',fazer:()=>{st.selected=4;}},
+{texto:'Em vez de editar ou apagar o #4, o sistema anexa ExpiracaoEstornada +500. O saldo volta a 800.',fazer:()=>estornar('2026-10-05')},
+{texto:'O evento #4 continua no fluxo. O histórico mostra o erro e a correção, cada um no seu lugar.',fazer:()=>{st.selected=4;}}]},
+{titulo:'A projeção pode atrasar',inicio:()=>iniciar('carteira-42',[...ARTIGO,ESTORNO],true),passos:[
+{texto:'Agora a projeção é atualizada por outro processo, que anota até qual versão já leu. Ela está em dia: versão 5.'},
+{texto:'Um resgate de 200 vira o evento #6. O fluxo já tem o fato, mas a projeção ainda mostra 800: consistência eventual.',fazer:()=>resgatar(200,'vale-presente','2026-10-20')},
+{texto:'O processo da projeção lê o evento #6 e atualiza o saldo para 600.',fazer:()=>processarProximo()},
+{texto:'A fila entrega o #6 de novo. A projeção já está na versão 6 e ignora o repetido: projeção idempotente.',fazer:()=>reentregar()}]},
+{titulo:'Reconstruir e criar projeções',inicio:()=>iniciar('carteira-42',[...ARTIGO,ESTORNO,RESGATE],true),passos:[
+{texto:'Os eventos são a fonte da verdade. A projeção é só uma visão derivada deles.'},
+{texto:'Apagamos a projeção: saldo 0, versão 0. Os 6 eventos continuam no fluxo.',fazer:()=>reconstruir()},
+{texto:'A projeção reprocessa os eventos em ordem: 1.000, 1.200, 800.',fazer:()=>{for(let i=0;i<3;i++)processarProximo();}},
+{texto:'Continua: 300, 800, 600. O mesmo saldo de antes, recalculado do zero.',fazer:()=>{for(let i=0;i<3;i++)processarProximo();}},
+{texto:'Pergunta nova: quanto foi creditado, resgatado, expirado e estornado? Uma projeção nova lê todo o histórico e responde, inclusive sobre o passado.',fazer:()=>criarTotais()}]},
+{titulo:'Dois resgates ao mesmo tempo',inicio:()=>iniciar('carteira-73',CARTEIRA_73),passos:[
+{texto:'Outra carteira: 500 pontos, na versão 4. Dois pedidos de resgate de 400 chegam ao mesmo tempo.'},
+{texto:'As duas requisições leem a versão 4, veem saldo 500 e aprovam.',fazer:()=>corridaLer(400)},
+{texto:'A grava esperando a versão 4. O fluxo está na 4: o evento #5 é anexado.',fazer:()=>corridaGravar('A',true)},
+{texto:'B também espera a versão 4, mas o fluxo já está na 5. A gravação é rejeitada.',fazer:()=>corridaGravar('B',true)},
+{texto:'B relê os eventos: saldo 100. Agora o resgate de 400 é recusado. Saldo final: 100.',fazer:()=>corridaReler()},
+{texto:'E sem a versão esperada? De volta à versão 4, as duas gravações entram e o saldo vai a −300.',fazer:()=>{iniciar('carteira-73',CARTEIRA_73);registrar('info','De volta à versão 4, agora sem verificar a versão.');corridaLer(400);corridaGravar('A',false);corridaGravar('B',false);alertaNegativo();}}]}
+];
+const pres={on:false,c:0,p:0};
+// Volta ao início do cenário e refaz os passos até o atual: o roteiro também é um replay.
+function montar(){const c=CENARIOS[pres.c];c.inicio();c.passos.forEach((passo,i)=>{if(i>pres.p)return;if(i===pres.p)marcar();passo.fazer?.();});render(true);}
+const node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
+function render(animar=false){
+  const total=st.events.length;
+  $('lab-stream').textContent=st.stream;$('lab-version').textContent=total;
+  const lista=$('lab-events');lista.replaceChildren();
+  if(!total)lista.append(node('li','lab-empty','Nenhum evento ainda.'));
+  for(const e of st.events){const novo=e.versao>st.newFrom;const b=node('button','lab-event'+(novo?' lab-fresh':'')+(novo&&animar?' lab-new':''));b.type='button';b.dataset.versao=e.versao;b.setAttribute('aria-pressed',String(st.selected===e.versao));b.append(node('span','lab-v','#'+e.versao),node('span','lab-type',e.tipo),node('span','lab-amt',signed(delta(e))),node('span','lab-meta',`${e.detalhe} · ${data(e.em)}`));const li=node('li');li.append(b);lista.append(li);}
+  const det=$('lab-detail');det.replaceChildren();
+  const sel=st.events.find(e=>e.versao===st.selected);
+  if(sel){const p=node('p');p.append(`Saldo após o evento #${sel.versao} (consulta temporal): `,node('strong',null,fmt(saldoAte(sel.versao))));const dados={pontos:sel.pontos,detalhe:sel.detalhe};if(sel.estorna)dados.estorna=sel.estorna;const pre=node('pre');pre.append(node('code',null,JSON.stringify({stream:st.stream,versao:sel.versao,tipo:sel.tipo,dados,registradoEm:sel.em},null,2)));det.append(p,pre,node('p','lab-note','Eventos não são editados nem apagados. Uma correção entra como evento novo.'));}
+  const proj=st.projs.saldo,atraso=total-proj.versao;
+  $('lab-saldo').textContent=fmt(proj.estado.saldo);$('lab-saldo').classList.toggle('lab-neg',proj.estado.saldo<0);
+  $('lab-status').textContent=atraso?`Atrasada: processou até a versão ${proj.versao} de ${total} · ${atraso} ${atraso===1?'evento pendente':'eventos pendentes'}.`:`Em dia: processou até a versão ${proj.versao} de ${total}.`;
+  $('lab-status').classList.toggle('lab-lag',atraso>0);
+  const extrato=$('lab-extrato');extrato.replaceChildren();
+  if(!proj.estado.linhas.length)extrato.append(node('li','lab-empty','Extrato vazio.'));
+  for(const e of proj.estado.linhas){const li=node('li');li.append(node('span',null,`${data(e.em)} · ${TIPOS[e.tipo].nome} · ${e.detalhe}`),node('span',null,signed(delta(e))));extrato.append(li);}
+  const totais=st.projs.totais;$('lab-totals-box').hidden=!totais;
+  if(totais){$('lab-totals-status').textContent=`Processou até a versão ${totais.versao} de ${total}.`;$('lab-totals-body').replaceChildren(...Object.entries(TIPOS).map(([tipo,info])=>{const tr=node('tr');const th=node('th',null,info.total);th.scope='row';tr.append(th,node('td','number',fmt(totais.estado[tipo]||0)));return tr;}));}
+  for(const r of dialog.querySelectorAll('input[name="lab-mode"]'))r.checked=(r.value==='async')===st.async;
+  $('lab-process').disabled=!Object.values(st.projs).some(p=>p.versao<total);$('lab-totals').disabled=Boolean(totais);
+  const log=$('lab-log');log.replaceChildren(...st.log.map((item,i)=>{const li=node('li',`lab-${item.tipo}${i>=st.logFrom?' lab-latest':''}`);if(item.quem){const who=node('span','lab-who',item.quem);who.title='Requisição '+item.quem;li.append(who);}li.append(item.texto);return li;}).reverse());
+  if(!st.log.length)log.append(node('li','lab-empty','Nenhuma atividade ainda.'));
+  $('lab-live').textContent=st.log.slice(st.logFrom).map(item=>(item.quem?`Requisição ${item.quem}: `:'')+item.texto).join(' ');
+  dialog.classList.toggle('lab-presenting',pres.on);$('lab-pres').hidden=!pres.on;
+  $('lab-present').setAttribute('aria-pressed',String(pres.on));$('lab-present').textContent=pres.on?'Sair da apresentação':'Modo apresentação';
+  if(pres.on){const c=CENARIOS[pres.c],ultimo=pres.p===c.passos.length-1;$('lab-scenario').value=String(pres.c);$('lab-step').textContent=`Cenário ${pres.c+1} de ${CENARIOS.length} · passo ${pres.p+1} de ${c.passos.length}`;$('lab-caption').textContent=c.passos[pres.p].texto;$('lab-prev').disabled=pres.p===0;$('lab-next').textContent=ultimo?'Recomeçar cenário':'Próximo passo';$('lab-next-scenario').hidden=!(ultimo&&pres.c<CENARIOS.length-1);}
+}
+function acao(fn){marcar();fn();render(true);}
+function explorar(){iniciar('carteira-42',ARTIGO);registrar('info','Carteira 42 com os quatro eventos do artigo. Envie um comando.');}
+function avancar(){const c=CENARIOS[pres.c];pres.p=pres.p<c.passos.length-1?pres.p+1:0;montar();}
+function voltar(){if(pres.p>0){pres.p--;montar();}}
+function proximoCenario(){if(pres.c<CENARIOS.length-1){pres.c++;pres.p=0;montar();}}
+function telaCheia(ligar){try{const r=ligar?(document.fullscreenElement?null:dialog.requestFullscreen?.()):(document.fullscreenElement?document.exitFullscreen():null);r?.catch?.(()=>{});}catch{}}
+$('lab-scenario').append(...CENARIOS.map((c,i)=>{const o=node('option',null,`${i+1}. ${c.titulo}`);o.value=String(i);return o;}));
+let iniciado=false;
+$('lab-open').addEventListener('click',()=>{if(!iniciado){explorar();iniciado=true;}document.body.classList.add('lab-lock');dialog.showModal();render();$('lab-title').focus();});
+$('lab-close').addEventListener('click',()=>dialog.close());
+dialog.addEventListener('close',()=>{document.body.classList.remove('lab-lock');telaCheia(false);if(pres.on){pres.on=false;render();}$('lab-open').focus();});
+$('lab-present').addEventListener('click',()=>{pres.on=!pres.on;if(pres.on){pres.p=0;montar();telaCheia(true);$('lab-caption').focus();}else{telaCheia(false);render();}});
+$('lab-reset').addEventListener('click',()=>{if(pres.on){pres.p=0;montar();}else{explorar();render(true);}});
+$('lab-next').addEventListener('click',avancar);$('lab-prev').addEventListener('click',voltar);$('lab-next-scenario').addEventListener('click',proximoCenario);
+$('lab-scenario').addEventListener('change',event=>{pres.c=Number(event.target.value);pres.p=0;montar();});
+$('lab-events').addEventListener('click',event=>{const b=event.target.closest('.lab-event');if(!b)return;const v=Number(b.dataset.versao);st.selected=st.selected===v?null:v;render();});
+for(const b of dialog.querySelectorAll('[data-cmd]'))b.addEventListener('click',()=>acao(()=>{const n=Number($('lab-points').value);({creditar:()=>creditar(n),resgatar:()=>resgatar(n),expirar:()=>expirar(n),estornar:()=>estornar()})[b.dataset.cmd]();}));
+$('lab-race').addEventListener('click',()=>acao(()=>corrida(Number($('lab-points').value),$('lab-verify').checked)));
+for(const r of dialog.querySelectorAll('input[name="lab-mode"]'))r.addEventListener('change',()=>acao(()=>{st.async=r.value==='async';if(st.async)registrar('info','A projeção agora é atualizada por outro processo. Use “Processar próximo evento”.');else{emDia();registrar('info','A projeção volta a ser atualizada na hora e alcança o fluxo.');}}));
+$('lab-process').addEventListener('click',()=>acao(processarProximo));$('lab-redeliver').addEventListener('click',()=>acao(reentregar));$('lab-rebuild').addEventListener('click',()=>acao(reconstruir));$('lab-totals').addEventListener('click',()=>acao(criarTotais));
+dialog.addEventListener('keydown',event=>{if(!pres.on||event.target.closest('select,input'))return;const c=CENARIOS[pres.c],ultimo=pres.p===c.passos.length-1;if(event.key==='ArrowRight'||event.key==='PageDown'){event.preventDefault();if(ultimo&&pres.c<CENARIOS.length-1)proximoCenario();else avancar();}else if(event.key==='ArrowLeft'||event.key==='PageUp'){event.preventDefault();voltar();}else if(event.key==='Home'){event.preventDefault();pres.p=0;montar();}});
+})();
 </script>
 </body></html>
