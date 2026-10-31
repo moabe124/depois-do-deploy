@@ -24,6 +24,8 @@ As rotinas automáticas devem executar apenas de segunda a sexta, no fuso `Ameri
 
 Cada novo artigo deve incluir uma animação didática curta criada com HyperFrames, ligada ao objetivo de estudo. Seguir os controles, a alternativa estática e a acessibilidade definidos em `docs/FORMATO.md`.
 
+Cada novo artigo também deve incluir o modo apresentação em slides (`<template id="apresentacao">`), que é obrigatório. Para cada parte do artigo, primeiro o texto integral (slides `data-texto`, paginados pelo motor) e depois slides de resumo com notas do apresentador. O leitor grava vídeos e estuda pela apresentação, então ela não substitui o texto por tópicos. Detalhes em `docs/FORMATO.md`.
+
 Os níveis iniciante, intermediário e avançado devem alternar dentro de cada tema. Excluir o nível da última edição da categoria e escolher aleatoriamente entre os níveis menos presentes nas últimas seis edições da categoria, dentre os restantes. A edição identifica seu nível e pode oferecer perguntas nas três camadas. Em novidades, o nível descreve a profundidade da análise. Uma edição não diagnostica o nível profissional do leitor.
 
 ## Publicação e credenciais
