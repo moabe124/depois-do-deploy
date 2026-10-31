@@ -195,20 +195,24 @@ async function resgatar(carteiraId, pontos) {
 <h1>Event sourcing</h1>
 <p class="slide-sub">Guarde os fatos, derive o estado.</p>
 <p class="slide-meta">Um exemplo só, do começo ao fim: a carteira de pontos de um app de varejo.</p>
-<aside class="notes">Apresente o objetivo: entender o que é event sourcing, como o estado atual é calculado a partir de eventos, o que são projeções e quando o padrão compensa. Conte que o vídeo inteiro usa um exemplo só: a carteira de pontos.</aside>
+<aside class="notes">Apresente o tema e conte que o vídeo inteiro usa um exemplo só: a carteira de pontos. Explique o formato: cada parte do artigo aparece primeiro como texto completo, para estudar, e depois como resumo.</aside>
 </section>
 <section class="slide">
 <h2>O que vamos ver</h2>
 <ol class="slide-list">
-<li data-frag>O problema do saldo sobrescrito</li>
-<li data-frag>Evento, fluxo e projeção</li>
-<li data-frag>Corrigir sem apagar</li>
-<li data-frag>Quando compensa, e quando não</li>
+<li data-frag>Conceito: o que é event sourcing</li>
+<li data-frag>Problema: o saldo sobrescrito</li>
+<li data-frag>Solução: anexar, corrigir e saber quando compensa</li>
+<li data-frag>Em produção: projeções, concorrência e outros cuidados</li>
+<li data-frag>Desafio</li>
 </ol>
 <aside class="notes">Mostre o roteiro. Avise que as demonstrações usam o laboratório do próprio artigo, que qualquer pessoa pode abrir depois.</aside>
 </section>
+<section class="slide" data-texto=".hero" data-titulo="Objetivo do estudo"><aside class="notes">Leia o objetivo. É a pergunta que o vídeo responde.</aside></section>
+
+<section class="slide" data-texto="#concept"></section>
 <section class="slide">
-<p class="slide-eyebrow">Conceito</p>
+<p class="slide-eyebrow">01 / conceito · resumo</p>
 <h2>CRUD guarda o resultado</h2>
 <div class="slide-cols">
 <table class="slide-table"><caption>Tabela carteiras</caption><thead><tr><th>cliente</th><th class="num">saldo</th></tr></thead><tbody><tr><td>42</td><td class="num">300</td></tr></tbody></table>
@@ -220,7 +224,7 @@ WHERE cliente = 42;</code></pre>
 <aside class="notes">No modelo mais comum, a tabela guarda o estado atual: o último valor de cada campo. Quando algo muda, um UPDATE troca o valor antigo pelo novo. É simples e rápido na maioria dos casos. O custo: o valor anterior e o motivo da mudança somem.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Conceito</p>
+<p class="slide-eyebrow">01 / conceito · resumo</p>
 <h2>Event sourcing guarda o que aconteceu</h2>
 <ul class="slide-list">
 <li data-frag><strong>Evento:</strong> um fato que já aconteceu, como <code>PontosResgatados</code>.</li>
@@ -230,7 +234,7 @@ WHERE cliente = 42;</code></pre>
 <aside class="notes">Event sourcing muda o que é guardado. Cada mudança vira um evento, com o nome no passado, porque já aconteceu. Os eventos vão para um armazenamento em que só se acrescenta no fim. O saldo deixa de ser gravado: ele passa a ser calculado.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Analogia</p>
+<p class="slide-eyebrow">01 / conceito · resumo</p>
 <h2>Você já usa essa ideia</h2>
 <div class="slide-cards">
 <div class="slide-card" data-frag><h3>Extrato bancário</h3><p>Guarda os lançamentos. O saldo é a soma deles.</p></div>
@@ -239,18 +243,20 @@ WHERE cliente = 42;</code></pre>
 <p class="slide-key" data-frag>O saldo é consequência. O evento é o fato.</p>
 <aside class="notes">Use as duas analogias. No extrato, o banco guarda os lançamentos e o saldo sai da soma. No Git, o histórico de commits é o registro, e a cópia de trabalho é o estado. Feche com a frase do slide.</aside>
 </section>
+
+<section class="slide" data-texto="#problem"></section>
 <section class="slide">
-<p class="slide-eyebrow">Problema</p>
+<p class="slide-eyebrow">02 / problema · resumo</p>
 <h2>“Eu tinha 1.200 pontos. Cadê?”</h2>
 <ul class="slide-list">
 <li data-frag>Compra, resgate e expiração fazem <code>UPDATE</code> na coluna <code>saldo</code>.</li>
 <li data-frag>O suporte consulta o banco e encontra só o número 300.</li>
 <li data-frag>A tabela de histórico paralela não recebe as expirações: <strong>duas versões da verdade</strong>.</li>
 </ul>
-<aside class="notes">Conte o chamado: o cliente tinha 1.200 pontos e agora tem 300. O suporte só vê o 300. A equipe até criou uma tabela de histórico, mas o job de expiração, escrito depois, não grava nela. Resultado: duas fontes que discordam.</aside>
+<aside class="notes">Retome o chamado: o cliente tinha 1.200 pontos e agora tem 300. O suporte só vê o 300. A tabela de histórico não recebe as expirações, então existem duas fontes que discordam.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Problema</p>
+<p class="slide-eyebrow">02 / problema · resumo</p>
 <h2>O que o negócio precisa</h2>
 <ol class="slide-list">
 <li data-frag>Explicar qualquer saldo.</li>
@@ -259,8 +265,10 @@ WHERE cliente = 42;</code></pre>
 </ol>
 <aside class="notes">Esses três requisitos guiam a solução. Diga que vamos voltar a cada um deles.</aside>
 </section>
+
+<section class="slide" data-texto="#solution" data-parte="0"></section>
 <section class="slide">
-<p class="slide-eyebrow">Solução</p>
+<p class="slide-eyebrow">03 / solução · resumo</p>
 <h2>Anexar o fato, calcular o saldo</h2>
 <table class="slide-table"><caption>Fluxo de eventos da carteira 42</caption><thead><tr><th>#</th><th>Evento</th><th class="num">Pontos</th><th>Detalhe</th></tr></thead><tbody>
 <tr data-frag><td>1</td><td><code>PontosCreditados</code></td><td class="num">+1.000</td><td>compra 7781</td></tr>
@@ -269,16 +277,16 @@ WHERE cliente = 42;</code></pre>
 <tr data-frag><td>4</td><td><code>PontosExpirados</code></td><td class="num">−500</td><td>lote de março</td></tr>
 </tbody></table>
 <p class="slide-key" data-frag>1.000 + 200 − 400 − 500 = 300. O histórico é o dado.</p>
-<aside class="notes">Cada carteira tem seu fluxo de eventos, em ordem. Revele os eventos um a um e some em voz alta. Agora o suporte responde com fatos: 400 pontos viraram vale-presente e 500 expiraram. Não existe uma segunda tabela para alguém esquecer.</aside>
+<aside class="notes">Revele os eventos um a um e some em voz alta. O suporte agora responde com fatos: 400 pontos viraram vale-presente e 500 expiraram. Não existe uma segunda tabela para alguém esquecer.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Animação</p>
+<p class="slide-eyebrow">03 / solução · animação</p>
 <h2>Do número sobrescrito ao histórico</h2>
 <video class="slide-video" preload="none" playsinline aria-label="Animação: do número sobrescrito ao histórico de eventos" poster="../../assets/event-sourcing-saldo-poster.png" width="960" height="640"><source src="../../assets/event-sourcing-saldo.mp4" type="video/mp4"></video>
 <aside class="notes">Tecle P (ou clique no vídeo) para reproduzir e pausar; são 24 segundos. A animação mostra três momentos: a tabela que sobrescreve, os eventos que somam e a correção como fato novo.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Solução</p>
+<p class="slide-eyebrow">03 / solução · resumo</p>
 <h2>Comando, evento e projeção</h2>
 <div class="slide-cards slide-cards-3">
 <div class="slide-card" data-frag><h3>Comando</h3><p>Um pedido, que pode ser recusado.</p><p class="slide-mono">“resgatar 400”</p></div>
@@ -288,18 +296,20 @@ WHERE cliente = 42;</code></pre>
 <aside class="notes">Separe os três nomes. Comando é pedido e pode ser recusado: há pontos suficientes? Evento é fato e já aconteceu. Projeção é uma visão derivada dos eventos, como a tabela de saldos ou o extrato da tela.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Demonstração</p>
+<p class="slide-eyebrow">03 / solução · demonstração</p>
 <h2>O fluxo cresce, o saldo é calculado</h2>
 <div class="slide-demos">
 <button type="button" class="slide-demo" data-lab-cenario="1"><span>Cenário 1</span>Fatos, não saldo</button>
 <button type="button" class="slide-demo" data-lab-cenario="2"><span>Cenário 2</span>Comando pode ser recusado</button>
 </div>
-<p class="slide-hint">Abre o laboratório no modo apresentação. Avance com as setas; feche para voltar aos slides.</p>
-<aside class="notes">Clique no cenário 1 e avance com as setas: a carteira começa vazia e o saldo vai sendo calculado; no fim, selecione o evento 3 para mostrar o saldo naquele ponto. No cenário 2, o resgate de 400 é recusado e nada entra no fluxo. Feche o laboratório (Esc) para voltar aos slides.</aside>
+<p class="slide-hint">Abre o laboratório no roteiro guiado. Avance com as setas; feche para voltar aos slides.</p>
+<aside class="notes">Clique no cenário 1 e avance com as setas: a carteira começa vazia e o saldo vai sendo calculado; no fim, o evento 3 mostra o saldo naquele ponto. No cenário 2, o resgate de 400 é recusado e nada entra no fluxo. Feche o laboratório (Esc) para voltar aos slides.</aside>
 </section>
+
+<section class="slide" data-texto="#solution" data-parte="1"></section>
 <section class="slide">
 <button type="button" class="slide-demo-inline" data-lab-cenario="3"><span>Demonstração</span>Cenário 3</button>
-<p class="slide-eyebrow">Solução</p>
+<p class="slide-eyebrow">03 / solução · resumo</p>
 <h2>Errou? Registre a correção</h2>
 <table class="slide-table"><thead><tr><th>#</th><th>Evento</th><th class="num">Pontos</th><th>Detalhe</th></tr></thead><tbody>
 <tr class="slide-muted"><td>3</td><td><code>PontosResgatados</code></td><td class="num">−400</td><td>vale-presente</td></tr>
@@ -308,11 +318,13 @@ WHERE cliente = 42;</code></pre>
 </tbody></table>
 <p data-frag>Saldo: 300 → <strong>800</strong>. O evento 4 continua no histórico.</p>
 <p class="slide-key" data-frag>O passado não se edita. A correção é um fato novo.</p>
-<aside class="notes">A expiração foi indevida: o lote de março ainda valia. Num CRUD, alguém corrigiria o número na tabela. Aqui, o sistema anexa um evento compensatório. O evento 4 continua no histórico, e a auditoria mostra o erro e a correção. Se quiser, mostre o cenário 3 no laboratório.</aside>
+<aside class="notes">Num CRUD, alguém corrigiria o número na tabela. Aqui, o sistema anexa um evento compensatório. O evento 4 continua no histórico, e a auditoria mostra o erro e a correção. Se quiser, mostre o cenário 3 no laboratório.</aside>
 </section>
+
+<section class="slide" data-texto="#solution" data-parte="2"></section>
 <section class="slide">
 <button type="button" class="slide-demo-inline" data-lab-cenario="5"><span>Demonstração</span>Cenário 5</button>
-<p class="slide-eyebrow">Ganhos</p>
+<p class="slide-eyebrow">03 / solução · resumo</p>
 <h2>O que se ganha</h2>
 <ul class="slide-list">
 <li data-frag><strong>Reconstruir</strong> qualquer projeção do zero.</li>
@@ -322,7 +334,7 @@ WHERE cliente = 42;</code></pre>
 <aside class="notes">Como os eventos guardam o que aconteceu, dá para reconstruir projeções, consultar o saldo em qualquer ponto e responder a perguntas que ninguém previu. O cenário 5 mostra a projeção apagada, reconstruída e uma projeção nova de totais.</aside>
 </section>
 <section class="slide">
-<p class="slide-eyebrow">Custos</p>
+<p class="slide-eyebrow">03 / solução · resumo</p>
 <h2>Quando compensa</h2>
 <table class="slide-table"><tbody>
 <tr data-frag><th>Costuma compensar</th><td>Saldos, pagamentos, pedidos com várias etapas; perguntas novas sobre o passado</td></tr>
@@ -332,20 +344,38 @@ WHERE cliente = 42;</code></pre>
 <p class="slide-key" data-frag>Não precisa ser tudo ou nada: só a carteira, e o cadastro em CRUD.</p>
 <aside class="notes">Seja honesto sobre o custo. A Microsoft descreve event sourcing como um padrão complexo, caro de adotar e de abandonar, e lembra que, na maioria dos sistemas, o armazenamento tradicional basta. Dá para usar o padrão em uma parte só do sistema.</aside>
 </section>
+
+<section class="slide" data-texto="#depth" data-parte="0"></section>
+<section class="slide">
+<p class="slide-eyebrow">04 / aprofundamento · resumo</p>
+<h2>Event sourcing não é mensageria</h2>
+<div class="slide-cards">
+<div class="slide-card" data-frag><h3>Notificação de evento</h3><p>Avisa outros sistemas de que algo mudou.</p></div>
+<div class="slide-card" data-frag><h3>Transferência de estado</h3><p>O evento leva os dados para o consumidor guardar uma cópia.</p></div>
+<div class="slide-card" data-frag><h3>Event sourcing</h3><p>O log de eventos é a fonte da verdade do estado.</p></div>
+<div class="slide-card" data-frag><h3>CQRS</h3><p>Modelos separados para escrita e leitura.</p></div>
+</div>
+<p class="slide-key" data-frag>Kafka distribui eventos; não substitui o armazenamento de eventos.</p>
+<aside class="notes">“Orientado a eventos” virou um termo amplo; Fowler separa quatro padrões. Usar Kafka não torna um sistema event sourced: brokers em geral não leem o fluxo de uma entidade nem fazem concorrência otimista. CQRS aparece junto com frequência, mas é independente.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="1"></section>
 <section class="slide">
 <button type="button" class="slide-demo-inline" data-lab-cenario="4"><span>Demonstração</span>Cenário 4</button>
-<p class="slide-eyebrow">Em produção</p>
+<p class="slide-eyebrow">04 / aprofundamento · resumo</p>
 <h2>A projeção pode atrasar</h2>
 <ul class="slide-list">
 <li data-frag>O evento é gravado; outro processo atualiza a projeção depois: <strong>consistência eventual</strong>.</li>
 <li data-frag>A regra de negócio decide com os eventos, não com a projeção.</li>
 <li data-frag>A entrega é “pelo menos uma vez”: a projeção precisa ser <strong>idempotente</strong>.</li>
 </ul>
-<aside class="notes">Em muitas implementações, a projeção é atualizada por outro processo, e a tela pode mostrar o saldo antigo por um instante. A decisão de negócio usa os eventos. Como a fila pode entregar o mesmo evento duas vezes, a projeção guarda até qual versão já processou e ignora repetidos. Cenário 4.</aside>
+<aside class="notes">A tela pode mostrar o saldo antigo por um instante. A decisão de negócio usa os eventos. Como a fila pode entregar o mesmo evento duas vezes, a projeção guarda até qual versão já processou e ignora repetidos. Cenário 4.</aside>
 </section>
+
+<section class="slide" data-texto="#depth" data-parte="2"></section>
 <section class="slide">
 <button type="button" class="slide-demo-inline" data-lab-cenario="6"><span>Demonstração</span>Cenário 6</button>
-<p class="slide-eyebrow">Em produção</p>
+<p class="slide-eyebrow">04 / aprofundamento · resumo</p>
 <h2>Dois resgates ao mesmo tempo</h2>
 <div class="slide-race">
 <div><h3>Requisição A</h3><p data-frag="1">Lê a versão 4 · saldo 500</p><p data-frag="3">Grava esperando a 4 → <strong>evento #5</strong></p></div>
@@ -354,32 +384,26 @@ WHERE cliente = 42;</code></pre>
 <p class="slide-key" data-frag="6">Concorrência otimista: só grava se o fluxo ainda está na versão lida.</p>
 <aside class="notes">Duas requisições leem a versão 4, com saldo 500, e as duas aprovam um resgate de 400. A primeira grava. A segunda esperava a versão 4, mas o fluxo já está na 5: rejeitada. Ela relê, vê 100 e recusa. Sem essa verificação, o saldo iria a menos 300. Cenário 6.</aside>
 </section>
+
+<section class="slide" data-texto="#depth" data-parte="3"></section>
 <section class="slide">
-<p class="slide-eyebrow">Em produção</p>
+<p class="slide-eyebrow">04 / aprofundamento · resumo</p>
 <h2>Outros cuidados</h2>
 <div class="slide-cards">
 <div class="slide-card" data-frag><h3>Snapshots</h3><p>Guardam o estado a cada N eventos. Os eventos continuam sendo a fonte da verdade.</p></div>
 <div class="slide-card" data-frag><h3>Versionamento</h3><p>Eventos ficam para sempre: leitores tolerantes e <em>upcasting</em>.</p></div>
+<div class="slide-card" data-frag><h3>Replay sem efeitos</h3><p>Reprocessar não pode reenviar e-mails nem repetir cobranças.</p></div>
 <div class="slide-card" data-frag><h3>Dados pessoais</h3><p>Fora dos eventos, ou criptografados com chave por pessoa.</p></div>
-<div class="slide-card" data-frag><h3>Não é mensageria</h3><p>Kafka distribui eventos, mas não substitui o armazenamento de eventos.</p></div>
 </div>
-<aside class="notes">Passe rápido: são temas para outro vídeo. Snapshots aceleram fluxos longos. Eventos antigos ficam para sempre, então o formato evolui com cuidado. Dados pessoais pedem planejamento desde o início. E usar Kafka não torna um sistema event sourced.</aside>
+<aside class="notes">Snapshots aceleram fluxos longos. Eventos antigos ficam para sempre, então o formato evolui com cuidado. No replay, chamadas externas ficam atrás de um gateway desligado. Dados pessoais pedem planejamento desde o início.</aside>
 </section>
-<section class="slide">
-<p class="slide-eyebrow">Desafio</p>
-<h2>Um resgate de 400 foi lançado por engano. Como corrigir?</h2>
-<ol class="slide-options">
-<li><b>A</b>Editar o evento de resgate para 0 pontos.</li>
-<li><b>B</b>Anexar um evento que devolve os 400 pontos.</li>
-<li><b>C</b>Apagar o evento e recalcular o saldo.</li>
-</ol>
-<p class="slide-key" data-frag>Resposta: B. O erro fica no histórico; o estorno é um fato novo.</p>
-<aside class="notes">Leia a pergunta, dê alguns segundos e revele a resposta. Convide quem assiste a responder às outras duas perguntas no artigo.</aside>
-</section>
+
+<section class="slide" data-texto="#challenge"><aside class="notes">Leia a pergunta e as alternativas, dê alguns segundos e avance para revelar a resposta.</aside></section>
+<section class="slide" data-texto=".sources" data-titulo="Fontes para voltar depois" data-rotulo="06 / fontes"><aside class="notes">Indique as fontes para quem quiser se aprofundar: Microsoft Azure Architecture Center, Martin Fowler e a documentação do KurrentDB.</aside></section>
 <section class="slide" data-layout="statement">
 <p class="slide-quote">Tabelas contam onde você está. Eventos contam como você chegou até aí.</p>
 <p class="slide-meta">Artigo completo, laboratório e fontes no Depois do Deploy · System Design.</p>
-<aside class="notes">Feche com a frase. Indique o artigo, o laboratório e as fontes: Microsoft Azure Architecture Center, Martin Fowler e a documentação do KurrentDB.</aside>
+<aside class="notes">Feche com a frase e convide a abrir o artigo e o laboratório.</aside>
 </section>
 </template>
 <footer>Depois do Deploy · Uma ideia por vez, com as garantias à vista.</footer>
