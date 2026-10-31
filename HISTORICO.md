@@ -6,6 +6,18 @@
 
 ## System Design
 
+### system-design-003 — Event sourcing: guarde os fatos, derive o estado
+
+- Data: 2026-10-30
+- Nível: iniciante
+- Estado: apresentado
+- Identidade do objetivo: `event-sourcing-fatos-estado-projecoes`
+- Objetivo: Entender o que é event sourcing: guardar cada mudança como um evento imutável, calcular o estado atual a partir desses eventos e criar projeções para leitura, reconhecendo quando o padrão compensa e quando é custo desnecessário.
+- Conceitos: event sourcing, evento, armazenamento de eventos, append-only, fluxo de eventos, comando, projeção, evento compensatório, consistência eventual, concorrência otimista, snapshot, versionamento de eventos, CQRS
+- Edição: [HTML](content/system-design/003-event-sourcing.html)
+
+Conceito: uma carteira de pontos em CRUD sobrescreve o saldo e não explica para onde foram 900 pontos; uma tabela de histórico paralela diverge do saldo. Apresenta event sourcing como anexar fatos imutáveis ao fluxo de cada carteira e derivar o saldo aplicando-os em ordem; separa comando, evento e projeção; corrige uma expiração indevida com evento compensatório; e compara quando o padrão compensa e quando o CRUD basta. Aprofundamentos opcionais tratam a diferença para mensageria e CQRS, projeções com atraso e idempotentes, concorrência otimista com versão esperada, snapshots, versionamento de eventos, replay com sistemas externos e dados pessoais.
+
 ### system-design-002 — Back-of-the-envelope: estime antes de decidir
 
 - Data: 2026-10-09
