@@ -28,6 +28,8 @@ Cada novo artigo também deve incluir o modo apresentação em slides (`<templat
 
 Os níveis iniciante, intermediário e avançado devem alternar dentro de cada tema. Excluir o nível da última edição da categoria e escolher aleatoriamente entre os níveis menos presentes nas últimas seis edições da categoria, dentre os restantes. A edição identifica seu nível e pode oferecer perguntas nas três camadas. Em novidades, o nível descreve a profundidade da análise. Uma edição não diagnostica o nível profissional do leitor.
 
+Todo artigo novo termina com uma seção de hashtags para divulgação: de 3 a 15 para a descrição do vídeo no YouTube e de 3 a 5 para o post no LinkedIn, registradas em `hashtags` no catálogo e idênticas às do HTML. Regras de escolha em `docs/FORMATO.md`.
+
 ## Publicação e credenciais
 
 O repositório é público. Não incluir chaves, tokens, dados pessoais privados, exemplos com credenciais nem logs de autenticação. Nunca copiar o diretório de configuração do Firebase ou GitHub para o projeto.
