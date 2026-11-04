@@ -13,7 +13,8 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 5. **Aprofundamento:** detalhes recolhíveis, separados por base, aplicação e profundidade. Explicar garantias, concorrência, operação e limites.
 6. **Desafio:** pergunta curta, feedback e resposta inicialmente escondida. Sem pontuação que finja medir competência profissional.
 7. **Fecho:** uma frase memorável, seguida de fontes técnicas primárias para consulta posterior.
-8. **Apresentação (obrigatória):** o artigo inteiro em slides, com o texto integral de cada seção seguido de slides de resumo. Ver [Modo apresentação](#modo-apresentação-obrigatório).
+8. **Hashtags de divulgação (obrigatório):** ao final do artigo, depois das fontes, hashtags para a descrição do vídeo no YouTube e para o post no LinkedIn. Ver [Hashtags de divulgação](#hashtags-de-divulgação-obrigatório).
+9. **Apresentação (obrigatória):** o artigo inteiro em slides, com o texto integral de cada seção seguido de slides de resumo. Ver [Modo apresentação](#modo-apresentação-obrigatório).
 
 ## Leitura
 
@@ -73,6 +74,23 @@ Cada novo artigo inclui um modo apresentação em slides, aberto pelo botão **A
   - testar notas, vídeo, demonstrações e tema claro.
 
 Referência: [event sourcing](../content/system-design/003-event-sourcing.html) e o motor em `site/deck.js`.
+
+## Hashtags de divulgação (obrigatório)
+
+O leitor grava vídeos para o YouTube e publica no LinkedIn sobre cada artigo. Por isso todo artigo termina com uma seção de hashtags prontas para colar, uma por rede. `npm run check` recusa edições a partir de 04/11/2026 sem elas.
+
+- **Posição:** `<section class="share" id="hashtags">` logo depois da seção de fontes e antes do rodapé. Não entra nos slides nem conta como texto do artigo.
+- **YouTube (descrição do vídeo):** de 3 a 15 hashtags; o YouTube ignora todas se passar de 15. As três primeiras aparecem acima do título, então devem ser as mais descritivas do assunto. Sugestão: 6 a 8.
+- **LinkedIn (post):** de 3 a 5, no fim do texto do post. Menos hashtags e mais específicas alcançam melhor que uma lista longa.
+- **Escolha:**
+  - Começar pelo conceito central (`#EventSourcing`), depois a categoria (`#SystemDesign`, `#JavaJVM`…) e o público (`#ArquiteturaDeSoftware`, `#Backend`).
+  - Fechar com a marca `#DepoisDoDeploy`.
+  - Sem espaços, sem repetir e em CamelCase, para leitores de tela lerem as palavras separadas. Sem acentos, para funcionar igual nas duas redes.
+  - Só termos que o artigo realmente cobre. Nada de hashtag de tendência sem relação com o conteúdo.
+- **Catálogo:** a lista fica em `hashtags: { youtube: [], linkedin: [] }` na edição, em `content/catalog.json`. O HTML mostra as mesmas hashtags em `<p class="share-tags" id="tags-youtube">` e `id="tags-linkedin"`, separadas por um espaço, e o check confere que são idênticas.
+- **Cópia:** botão **Copiar hashtags**, escondido por padrão e mostrado por JavaScript. Sem JavaScript, o texto continua visível para copiar à mão. A mensagem de resultado usa `role="status"`. O botão não aparece na impressão.
+
+Referência: [event sourcing](../content/system-design/003-event-sourcing.html).
 
 ## Laboratório interativo (opcional)
 

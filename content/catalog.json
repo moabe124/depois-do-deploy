@@ -483,6 +483,10 @@
             "correct": "expected-version"
           }
         ]
+      },
+      "hashtags": {
+        "youtube": ["#EventSourcing", "#SystemDesign", "#ArquiteturaDeSoftware", "#CQRS", "#Backend", "#EngenhariaDeSoftware", "#Programacao", "#DepoisDoDeploy"],
+        "linkedin": ["#EventSourcing", "#SystemDesign", "#ArquiteturaDeSoftware", "#CQRS", "#DepoisDoDeploy"]
       }
     }
   ]
