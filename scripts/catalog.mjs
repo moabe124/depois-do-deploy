@@ -4,6 +4,9 @@ import { fileURLToPath } from 'node:url';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Edições a partir desta data precisam do modo apresentação em slides (docs/FORMATO.md).
 const PRESENTATION_SINCE = '2026-10-31';
+// Edições a partir desta data precisam das hashtags de divulgação (docs/FORMATO.md).
+const HASHTAGS_SINCE = '2026-11-04';
+const HASHTAG = /^#[\p{L}\p{N}_]+$/u;
 export const readCatalog =() => JSON.parse(readFileSync(path.join(root, 'content/catalog.json'), 'utf8'));
 export function validate(catalog = readCatalog()) {
   const topics = new Set(), ids = new Set(), focuses = new Set(), urls = new Set(), sources = new Set();
@@ -47,6 +50,16 @@ export function validate(catalog = readCatalog()) {
     if(lesson.date>=PRESENTATION_SINCE){
       assert(html.includes('<template id="apresentacao"'), `Modo apresentação ausente: ${lesson.id}`);
       assert(html.includes('data-texto="'), `Apresentação sem slides de texto integral: ${lesson.id}`);
+    }
+    if(lesson.date>=HASHTAGS_SINCE||lesson.hashtags){
+      const limits={youtube:[3,15],linkedin:[3,5]};
+      assert(lesson.hashtags && typeof lesson.hashtags==='object', `Hashtags ausentes: ${lesson.id}`);
+      for(const [network,[min,max]] of Object.entries(limits)){
+        const tags=lesson.hashtags[network];
+        assert(Array.isArray(tags) && tags.length>=min && tags.length<=max, `Hashtags de ${network} devem ter de ${min} a ${max}: ${lesson.id}`);
+        assert(tags.every(tag=>HASHTAG.test(tag)) && new Set(tags.map(tag=>tag.toLowerCase())).size===tags.length, `Hashtag inválida ou repetida em ${network}: ${lesson.id}`);
+        assert(html.includes(`id="tags-${network}">${tags.join(' ')}</p>`), `Hashtags de ${network} do HTML diferem do catálogo: ${lesson.id}`);
+      }
     }
     for(const [,id] of html.matchAll(/data-texto="#([^"]+)"/g))assert(html.includes(`id="${id}"`), `Slide de texto aponta para seção inexistente: ${lesson.id}/#${id}`);
     assert(/<html lang="pt-BR">/.test(html) && /<title>.+<\/title>/.test(html), `Metadados ausentes: ${lesson.id}`);
