@@ -2,7 +2,9 @@ import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const readCatalog = () => JSON.parse(readFileSync(path.join(root, 'content/catalog.json'), 'utf8'));
+// Edições a partir desta data precisam do modo apresentação em slides (docs/FORMATO.md).
+const PRESENTATION_SINCE = '2026-10-31';
+export const readCatalog =() => JSON.parse(readFileSync(path.join(root, 'content/catalog.json'), 'utf8'));
 export function validate(catalog = readCatalog()) {
   const topics = new Set(), ids = new Set(), focuses = new Set(), urls = new Set(), sources = new Set();
   const assert = (ok, message) => { if (!ok) throw new Error(message); };
@@ -42,6 +44,11 @@ export function validate(catalog = readCatalog()) {
         questions.add(q.id);
       }
     }
+    if(lesson.date>=PRESENTATION_SINCE){
+      assert(html.includes('<template id="apresentacao"'), `Modo apresentação ausente: ${lesson.id}`);
+      assert(html.includes('data-texto="'), `Apresentação sem slides de texto integral: ${lesson.id}`);
+    }
+    for(const [,id] of html.matchAll(/data-texto="#([^"]+)"/g))assert(html.includes(`id="${id}"`), `Slide de texto aponta para seção inexistente: ${lesson.id}/#${id}`);
     assert(/<html lang="pt-BR">/.test(html) && /<title>.+<\/title>/.test(html), `Metadados ausentes: ${lesson.id}`);
     assert(!/sk_live_|BEGIN PRIVATE KEY|ghp_[A-Za-z0-9]{20}/.test(html), `Possível credencial no HTML: ${lesson.id}`);
     ids.add(lesson.id); focuses.add(`${lesson.topic}/${lesson.focusKey}`); urls.add(lesson.url); sources.add(lesson.source);

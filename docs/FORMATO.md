@@ -13,6 +13,7 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 5. **Aprofundamento:** detalhes recolhíveis, separados por base, aplicação e profundidade. Explicar garantias, concorrência, operação e limites.
 6. **Desafio:** pergunta curta, feedback e resposta inicialmente escondida. Sem pontuação que finja medir competência profissional.
 7. **Fecho:** uma frase memorável, seguida de fontes técnicas primárias para consulta posterior.
+8. **Apresentação (obrigatória):** o artigo inteiro em slides, com o texto integral de cada seção seguido de slides de resumo. Ver [Modo apresentação](#modo-apresentação-obrigatório).
 
 ## Leitura
 
@@ -43,6 +44,46 @@ Cada novo artigo inclui uma animação curta criada com **HyperFrames**, como a 
 - **Verificação:** validar a composição com HyperFrames, inspecionar a mídia renderizada e conferir integração no build e na publicação. O build do site não substitui a validação da animação.
 
 Referência de composição: [Café idempotente](../motion/cafe-idempotente/README.md). Os controles atuais do artigo servem de referência para a experiência de reprodução.
+
+## Modo apresentação (obrigatório)
+
+Cada novo artigo inclui um modo apresentação em slides, aberto pelo botão **Apresentar** no topo da edição. O leitor grava vídeos sobre os artigos e também estuda pela apresentação. Por isso ela traz o **texto integral** do artigo, não só um resumo. `npm run check` recusa edições a partir de 31/10/2026 sem esse modo.
+
+- **Declaração:** os slides ficam em `<template id="apresentacao" data-tema="Tema · assunto">` no HTML da edição. O build injeta `site/deck.js` e `site/deck.css` só quando o template existe. Sem JavaScript, o artigo continua completo.
+- **Ordem:**
+  - Abrir com um slide de título e um roteiro.
+  - Para cada parte do artigo, **primeiro o texto integral, depois um ou mais slides de resumo**.
+  - As partes são: objetivo, conceito, problema, cada subseção da solução, cada bloco do aprofundamento, desafio e fontes.
+  - Fechar com a frase memorável.
+- **Texto integral:** `<section class="slide" data-texto="#id-da-seção"></section>`.
+  - O motor copia os blocos da seção e pagina em quantos slides forem necessários, sem transbordar.
+  - `data-parte="n"` escolhe a n-ésima subseção (`h3` ou `details`). `data-titulo` e `data-rotulo` trocam o título e o sobretítulo.
+  - Um título no topo da página vira o título do slide. Listas longas continuam no slide seguinte.
+  - Figuras, laboratório e controles ficam de fora; marcadores de citação como [1] também, porque as fontes aparecem num slide próprio.
+  - Cada pergunta do desafio vira um slide com as alternativas e a resposta revelada no avanço.
+- **Resumo:** slides escritos à mão, com poucas palavras, conceitos em destaque e itens revelados um a um com `data-frag` (ou `data-frag="n"` para impor a ordem). Cada slide de resumo traz `<aside class="notes">` com uma sugestão do que falar, visível com a tecla N.
+- **Animação e demonstrações:** a animação HyperFrames entra como slide e toca com P ou com um clique, sem a barra nativa do player. Quando houver laboratório, botões `data-lab-cenario="n"` abrem o cenário por cima dos slides.
+- **Gravação:** nenhuma instrução visível no slide; dicas ficam nas notas. Os controles somem com o mouse parado. Teclas:
+  - ← → e PageUp/PageDown, compatíveis com passador de slides;
+  - Home e End;
+  - N mostra as notas, B ativa a tela preta, F alterna a tela cheia, P toca o vídeo e Esc sai.
+- **Verificação:**
+  - percorrer todos os slides em 1920×1080, sem transbordo;
+  - conferir que todo parágrafo, item de lista, pergunta e fonte do artigo aparece nos slides de texto;
+  - testar notas, vídeo, demonstrações e tema claro.
+
+Referência: [event sourcing](../content/system-design/003-event-sourcing.html) e o motor em `site/deck.js`.
+
+## Laboratório interativo (opcional)
+
+Quando o mecanismo estudado puder ser manipulado, a edição pode incluir um laboratório: uma simulação didática no próprio HTML, em `<dialog>` nativo e sem dependências externas.
+
+- **Modo livre:** o leitor explora o mecanismo à vontade.
+- **Roteiro guiado:** cenários numerados com "próximo passo", "passo anterior" e "recomeçar cenário", controlados pelo teclado ou passador.
+- **Dados:** fictícios e determinísticos, identificados como simulação.
+- **Sem JavaScript:** o laboratório não aparece, e o artigo continua completo.
+
+Referência: o laboratório do event store na mesma edição de event sourcing.
 
 ## Novidade e encadeamento
 
