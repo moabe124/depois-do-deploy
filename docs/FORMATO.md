@@ -14,7 +14,7 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 6. **Desafio:** pergunta curta, feedback e resposta inicialmente escondida. Sem pontuação que finja medir competência profissional.
 7. **Fecho:** uma frase memorável, seguida de fontes técnicas primárias para consulta posterior.
 8. **Hashtags de divulgação (obrigatório):** ao final do artigo, depois das fontes, hashtags para a descrição do vídeo no YouTube e para o post no LinkedIn. Ver [Hashtags de divulgação](#hashtags-de-divulgação-obrigatório).
-9. **Apresentação (obrigatória):** o artigo inteiro em slides, com o texto integral de cada seção seguido de slides de resumo. Ver [Modo apresentação](#modo-apresentação-obrigatório).
+9. **Apresentação (obrigatória):** o artigo inteiro em slides: o texto integral de cada parte e, no fim dela, um slide de revisão só com cards. Ver [Modo apresentação](#modo-apresentação-obrigatório).
 
 ## Leitura
 
@@ -53,8 +53,9 @@ Cada novo artigo inclui um modo apresentação em slides, aberto pelo botão **A
 - **Declaração:** os slides ficam em `<template id="apresentacao" data-tema="Tema · assunto">` no HTML da edição. O build injeta `site/deck.js` e `site/deck.css` só quando o template existe. Sem JavaScript, o artigo continua completo.
 - **Ordem:**
   - Abrir com um slide de título e um roteiro.
-  - Para cada parte do artigo, **primeiro o texto integral, depois um ou mais slides de resumo**.
-  - As partes são: objetivo, conceito, problema, cada subseção da solução, cada bloco do aprofundamento, desafio e fontes.
+  - Para cada parte do artigo, **primeiro o texto integral; no fim, um único slide de revisão em cards**.
+  - As partes são: objetivo, conceito, problema, cada subseção da solução, cada bloco do aprofundamento, desafio e fontes. Objetivo, desafio e fontes não têm revisão.
+  - Animação e demonstrações entram depois do texto e antes da revisão da parte em que aparecem.
   - Fechar com a frase memorável.
 - **Texto integral:** `<section class="slide" data-texto="#id-da-seção"></section>`.
   - O motor copia os blocos da seção e pagina em quantos slides forem necessários, sem transbordar.
@@ -62,7 +63,13 @@ Cada novo artigo inclui um modo apresentação em slides, aberto pelo botão **A
   - Um título no topo da página vira o título do slide. Listas longas continuam no slide seguinte.
   - Figuras, laboratório e controles ficam de fora; marcadores de citação como [1] também, porque as fontes aparecem num slide próprio.
   - Cada pergunta do desafio vira um slide com as alternativas e a resposta revelada no avanço.
-- **Resumo:** slides escritos à mão, com poucas palavras, conceitos em destaque e itens revelados um a um com `data-frag` (ou `data-frag="n"` para impor a ordem). Cada slide de resumo traz `<aside class="notes">` com uma sugestão do que falar, visível com a tecla N.
+- **Revisão em cards:** um slide por parte, escrito à mão, para revisar o que acabou de ser lido. `npm run check` recusa edições a partir de 09/11/2026 com parte sem revisão no fim ou com revisão fora deste padrão.
+  - Marcação: `<section class="slide slide-resumo">` com sobretítulo `NN / parte · revisão`, um título (a frase-chave da parte ou o título dela) e `<div class="slide-cards">` com de 2 a 6 `<div class="slide-card">`.
+  - Cada card: o conceito em `h3` e uma frase curta que o explica, de preferência com até 90 caracteres. Opcionalmente, uma linha `<p class="slide-mono">` com o exemplo do texto (nome de evento, conta, comando).
+  - Só cards: nada de listas, tabelas, código, vídeo ou frase solta fora deles. Nenhum conteúdo que não esteja no texto da parte.
+  - O motor revela um card por avanço e monta a grade: 2 ou 4 cards em duas colunas; 3, 5 ou 6 em três. Se não couberem, reduz a fonte.
+  - `<aside class="notes">` traz uma sugestão do que falar, visível com a tecla N.
+- **Roteiro e frase final:** o roteiro revela itens um a um com `data-frag` (ou `data-frag="n"` para impor a ordem). Todo slide escrito à mão traz notas.
 - **Animação e demonstrações:** a animação HyperFrames entra como slide e toca com P ou com um clique, sem a barra nativa do player. Quando houver laboratório, botões `data-lab-cenario="n"` abrem o cenário por cima dos slides.
 - **Gravação:** nenhuma instrução visível no slide; dicas ficam nas notas. Os controles somem com o mouse parado. Teclas:
   - ← → e PageUp/PageDown, compatíveis com passador de slides;
@@ -71,6 +78,7 @@ Cada novo artigo inclui um modo apresentação em slides, aberto pelo botão **A
 - **Verificação:**
   - percorrer todos os slides em 1920×1080, sem transbordo;
   - conferir que todo parágrafo, item de lista, pergunta e fonte do artigo aparece nos slides de texto;
+  - conferir que cada parte termina com a revisão em cards e que os cards só retomam o que o texto disse;
   - testar notas, vídeo, demonstrações e tema claro.
 
 Referência: [event sourcing](../content/system-design/003-event-sourcing.html) e o motor em `site/deck.js`.
