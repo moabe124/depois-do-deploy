@@ -23,22 +23,39 @@
 <div class="eyebrow">Java e JVM / aplicação prática · revisão</div>
 <h1 id="title">Anotações do Spring Boot: <em>quem lê, quando age e onde falha.</em></h1>
 <p class="dek"><strong>Objetivo:</strong> revisar as anotações mais usadas do Spring Boot 4 sabendo, para cada uma, quem a processa e em que momento, e corrigir os erros mais comuns: classe fora da varredura, <code>@Value</code> que esconde chave errada, <code>@Transactional</code> sem transação, <code>@Retryable</code> que não repete e testes que perderam o <code>@MockBean</code>.</p>
-<div class="meta"><span>Iniciante · revisão para quem já usa Spring Boot</span><span>12 de novembro de 2026</span><span>Essencial · 4 min</span><span>Completa · 10 min + animação</span></div>
+<div class="meta"><span>Iniciante · revisão para quem já usa Spring Boot</span><span>12 de novembro de 2026</span><span>Essencial · 5 min</span><span>Completa · 12 min + animação</span></div>
 </section>
-<section class="reading" aria-label="Preferência de leitura" hidden><p><strong>Escolha o ritmo de hoje.</strong> O essencial cobre o conceito, os cinco sintomas, as correções e a primeira pergunta.</p><div class="switch" role="group" aria-label="Tempo disponível"><button id="short" type="button" aria-pressed="false">Essencial · 4 min</button><button id="full" type="button" aria-pressed="true">Completa · 10 min</button></div></section>
+<section class="reading" aria-label="Preferência de leitura" hidden><p><strong>Escolha o ritmo de hoje.</strong> O essencial cobre o conceito, os cinco sintomas, as correções e a primeira pergunta.</p><div class="switch" role="group" aria-label="Tempo disponível"><button id="short" type="button" aria-pressed="false">Essencial · 5 min</button><button id="full" type="button" aria-pressed="true">Completa · 12 min</button></div></section>
 <noscript><p class="caption">A leitura e as respostas recolhíveis funcionam sem JavaScript. A animação tem controles nativos e uma imagem estática.</p></noscript>
 <main class="article">
 <section class="chapter" id="concept">
 <div class="eyebrow">01 / conceito</div>
-<h2>Anotação não executa nada. Alguém precisa ler.</h2>
-<p>Uma <strong>anotação</strong> é um metadado: um rótulo preso a uma classe, a um método ou a um campo. Sozinha, <code>@Transactional</code> não abre transação, do mesmo jeito que a etiqueta “frágil” não protege a caixa. Quem age é a parte do Spring que <strong>lê</strong> a anotação e faz alguma coisa com ela.</p>
-<p>No Spring Boot, as anotações do dia a dia são lidas em três momentos:</p>
+<h2>Antes das anotações: o que o Spring faz por você</h2>
+<h3>O Spring e os beans</h3>
+<p>Num programa Java simples, você mesmo cria os objetos e os conecta: <code>new PedidoService(new PedidoRepository())</code>. Numa aplicação com dezenas de classes, essa montagem vira trabalho repetitivo e fácil de errar.</p>
+<p>O <strong>Spring</strong> assume essa tarefa. Ele funciona como um <strong>contêiner</strong>: quando a aplicação sobe, ele cria os objetos principais, conecta uns aos outros e os guarda para usar enquanto a aplicação roda. Cada objeto criado e guardado pelo Spring se chama <strong>bean</strong>.</p>
+<p>Conectar um bean a outro tem nome: <strong>injeção de dependências</strong>. Em vez de o <code>PedidoService</code> criar o repositório que usa, ele só declara que precisa de um, e o Spring entrega. <a href="https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html">[8]</a></p>
+<p>O <strong>Spring Boot</strong> é o Spring com padrões prontos: servidor web embutido, acesso a banco e configuração pelo arquivo <code>application.yml</code>. Ele olha o que está no projeto e configura sozinho o que costuma ser igual em toda aplicação. Isso se chama <strong>autoconfiguração</strong>. <a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">[1]</a></p>
+<h3>O que é uma anotação</h3>
+<p>Uma <strong>anotação</strong> é uma marca no código que começa com <code>@</code>. Ela fica presa a uma classe, a um método ou a um campo e <strong>não executa nada</strong>: só deixa uma informação ali. Quem lê essa informação, e age por causa dela, é o Spring.</p>
+<pre data-lang="java" data-rotulo="PedidoService.java"><code>// "Spring, crie e guarde um bean desta classe"
+@Service
+public class PedidoService {
+
+  // "abra uma transação quando este método for chamado"
+  @Transactional
+  public void confirmar(Pedido pedido) { /* ... */ }
+}</code></pre>
+<p>Pense na etiqueta “frágil” numa caixa. Ela não protege nada sozinha; protege porque quem carrega a caixa lê a etiqueta e muda o jeito de carregar. Com anotações é igual: se ninguém ler a marca, ela continua lá e nada muda.</p>
+<h3>Quando o Spring lê cada anotação</h3>
+<p>O Spring lê as anotações em três momentos. Vale guardar, porque cada erro deste artigo acontece em um deles:</p>
 <ul class="steps">
-<li><strong>Na subida:</strong> a <strong>varredura de componentes</strong> (<em>component scan</em>) encontra <code>@Service</code>, <code>@RestController</code> e <code>@Configuration</code>; a <strong>autoconfiguração</strong> cria beans conforme o que está no classpath; o <em>binder</em> preenche as classes de <code>@ConfigurationProperties</code>. <a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">[1]</a></li>
-<li><strong>A cada chamada:</strong> <code>@Transactional</code>, <code>@Async</code>, <code>@Cacheable</code> e <code>@Retryable</code> funcionam por <strong>proxy</strong>, um objeto intermediário que o Spring entrega aos outros beans no lugar do seu. O proxy faz algo antes e depois do método real, como abrir e fechar a transação. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></li>
-<li><strong>No teste:</strong> <code>@SpringBootTest</code>, <code>@WebMvcTest</code> e <code>@MockitoBean</code> são lidas pelo framework de testes do Spring, que monta um contexto só para o teste. <a href="https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-mockitobean.html">[3]</a></li>
+<li><strong>Na subida:</strong> ao iniciar, o Spring procura as classes marcadas com <code>@Service</code>, <code>@RestController</code> e parecidas e cria os beans. Essa busca se chama <strong>varredura de componentes</strong>. Nesse momento ele também preenche as classes de configuração, marcadas com <code>@ConfigurationProperties</code>, com os valores do <code>application.yml</code>. <a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">[1]</a></li>
+<li><strong>A cada chamada:</strong> para anotações como <code>@Transactional</code>, o Spring não entrega aos outros beans o seu objeto, e sim um <strong>proxy</strong>: um intermediário com os mesmos métodos, que faz algo antes e depois do seu código, como abrir e fechar a transação. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></li>
+<li><strong>No teste:</strong> anotações como <code>@WebMvcTest</code> e <code>@MockitoBean</code> são lidas pelo suporte a testes do Spring, que monta uma versão menor da aplicação só para o teste. <a href="https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-mockitobean.html">[3]</a></li>
 </ul>
-<p>Daí três perguntas que servem para revisar qualquer anotação: <strong>quem lê?</strong>, <strong>quando age?</strong> e <strong>o que acontece se ninguém ler?</strong> A última é a mais perigosa, porque muitas vezes a resposta é: nada. Sem erro e sem aviso.</p>
+<p>Com isso, dá para revisar qualquer anotação com três perguntas: <strong>quem lê?</strong>, <strong>quando age?</strong> e <strong>o que acontece se ninguém ler?</strong> A última é a que mais engana. Muitas vezes a resposta é “nada”: a aplicação sobe, não aparece erro, e o comportamento simplesmente não acontece.</p>
+<p>A tabela abaixo é o mapa do artigo. Não precisa decorar agora: cada linha volta mais adiante, com exemplo.</p>
 <div class="table-wrap"><table><caption>Mapa de revisão: quem atende cada anotação, e quando</caption><thead><tr><th scope="col">Anotação</th><th scope="col">Quem atende, e quando</th><th scope="col">Se ninguém atender</th></tr></thead><tbody>
 <tr><th scope="row"><code>@Service</code>, <code>@RestController</code></th><td>Varredura de componentes, na subida</td><td>O bean não existe; a injeção falha na subida</td></tr>
 <tr><th scope="row"><code>@Configuration<wbr>Properties</code></th><td>Binder, na subida, com <code>@Configuration<wbr>PropertiesScan</code></td><td>A classe não vira bean; a injeção falha</td></tr>
@@ -48,7 +65,7 @@
 <tr><th scope="row"><code>@Retryable</code> (Spring 7)</th><td>Proxy com <code>@Enable<wbr>ResilientMethods</code>, a cada chamada <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a></td><td>Executa uma vez só</td></tr>
 </tbody></table></div>
 <p>As versões usadas aqui são o Spring Boot 4.1, estável em novembro de 2026, e o Spring Framework 7, com Java 17 ou mais novo. Quase tudo vale também para o Boot 3; quando algo mudou no 4, o texto avisa. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
-<p class="takeaway"><strong>Anotação é um pedido. Sem quem atenda, vira um comentário que compila.</strong></p>
+<p class="takeaway"><strong>A anotação só marca. Quem age é o Spring, e só quando lê a marca.</strong></p>
 </section>
 <section class="chapter" id="problem">
 <div class="eyebrow">02 / problema</div>
@@ -279,7 +296,7 @@ public void processar(Pedido pedido) {
 <section class="slide">
 <h2>O que vamos ver</h2>
 <ol class="slide-list">
-<li data-frag>Conceito: quem lê uma anotação, e quando</li>
+<li data-frag>Conceito: Spring, beans e o que é uma anotação</li>
 <li data-frag>Problema: cinco sintomas de uma migração</li>
 <li data-frag>Solução: varredura, configuração, transação, retry e testes</li>
 <li data-frag>Em produção: proxy, <code>@Async</code>, novidades do Spring 7 e checklist do Boot 4</li>
@@ -292,16 +309,16 @@ public void processar(Pedido pedido) {
 <section class="slide" data-texto="#concept"></section>
 <section class="slide slide-resumo">
 <p class="slide-eyebrow">01 / conceito · revisão</p>
-<h2>Anotação é um pedido. Alguém precisa atender.</h2>
+<h2>A anotação só marca. Quem age é o Spring.</h2>
 <div class="slide-cards">
-<div class="slide-card"><h3>Anotação</h3><p>Metadado preso ao código. Sozinha, não executa nada.</p></div>
-<div class="slide-card"><h3>Na subida</h3><p>Varredura, autoconfiguração e binder registram beans e leem a configuração.</p><p class="slide-mono">@Service · @ConfigurationProperties</p></div>
-<div class="slide-card"><h3>A cada chamada</h3><p>Um proxy no lugar do bean age antes e depois do método real.</p><p class="slide-mono">@Transactional · @Async · @Retryable</p></div>
-<div class="slide-card"><h3>No teste</h3><p>O framework de testes do Spring monta um contexto só para o teste.</p><p class="slide-mono">@WebMvcTest · @MockitoBean</p></div>
-<div class="slide-card"><h3>Três perguntas</h3><p>Quem lê? Quando age? O que acontece se ninguém ler?</p></div>
-<div class="slide-card"><h3>Se ninguém ler</h3><p>Muitas vezes, nada: sem erro e sem aviso.</p><p class="slide-mono">@EnableAsync · @EnableCaching · @EnableResilientMethods</p></div>
+<div class="slide-card"><h3>Spring</h3><p>Cria os objetos da aplicação, conecta uns aos outros e os guarda.</p><p class="slide-mono">contêiner</p></div>
+<div class="slide-card"><h3>Bean e injeção</h3><p>Bean é o objeto que o Spring cria. Ele entrega a cada bean o que ele declara precisar.</p></div>
+<div class="slide-card"><h3>Spring Boot</h3><p>O Spring com padrões prontos e autoconfiguração.</p><p class="slide-mono">application.yml</p></div>
+<div class="slide-card"><h3>Anotação</h3><p>Marca com <code>@</code> que não executa nada. É como a etiqueta “frágil”.</p><p class="slide-mono">@Service · @Transactional</p></div>
+<div class="slide-card"><h3>Três momentos</h3><p>Na subida (varredura), a cada chamada (proxy) e no teste.</p></div>
+<div class="slide-card"><h3>Se ninguém ler</h3><p>Muitas vezes, nada: sem erro e sem aviso.</p></div>
 </div>
-<aside class="notes">Revise um card por vez. A anotação é só um rótulo; quem age é o Spring, em três momentos: subida, cada chamada e teste. As três perguntas valem para qualquer anotação. Feche no último card: as anotações de proxy com @Enable algo não fazem nada sem ele.</aside>
+<aside class="notes">Revise um card por vez, do básico ao específico. O Spring é o contêiner que cria e conecta os objetos, os beans; o Boot traz padrões prontos. A anotação só marca, como a etiqueta frágil na caixa. Feche nos três momentos em que o Spring lê as marcas e no perigo do “nada acontece”.</aside>
 </section>
 
 <section class="slide" data-texto="#problem"></section>
