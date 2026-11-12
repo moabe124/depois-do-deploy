@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Edições a partir desta data precisam do modo apresentação em slides (docs/FORMATO.md).
 const PRESENTATION_SINCE = '2026-10-31';
+// Edições a partir desta data fecham cada parte da apresentação com uma revisão só de cards (docs/FORMATO.md).
+const REVIEW_CARDS_SINCE = '2026-11-09';
 // Edições a partir desta data precisam das hashtags de divulgação (docs/FORMATO.md).
 const HASHTAGS_SINCE = '2026-11-04';
 const HASHTAG = /^#[\p{L}\p{N}_]+$/u;
@@ -50,6 +52,20 @@ export function validate(catalog = readCatalog()) {
     if(lesson.date>=PRESENTATION_SINCE){
       assert(html.includes('<template id="apresentacao"'), `Modo apresentação ausente: ${lesson.id}`);
       assert(html.includes('data-texto="'), `Apresentação sem slides de texto integral: ${lesson.id}`);
+    }
+    if(lesson.date>=REVIEW_CARDS_SINCE||html.includes('slide-resumo')){
+      const deck=html.match(/<template id="apresentacao"[^>]*>([\s\S]*?)<\/template>/)?.[1]||'';
+      const slides=[...deck.matchAll(/<section class="slide([^"]*)"([^>]*)>([\s\S]*?)<\/section>/g)].map(([,classes,attrs,body])=>({revisao:/\bslide-resumo\b/.test(classes),texto:attrs.match(/data-texto="([^"]+)"/)?.[1],body}));
+      for(const slide of slides.filter(s=>s.revisao)){
+        const cards=(slide.body.match(/class="slide-card[" ]/g)||[]).length;
+        assert(cards>=2 && cards<=6 && slide.body.includes('<aside class="notes">') && !/<(?:ul|ol|table|pre|video)\b|slide-(?:list|table|code|race|key|demo)/.test(slide.body), `Revisão da apresentação precisa de 2 a 6 cards, notas e nada além dos cards: ${lesson.id}`);
+      }
+      // Cada parte de estudo (todo texto integral de seção #id, exceto o desafio) termina com exatamente uma revisão.
+      slides.forEach((slide,i)=>{
+        if(!slide.texto?.startsWith('#') || slide.texto==='#challenge')return;
+        const fim=slides.findIndex((s,j)=>j>i && s.texto),grupo=slides.slice(i+1,fim<0?slides.length:fim);
+        assert(grupo.filter(s=>s.revisao).length===1 && grupo.at(-1)?.revisao, `Parte da apresentação sem uma revisão em cards no fim: ${lesson.id}/${slide.texto}`);
+      });
     }
     if(lesson.date>=HASHTAGS_SINCE||lesson.hashtags){
       const limits={youtube:[3,15],linkedin:[3,5]};

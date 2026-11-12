@@ -4,6 +4,8 @@
 // - <section class="slide" data-texto="#id"></section> traz o texto integral daquele bloco do artigo,
 //   paginado em quantos slides couberem; data-parte="n" escolhe a n-ésima subseção (h3 ou details),
 //   data-titulo e data-rotulo trocam o título e o sobretítulo;
+// - <section class="slide slide-resumo"> fecha cada parte: só cards (.slide-cards > .slide-card) para revisar
+//   o que foi lido; cada card aparece num avanço, e o slide reduz a fonte se os cards não couberem;
 // - [data-frag] aparece a cada avanço, na ordem do número (ou do documento);
 // - <aside class="notes"> traz as notas do apresentador, visíveis só com a tecla N.
 const template=document.getElementById('apresentacao');
@@ -97,7 +99,7 @@ if(template?.content.querySelector('.slide')&&typeof HTMLDialogElement==='functi
       pagina.querySelector('.slide-eyebrow').textContent=(rotulo?`${rotulo} · `:'')+'texto do artigo'+parte;
       if(transborda(pagina.querySelector('.slide-texto-corpo')))pagina.classList.add('slide-rola');
       const aside=document.createElement('aside');aside.className='notes';
-      aside.textContent=nota||`Texto integral do artigo${parte}. Leia ou comente os termos em negrito; o resumo vem em seguida.`;
+      aside.textContent=nota||`Texto integral do artigo${parte}. Leia ou comente os termos em negrito; a revisão em cards fecha a parte.`;
       pagina.append(aside);pagina.hidden=true;
     });
     declaracao.remove();
@@ -106,6 +108,15 @@ if(template?.content.querySelector('.slide')&&typeof HTMLDialogElement==='functi
   let slides=[];
   function preparar(){
     for(const declaracao of [...caixa.querySelectorAll(':scope > .slide[data-texto]')])expandir(declaracao);
+    // Revisão em cards: um card por avanço; mede no palco e reduz a fonte em degraus se os cards não couberem.
+    for(const revisao of caixa.querySelectorAll(':scope > .slide-resumo')){
+      for(const card of revisao.querySelectorAll('.slide-card:not([data-frag])'))card.dataset.frag='';
+      revisao.hidden=false;
+      const cabe=()=>revisao.scrollHeight<=revisao.clientHeight+1;
+      for(const fonte of [20,18,16]){if(cabe())break;revisao.classList.add('slide-resumo-denso');revisao.style.setProperty('--revisao-fonte',fonte+'px');}
+      if(!cabe())revisao.classList.add('slide-rola');
+      revisao.hidden=true;
+    }
     slides=[...caixa.children].filter(el=>el.classList.contains('slide'));
     slides.forEach((slide,i)=>{slide.hidden=true;slide.setAttribute('role','group');slide.setAttribute('aria-roledescription','slide');slide.setAttribute('aria-label',`${i+1} de ${slides.length}`);});
   }
