@@ -1,0 +1,88 @@
+<template>
+<style>
+*{box-sizing:border-box}[data-composition-id="01-proxy-transacao"]{position:relative;width:100%;height:100%;overflow:hidden;font-family:sans-serif;color:#d7d9d5}.clip{position:absolute;inset:0;width:100%;height:100%}.ground{background:#191d20}.stage{position:absolute;inset:0}#phase-self,#phase-fix{opacity:0}.heading{position:absolute;left:42px;top:32px;width:876px;margin:0;font-size:42px;line-height:1.22;font-weight:600;letter-spacing:-1px}.subhead{position:absolute;left:42px;top:94px;width:876px;margin:0;font-size:28px;line-height:1.38;color:#a6cdbb}.box{position:absolute;background:#22292b;border:2px solid #697a74;border-radius:10px;padding:12px 14px}.box p{margin:0;white-space:nowrap}.box-title{font-size:22px;line-height:1.4;font-weight:600}.box-sub{font-size:20px;line-height:1.4;color:#aab1b4}.proxy .box-title{color:#a6cdbb}.step{font-size:20px;line-height:1.4;color:#aab1b4;opacity:.45}.pill{position:absolute;height:56px;background:#191d20;border:2px solid #697a74;border-radius:8px;display:flex;align-items:center;gap:12px;padding:0 16px;font-size:22px;line-height:1.3;white-space:nowrap}.pill .tag{color:#a6cdbb;font-size:20px}.inner-label{position:absolute;margin:0;font-size:20px;line-height:1.35;color:#e7b28c;white-space:nowrap;opacity:0}.away{position:absolute;margin:0;font-size:20px;line-height:1.35;color:#e7b28c;white-space:nowrap;opacity:0}.row{position:absolute;left:42px;width:876px;margin:0;font-size:22px;line-height:1.35;white-space:nowrap;opacity:0}.row.bad{color:#e7b28c}.row.good{color:#a6cdbb}.note{position:absolute;left:42px;top:548px;width:876px;margin:0;font-size:28px;line-height:1.35;color:#a6cdbb}.footline{position:absolute;left:42px;top:604px;width:876px;margin:0;font-size:20px;line-height:1.3;color:#aab1b4}.connector{position:absolute;inset:0;width:960px;height:640px;pointer-events:none}.connector path{fill:none;stroke:#a6cdbb;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.connector path.warn-stroke{stroke:#e7b28c}
+</style>
+<div data-hf-id="hf-sp00" id="sp-diagram" data-composition-id="01-proxy-transacao" data-width="960" data-height="640" data-duration="24">
+<div data-hf-id="hf-sp01" id="diagram-ground" class="clip ground" data-start="0" data-duration="24" data-track-index="0"></div>
+<div data-hf-id="hf-sp02" id="diagram-calls" class="clip" data-start="0" data-duration="24" data-track-index="1">
+<section data-hf-id="hf-sp10" class="stage" id="phase-external">
+<h1 data-hf-id="hf-sp11" class="heading">Chamada externa passa pelo proxy.</h1>
+<p data-hf-id="hf-sp12" class="subhead">O proxy abre a transação antes e fecha depois.</p>
+<svg data-hf-id="hf-sp13" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-sp14" id="a-arrow1" d="M284 298 L332 298 M324 290 L332 298 L324 306" /><path data-hf-id="hf-sp15" id="a-arrow2" d="M620 298 L668 298 M660 290 L668 298 L660 306" /></svg>
+<div data-hf-id="hf-sp16" class="box" id="a-caller" style="left:42px;top:250px;width:240px;height:96px"><p data-hf-id="hf-sp17" class="box-title">PedidoController</p><p data-hf-id="hf-sp18" class="box-sub">chama confirmar()</p></div>
+<div data-hf-id="hf-sp19" class="box proxy" id="a-proxy" style="left:336px;top:212px;width:282px;height:172px"><p data-hf-id="hf-sp20" class="box-title">Proxy</p><p data-hf-id="hf-sp21" class="box-sub">@Transactional</p><p data-hf-id="hf-sp22" class="step" id="a-s1">1 · abre a transação</p><p data-hf-id="hf-sp23" class="step" id="a-s2">2 · chama o método real</p><p data-hf-id="hf-sp24" class="step" id="a-s3">3 · commit ou rollback</p></div>
+<div data-hf-id="hf-sp25" class="box" id="a-target" style="left:672px;top:250px;width:246px;height:96px"><p data-hf-id="hf-sp26" class="box-title">PedidoService</p><p data-hf-id="hf-sp27" class="box-sub">confirmar()</p></div>
+<p data-hf-id="hf-sp28" class="row" id="a-row1" style="top:436px">Quem injeta PedidoService recebe o proxy, não o objeto real.</p>
+<p data-hf-id="hf-sp29" class="note" id="a-note">A chamada de outro bean entra pelo proxy.</p>
+</section>
+<section data-hf-id="hf-sp40" class="stage" id="phase-self">
+<h1 data-hf-id="hf-sp41" class="heading">Auto-invocação pula o proxy.</h1>
+<p data-hf-id="hf-sp42" class="subhead">this.confirmar() fica dentro do objeto real.</p>
+<div data-hf-id="hf-sp46" class="box proxy" id="b-proxy" style="left:42px;top:200px;width:250px;height:112px"><p data-hf-id="hf-sp47" class="box-title">Proxy</p><p data-hf-id="hf-sp48" class="box-sub">repassa processar()</p></div>
+<p data-hf-id="hf-sp49" class="away" id="b-away" style="left:42px;top:322px">fora do caminho de this</p>
+<div data-hf-id="hf-sp50" class="box" id="b-target" style="left:340px;top:180px;width:578px;height:226px"><p data-hf-id="hf-sp51" class="box-title" style="color:#a6cdbb">PedidoService · objeto real</p></div>
+<div data-hf-id="hf-sp52" class="pill" id="b-p1" style="left:360px;top:228px;width:240px"><span data-hf-id="hf-sp53">processar()</span></div>
+<p data-hf-id="hf-sp54" class="inner-label" id="b-self-label" style="left:412px;top:292px">this.confirmar() · sem passar pelo proxy</p>
+<div data-hf-id="hf-sp55" class="pill" id="b-p2" style="left:360px;top:330px;width:420px"><span data-hf-id="hf-sp56">confirmar()</span><span data-hf-id="hf-sp57" class="tag">@Transactional</span></div>
+<svg data-hf-id="hf-sp43" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-sp44" id="b-arrow-in" d="M294 256 L354 256 M346 248 L354 256 L346 264" /><path data-hf-id="hf-sp45" id="b-arrow-self" class="warn-stroke" d="M392 286 L392 326 M384 318 L392 326 L400 318" /></svg>
+<p data-hf-id="hf-sp58" class="row" id="b-row1" style="top:424px">✓ pedido gravado como CONFIRMADO</p>
+<p data-hf-id="hf-sp59" class="row bad" id="b-row2" style="top:462px">✗ cobrança recusada: exceção</p>
+<p data-hf-id="hf-sp60" class="row bad" id="b-row3" style="top:500px">✗ sem transação, nada é desfeito</p>
+<p data-hf-id="hf-sp61" class="note" id="b-note">processar() chama this.confirmar() na mesma classe.</p>
+</section>
+<section data-hf-id="hf-sp80" class="stage" id="phase-fix">
+<h1 data-hf-id="hf-sp81" class="heading">Correção: chamar por outro bean.</h1>
+<p data-hf-id="hf-sp82" class="subhead">O @Transactional vai para ConfirmacaoService.</p>
+<svg data-hf-id="hf-sp83" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-sp84" id="c-arrow1" d="M284 298 L326 298 M318 290 L326 298 L318 306" /><path data-hf-id="hf-sp85" id="c-arrow2" d="M608 298 L656 298 M648 290 L656 298 L648 306" /></svg>
+<div data-hf-id="hf-sp86" class="box" id="c-caller" style="left:42px;top:250px;width:240px;height:96px"><p data-hf-id="hf-sp87" class="box-title">PedidoService</p><p data-hf-id="hf-sp88" class="box-sub">processar()</p></div>
+<div data-hf-id="hf-sp89" class="box proxy" id="c-proxy" style="left:330px;top:212px;width:276px;height:172px"><p data-hf-id="hf-sp90" class="box-title">Proxy</p><p data-hf-id="hf-sp91" class="box-sub">@Transactional</p><p data-hf-id="hf-sp92" class="step" id="c-s1">1 · abre a transação</p><p data-hf-id="hf-sp93" class="step" id="c-s2">2 · chama o método real</p><p data-hf-id="hf-sp94" class="step" id="c-s3">3 · rollback</p></div>
+<div data-hf-id="hf-sp95" class="box" id="c-target" style="left:660px;top:250px;width:258px;height:96px"><p data-hf-id="hf-sp96" class="box-title">ConfirmacaoService</p><p data-hf-id="hf-sp97" class="box-sub">confirmar()</p></div>
+<p data-hf-id="hf-sp98" class="row" id="c-row1" style="top:424px">✓ pedido gravado dentro da transação</p>
+<p data-hf-id="hf-sp99" class="row bad" id="c-row2" style="top:462px">✗ cobrança recusada: exceção de runtime</p>
+<p data-hf-id="hf-sp100" class="row good" id="c-row3" style="top:500px">↺ rollback: o pedido também é desfeito</p>
+<p data-hf-id="hf-sp101" class="note" id="c-note">PedidoService chama outro bean: ConfirmacaoService.</p>
+</section>
+<p data-hf-id="hf-sp120" class="footline">Cenário didático · API de Pedidos fictícia · proxy de classe, o padrão do Spring Boot</p>
+</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+const enter=(target,time,x=-18,y=0)=>tl.fromTo(target,{opacity:0,x,y},{opacity:1,x:0,y:0,duration:0.6,ease:'power2.out'},time);
+const draw=(id,time)=>{const p=document.querySelector(id);const n=p.getTotalLength();p.style.strokeDasharray=String(n);tl.fromTo(p,{strokeDashoffset:n,opacity:0},{strokeDashoffset:0,opacity:1,duration:0.6,ease:'none'},time);};
+const pulse=(target,color,time)=>tl.fromTo(target,{borderColor:color},{borderColor:'#697a74',duration:0.9,ease:'power1.out',immediateRender:false},time);
+const light=(target,time,color='#d7d9d5')=>tl.to(target,{opacity:1,color,duration:0.4,ease:'power1.out'},time);
+const show=(target,time)=>tl.fromTo(target,{opacity:0,y:10},{opacity:1,y:0,duration:0.5,ease:'power2.out'},time);
+// Estado 1: outro bean chama o método e passa pelo proxy, que envolve a chamada em uma transação
+enter('#a-caller',0.3);enter('#a-proxy',0.6);enter('#a-target',0.9);
+draw('#a-arrow1',1.5);pulse('#a-proxy','#a6cdbb',2.0);light('#a-s1',2.0);
+draw('#a-arrow2',2.8);light('#a-s2',3.0);pulse('#a-target','#a6cdbb',3.3);
+light('#a-s3',4.6,'#a6cdbb');pulse('#a-proxy','#a6cdbb',4.6);
+show('#a-row1',5.6);
+tl.set('#phase-external',{opacity:0},8);tl.set('#phase-self',{opacity:1},8);
+// Estado 2: a chamada interna usa this, o objeto real; o proxy não participa e não há transação
+enter('#b-proxy',8.2);enter('#b-target',8.4,18);enter('#b-p1',8.6,0,12);enter('#b-p2',8.6,0,12);
+draw('#b-arrow-in',9.2);pulse('#b-p1','#a6cdbb',9.6);
+draw('#b-arrow-self',10.6);tl.fromTo('#b-self-label',{opacity:0},{opacity:1,duration:0.5,ease:'power1.out',immediateRender:false},10.8);pulse('#b-p2','#e7b28c',11.0);
+tl.to('#b-proxy',{opacity:0.4,duration:0.6,ease:'power1.out'},11.6);show('#b-away',11.6);
+show('#b-row1',12.6);show('#b-row2',13.4);pulse('#b-p2','#e7b28c',13.4);show('#b-row3',14.2);
+tl.set('#phase-self',{opacity:0},16.5);tl.set('#phase-fix',{opacity:1},16.5);
+// Estado 3: a chamada atravessa outro bean, passa pelo proxy e a falha desfaz tudo
+enter('#c-caller',16.7);enter('#c-proxy',16.9);enter('#c-target',17.1);
+draw('#c-arrow1',17.7);pulse('#c-proxy','#a6cdbb',18.1);light('#c-s1',18.1);
+draw('#c-arrow2',18.8);light('#c-s2',19.0);pulse('#c-target','#a6cdbb',19.2);
+show('#c-row1',19.6);show('#c-row2',20.4);pulse('#c-target','#e7b28c',20.4);
+light('#c-s3',21.2,'#a6cdbb');pulse('#c-proxy','#a6cdbb',21.2);show('#c-row3',21.2);
+const sequence=[
+{t:0,aNote:'A chamada de outro bean entra pelo proxy.',bNote:'processar() chama this.confirmar() na mesma classe.',cNote:'PedidoService chama outro bean: ConfirmacaoService.'},
+{t:2.0,aNote:'Antes do método, o proxy abre a transação.'},
+{t:4.6,aNote:'Depois, commit. Com exceção de runtime, rollback.'},
+{t:11.6,bNote:'this é o objeto real: o proxy não vê a chamada.'},
+{t:14.2,bNote:'Resultado: pedido confirmado sem pagamento.'},
+{t:18.1,cNote:'A chamada passa pelo proxy, que abre a transação.'},
+{t:21.2,cNote:'Só a chamada que passa pelo proxy ganha a transação.'}
+];
+const fields=[['a-note','aNote'],['b-note','bNote'],['c-note','cNote']];
+const driver={time:0};tl.to(driver,{time:24,duration:24,ease:'none',onUpdate:()=>{const s={};for(const item of sequence)if(driver.time>=item.t)Object.assign(s,item);for(const [id,key] of fields)document.getElementById(id).textContent=s[key];}},0);
+window.__timelines['01-proxy-transacao']=tl;
+</script>
+</template>

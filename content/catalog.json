@@ -488,6 +488,95 @@
         "youtube": ["#EventSourcing", "#SystemDesign", "#ArquiteturaDeSoftware", "#CQRS", "#Backend", "#EngenhariaDeSoftware", "#Programacao", "#DepoisDoDeploy"],
         "linkedin": ["#EventSourcing", "#SystemDesign", "#ArquiteturaDeSoftware", "#CQRS", "#DepoisDoDeploy"]
       }
+    },
+    {
+      "id": "java-jvm-002",
+      "topic": "java-jvm",
+      "title": "Anotações do Spring Boot: quem lê, quando age e onde falha",
+      "date": "2026-11-12",
+      "level": "iniciante",
+      "minutes": {
+        "essential": 4,
+        "full": 10
+      },
+      "focusKey": "spring-boot-anotacoes-quem-le-proxy-migracao",
+      "objective": "Revisar as anotações mais usadas do Spring Boot 4 sabendo, para cada uma, quem a processa e em que momento, e corrigir os erros mais comuns: classe fora da varredura, @Value que esconde chave errada, @Transactional sem transação, @Retryable que não repete e testes que perderam o @MockBean.",
+      "summary": "Aplicação prática (revisão pedida pelo leitor): a API de Pedidos migra do Spring Boot 3.3 para o 4.1 e mostra cinco sintomas, quatro deles silenciosos. Apresenta a anotação como pedido que alguém precisa atender, na subida, a cada chamada ou no teste, com um mapa de quem lê cada uma. Corrige a varredura a partir do pacote da classe principal e a injeção por construtor; troca @Value espalhado por @ConfigurationProperties com record e @Validated; explica a auto-invocação que pula o proxy de @Transactional e o commit com exceção verificada (rollbackFor e rollbackOn desde o Spring 6.2); habilita o @Retryable nativo do Spring 7 com @EnableResilientMethods; e migra os testes para @MockitoBean e as fatias em módulos do Boot 4. Aprofundamentos opcionais tratam o proxy de classe e this, @Async e @Scheduled com threads virtuais e @ConcurrencyLimit, @HttpExchange com @ImportHttpServices, versionamento de API e um checklist de nomes que mudaram no Boot 4.",
+      "concepts": [
+        "anotação",
+        "varredura de componentes",
+        "autoconfiguração",
+        "injeção por construtor",
+        "@ConfigurationProperties",
+        "proxy",
+        "auto-invocação",
+        "regra de rollback",
+        "@Retryable",
+        "@ConcurrencyLimit",
+        "@MockitoBean",
+        "fatias de teste",
+        "migração para o Spring Boot 4"
+      ],
+      "source": "content/java-jvm/002-spring-boot-anotacoes.html",
+      "url": "temas/java-jvm/002-spring-boot-anotacoes.html",
+      "status": "presented",
+      "studiedAt": null,
+      "references": [
+        "https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html",
+        "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html",
+        "https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-mockitobean.html",
+        "https://docs.spring.io/spring-boot/reference/features/task-execution-and-scheduling.html",
+        "https://docs.spring.io/spring-boot/reference/io/caching.html",
+        "https://docs.spring.io/spring-framework/reference/core/resilience.html",
+        "https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide",
+        "https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html",
+        "https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html",
+        "https://docs.spring.io/spring-boot/reference/features/external-config.html",
+        "https://github.com/spring-projects/spring-boot/issues/46916",
+        "https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.4-Release-Notes",
+        "https://docs.spring.io/spring-boot/appendix/test-auto-configuration/slices.html",
+        "https://docs.spring.io/spring-boot/reference/features/aop.html",
+        "https://docs.spring.io/spring-framework/reference/integration/rest-clients.html",
+        "https://docs.spring.io/spring-boot/reference/io/rest-client.html",
+        "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html",
+        "https://docs.spring.io/spring-boot/reference/web/servlet.html"
+      ],
+      "quiz": {
+        "version": "1",
+        "questions": [
+          {
+            "id": "q1",
+            "options": [
+              "rollback",
+              "no-transaction",
+              "startup-error"
+            ],
+            "correct": "no-transaction"
+          },
+          {
+            "id": "q2",
+            "options": [
+              "missing-enable",
+              "zero-default",
+              "needs-library"
+            ],
+            "correct": "missing-enable"
+          },
+          {
+            "id": "q3",
+            "options": [
+              "checked-commit",
+              "no-proxy",
+              "isolation"
+            ],
+            "correct": "checked-commit"
+          }
+        ]
+      },
+      "hashtags": {
+        "youtube": ["#SpringBoot", "#Java", "#SpringFramework", "#JavaJVM", "#Backend", "#EngenhariaDeSoftware", "#Programacao", "#DepoisDoDeploy"],
+        "linkedin": ["#SpringBoot", "#Java", "#SpringFramework", "#Backend", "#DepoisDoDeploy"]
+      }
     }
   ]
 }
