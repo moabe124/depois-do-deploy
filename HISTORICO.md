@@ -16,7 +16,7 @@
 - Conceitos: event sourcing, evento, armazenamento de eventos, append-only, fluxo de eventos, comando, projeção, evento compensatório, consistência eventual, concorrência otimista, snapshot, versionamento de eventos, CQRS
 - Edição: [HTML](content/system-design/003-event-sourcing.html)
 
-Conceito: uma carteira de pontos em CRUD sobrescreve o saldo e não explica para onde foram 900 pontos; uma tabela de histórico paralela diverge do saldo. Apresenta event sourcing como anexar fatos imutáveis ao fluxo de cada carteira e derivar o saldo aplicando-os em ordem; separa comando, evento e projeção; corrige uma expiração indevida com evento compensatório; e compara quando o padrão compensa e quando o CRUD basta. Aprofundamentos opcionais tratam a diferença para mensageria e CQRS, projeções com atraso e idempotentes, concorrência otimista com versão esperada, snapshots, versionamento de eventos, replay com sistemas externos e dados pessoais. Inclui um laboratório interativo (event store simulado da carteira) com roteiro guiado em seis cenários e um modo apresentação do artigo em slides: o texto integral de cada seção seguido de slides de resumo, com notas do apresentador e demonstrações do laboratório.
+Conceito: uma carteira de pontos em CRUD sobrescreve o saldo e não explica para onde foram 900 pontos; uma tabela de histórico paralela diverge do saldo. Apresenta event sourcing como anexar fatos imutáveis ao fluxo de cada carteira e derivar o saldo aplicando-os em ordem; separa comando, evento e projeção; corrige uma expiração indevida com evento compensatório; e compara quando o padrão compensa e quando o CRUD basta. Aprofundamentos opcionais tratam a diferença para mensageria e CQRS, projeções com atraso e idempotentes, concorrência otimista com versão esperada, snapshots, versionamento de eventos, replay com sistemas externos e dados pessoais. Inclui um laboratório interativo (event store simulado da carteira) com roteiro guiado em seis cenários e um modo apresentação do artigo em slides: o texto integral de cada parte fechado por uma revisão em cards, com notas do apresentador e demonstrações do laboratório.
 
 ### system-design-002 — Back-of-the-envelope: estime antes de decidir
 
@@ -43,6 +43,18 @@ Aplicação prática: ensinar o método de back-of-the-envelope com uma estimati
 Timeout não confirma falha. Uma identidade estável, reserva atômica e idempotência no provedor permitem repetir tentativas com segurança. Reconciliação recupera operações pendentes; retenção e coordenação entre regiões limitam a garantia.
 
 ## Java e JVM
+
+### java-jvm-002 — Anotações do Spring Boot: quem lê, quando age e onde falha
+
+- Data: 2026-11-12
+- Nível: iniciante
+- Estado: apresentado
+- Identidade do objetivo: `spring-boot-anotacoes-quem-le-proxy-migracao`
+- Objetivo: Revisar as anotações mais usadas do Spring Boot 4 sabendo, para cada uma, quem a processa e em que momento, e corrigir os erros mais comuns: classe fora da varredura, @Value que esconde chave errada, @Transactional sem transação, @Retryable que não repete e testes que perderam o @MockBean.
+- Conceitos: anotação, varredura de componentes, autoconfiguração, injeção por construtor, @ConfigurationProperties, proxy, auto-invocação, regra de rollback, @Retryable, @ConcurrencyLimit, @MockitoBean, fatias de teste, migração para o Spring Boot 4
+- Edição: [HTML](content/java-jvm/002-spring-boot-anotacoes.html)
+
+Aplicação prática (revisão pedida pelo leitor): a API de Pedidos migra do Spring Boot 3.3 para o 4.1 e mostra cinco sintomas, quatro deles silenciosos. Apresenta a anotação como pedido que alguém precisa atender, na subida, a cada chamada ou no teste, com um mapa de quem lê cada uma. Corrige a varredura a partir do pacote da classe principal e a injeção por construtor; troca @Value espalhado por @ConfigurationProperties com record e @Validated; explica a auto-invocação que pula o proxy de @Transactional e o commit com exceção verificada (rollbackFor e rollbackOn desde o Spring 6.2); habilita o @Retryable nativo do Spring 7 com @EnableResilientMethods; e migra os testes para @MockitoBean e as fatias em módulos do Boot 4. Aprofundamentos opcionais tratam o proxy de classe e this, @Async e @Scheduled com threads virtuais e @ConcurrencyLimit, @HttpExchange com @ImportHttpServices, versionamento de API e um checklist de nomes que mudaram no Boot 4.
 
 ### java-jvm-001 — Threads virtuais: libere a espera, controle a concorrência
 

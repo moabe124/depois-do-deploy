@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Revise as anotações mais usadas do Spring Boot 4: quem lê cada uma, quando ela age e como corrigir varredura, configuração, @Transactional, @Retryable e testes com @MockitoBean.">
+<title>Depois do Deploy · Anotações do Spring Boot: quem lê, quando age e onde falha</title>
+<style>
+:root{color-scheme:dark;--paper:#191d20;--ink:#d7d9d5;--muted:#aab1b4;--line:#394146;--card:#22292b;--green:#a6cdbb;--soft:#293631;--orange:#e7b28c}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--paper);color:var(--ink);font:20px/1.7 'Segoe UI',Arial,sans-serif}body.light{color-scheme:light;--paper:#f5f2e9;--ink:#262c28;--muted:#62685f;--line:#d6d8ca;--card:#fffdf7;--green:#375746;--soft:#e4ebdf;--orange:#98532e}a{color:var(--green);text-underline-offset:4px}button,select,input{font:inherit}button,select,input[type=number]{color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:8px 12px}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:4px}.wrap{width:min(1060px,calc(100% - 64px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-bottom:1px solid var(--line)}.brand{font-size:18px;font-weight:650}.brand i{display:inline-block;width:13px;height:13px;background:var(--green);border-radius:50%;margin-right:10px}.theme{font-size:14px;border-radius:28px}.hero{padding:52px 0 34px;max-width:850px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(36px,4.8vw,56px);line-height:1.12;letter-spacing:-1.8px;margin:18px 0 24px;font-weight:650}h1 em{font-style:normal;color:var(--green)}.dek{font-size:21px;line-height:1.6;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:13px;margin-top:22px}.draft{font-size:13px;color:var(--muted);margin:18px 0 0}.reading{border-block:1px solid var(--line);padding:16px 0;display:flex;gap:18px;align-items:center;justify-content:space-between;font-size:14px}.reading p{margin:0;color:var(--muted)}.switch{display:flex;gap:6px;flex-shrink:0}.switch button{font-size:14px}.switch button[aria-pressed=true]{background:var(--green);color:var(--paper);border-color:var(--green)}.article{max-width:740px;margin:auto;padding-top:38px}.chapter{border-bottom:1px solid var(--line);padding-bottom:30px;margin-bottom:34px}h2{font-size:28px;line-height:1.35;letter-spacing:-.5px;font-weight:600;margin:10px 0 20px}h3{font-size:22px;line-height:1.4}p{margin:0 0 28px}strong{font-weight:600}code,pre,.number{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}code{font-size:.88em;overflow-wrap:anywhere}pre{font-size:16px;line-height:1.8;background:var(--card);padding:20px;white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:7px}.takeaway{border-left:2px solid var(--green);padding-left:18px;margin-top:28px}.caption,figcaption,.motion-status{font-size:14px;line-height:1.65;color:var(--muted)}figure{margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}video,.static-frame{display:block;width:100%;height:auto;aspect-ratio:3/2;background:#191d20}.motion-copy{padding:18px 20px}.motion-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0 10px;font-size:14px}.motion-controls label{display:flex;align-items:center;gap:8px}.motion-status{margin:0}.static-option{padding:0 20px}.static-option img{margin:10px 0 20px}details{border-top:1px solid var(--line);padding:15px 0}summary{font-size:18px;line-height:1.55;cursor:pointer;min-height:44px;padding-block:7px}summary::marker{color:var(--green)}.level{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);display:block}.detail-body{padding-top:15px;font-size:19px}.table-wrap{overflow-x:auto;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:16px;line-height:1.65;text-align:left}caption{text-align:left;color:var(--muted);font-size:14px;margin-bottom:12px}th,td{border-bottom:1px solid var(--line);padding:12px 10px;vertical-align:top}thead th{color:var(--green)}tbody th{font-weight:600}.steps{padding-left:24px}.steps li{padding-left:6px;margin-bottom:16px}.choices{display:grid;gap:9px;margin:18px 0}.choice{text-align:left;font-size:17px;padding:12px 16px}.choice[aria-pressed=true]{background:var(--soft);border-color:var(--green)}.feedback{font-size:17px;background:var(--soft);padding:16px;margin-bottom:20px}.calculator{border:1px solid var(--line);border-radius:8px;padding:20px;background:var(--card)}.inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px}.inputs label{font-size:15px;display:flex;flex-direction:column;gap:6px}.inputs input{width:100%}.inputs input[type=range]{accent-color:var(--green);min-height:44px}.results{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}.results p{margin:0;font-size:14px}.results output{display:block;font:600 28px/1.4 'Segoe UI',Arial,sans-serif;color:var(--green);font-variant-numeric:tabular-nums}.sources{font-size:15px;line-height:1.7;padding-bottom:28px}.sources li{margin-bottom:14px}.share{border-top:1px solid var(--line);padding:22px 0 30px}.share h2{font-size:22px;margin:0 0 6px}.share-group{margin-top:18px}.share-group h3{font-size:16px;margin:0 0 6px;color:var(--muted);font-weight:600}.share-tags{margin:0 0 8px;font-size:17px;line-height:1.9;word-spacing:6px;overflow-wrap:anywhere}.share-copy{font-size:14px}.closing{border-left:2px solid var(--green);padding-left:18px;font-size:25px;line-height:1.45}.essential .full-only{display:none}footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:13px}blockquote{margin:20px 0;padding-left:18px;border-left:2px solid var(--green)}blockquote p{font-size:19px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:700px){.wrap{width:calc(100% - 36px)}.hero{padding-top:34px}body{font-size:18px}.dek{font-size:19px}h1{letter-spacing:-1px}h2{font-size:25px}.reading{display:block}.switch{margin-top:12px;flex-wrap:wrap}.article{padding-top:30px}.detail-body{font-size:18px}.motion-copy{padding:16px}.motion-controls label{flex-wrap:wrap}pre{font-size:15px;padding:16px}table{font-size:14px}th,td{padding:10px 7px}.inputs,.results{grid-template-columns:1fr}.calculator{padding:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{--paper:#fff;--ink:#202820;--muted:#505850;--line:#ddd;--card:#fff;--green:#284f38;font-size:11pt}.wrap{width:100%}.theme,.reading,.motion-controls,.share-copy,video,.choices,.feedback,.calculator{display:none!important}.essential .full-only{display:block}.article{max-width:100%}.hero{padding-top:20px}h1{font-size:28pt}.sources a{overflow-wrap:anywhere}}
+
+.quiz-question+.quiz-question{margin-top:36px;padding-top:22px;border-top:1px solid var(--line)}td.number,th.number{text-align:right;white-space:nowrap}
+.table-wrap code{overflow-wrap:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><i aria-hidden="true"></i>Depois do Deploy</div><button class="theme" id="theme" type="button" aria-pressed="false" hidden>Modo claro</button></header>
+<section class="hero" aria-labelledby="title">
+<div class="eyebrow">Java e JVM / aplicação prática · revisão</div>
+<h1 id="title">Anotações do Spring Boot: <em>quem lê, quando age e onde falha.</em></h1>
+<p class="dek"><strong>Objetivo:</strong> revisar as anotações mais usadas do Spring Boot 4 sabendo, para cada uma, quem a processa e em que momento, e corrigir os erros mais comuns: classe fora da varredura, <code>@Value</code> que esconde chave errada, <code>@Transactional</code> sem transação, <code>@Retryable</code> que não repete e testes que perderam o <code>@MockBean</code>.</p>
+<div class="meta"><span>Iniciante · revisão para quem já usa Spring Boot</span><span>12 de novembro de 2026</span><span>Essencial · 4 min</span><span>Completa · 10 min + animação</span></div>
+</section>
+<section class="reading" aria-label="Preferência de leitura" hidden><p><strong>Escolha o ritmo de hoje.</strong> O essencial cobre o conceito, os cinco sintomas, as correções e a primeira pergunta.</p><div class="switch" role="group" aria-label="Tempo disponível"><button id="short" type="button" aria-pressed="false">Essencial · 4 min</button><button id="full" type="button" aria-pressed="true">Completa · 10 min</button></div></section>
+<noscript><p class="caption">A leitura e as respostas recolhíveis funcionam sem JavaScript. A animação tem controles nativos e uma imagem estática.</p></noscript>
+<main class="article">
+<section class="chapter" id="concept">
+<div class="eyebrow">01 / conceito</div>
+<h2>Anotação não executa nada. Alguém precisa ler.</h2>
+<p>Uma <strong>anotação</strong> é um metadado: um rótulo preso a uma classe, a um método ou a um campo. Sozinha, <code>@Transactional</code> não abre transação, do mesmo jeito que a etiqueta “frágil” não protege a caixa. Quem age é a parte do Spring que <strong>lê</strong> a anotação e faz alguma coisa com ela.</p>
+<p>No Spring Boot, as anotações do dia a dia são lidas em três momentos:</p>
+<ul class="steps">
+<li><strong>Na subida:</strong> a <strong>varredura de componentes</strong> (<em>component scan</em>) encontra <code>@Service</code>, <code>@RestController</code> e <code>@Configuration</code>; a <strong>autoconfiguração</strong> cria beans conforme o que está no classpath; o <em>binder</em> preenche as classes de <code>@ConfigurationProperties</code>. <a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">[1]</a></li>
+<li><strong>A cada chamada:</strong> <code>@Transactional</code>, <code>@Async</code>, <code>@Cacheable</code> e <code>@Retryable</code> funcionam por <strong>proxy</strong>, um objeto intermediário que o Spring entrega aos outros beans no lugar do seu. O proxy faz algo antes e depois do método real, como abrir e fechar a transação. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></li>
+<li><strong>No teste:</strong> <code>@SpringBootTest</code>, <code>@WebMvcTest</code> e <code>@MockitoBean</code> são lidas pelo framework de testes do Spring, que monta um contexto só para o teste. <a href="https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-mockitobean.html">[3]</a></li>
+</ul>
+<p>Daí três perguntas que servem para revisar qualquer anotação: <strong>quem lê?</strong>, <strong>quando age?</strong> e <strong>o que acontece se ninguém ler?</strong> A última é a mais perigosa, porque muitas vezes a resposta é: nada. Sem erro e sem aviso.</p>
+<div class="table-wrap"><table><caption>Mapa de revisão: quem atende cada anotação, e quando</caption><thead><tr><th scope="col">Anotação</th><th scope="col">Quem atende, e quando</th><th scope="col">Se ninguém atender</th></tr></thead><tbody>
+<tr><th scope="row"><code>@Service</code>, <code>@RestController</code></th><td>Varredura de componentes, na subida</td><td>O bean não existe; a injeção falha na subida</td></tr>
+<tr><th scope="row"><code>@Configuration<wbr>Properties</code></th><td>Binder, na subida, com <code>@Configuration<wbr>PropertiesScan</code></td><td>A classe não vira bean; a injeção falha</td></tr>
+<tr><th scope="row"><code>@Transactional</code></th><td>Proxy autoconfigurado, a cada chamada</td><td>Roda sem transação, sem aviso</td></tr>
+<tr><th scope="row"><code>@Async</code></th><td>Proxy com <code>@EnableAsync</code>, a cada chamada <a href="https://docs.spring.io/spring-boot/reference/features/task-execution-and-scheduling.html">[4]</a></td><td>Roda na thread de quem chamou</td></tr>
+<tr><th scope="row"><code>@Cacheable</code></th><td>Proxy com <code>@EnableCaching</code>, a cada chamada <a href="https://docs.spring.io/spring-boot/reference/io/caching.html">[5]</a></td><td>O método roda sempre; nada vai para o cache</td></tr>
+<tr><th scope="row"><code>@Retryable</code> (Spring 7)</th><td>Proxy com <code>@Enable<wbr>ResilientMethods</code>, a cada chamada <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a></td><td>Executa uma vez só</td></tr>
+</tbody></table></div>
+<p>As versões usadas aqui são o Spring Boot 4.1, estável em novembro de 2026, e o Spring Framework 7, com Java 17 ou mais novo. Quase tudo vale também para o Boot 3; quando algo mudou no 4, o texto avisa. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
+<p class="takeaway"><strong>Anotação é um pedido. Sem quem atenda, vira um comentário que compila.</strong></p>
+</section>
+<section class="chapter" id="problem">
+<div class="eyebrow">02 / problema</div>
+<h2>Compilou. Os sintomas vieram depois.</h2>
+<p>A API de Pedidos de uma loja on-line está migrando do Spring Boot 3.3 para o 4.1. O código de produção compilou na primeira tentativa. Mesmo assim, na mesma semana, apareceram cinco sintomas:</p>
+<ol class="steps">
+<li><strong>Bean não encontrado:</strong> o novo <code>TransportadoraClient</code> derruba a subida com <code>NoSuchBeanDefinitionException</code>.</li>
+<li><strong>Configuração ignorada:</strong> o timeout da transportadora foi mudado para 2 segundos no <code>application.yml</code>, mas as chamadas continuam esperando 5.</li>
+<li><strong>Pedido sem pagamento:</strong> alguns pedidos ficaram <code>CONFIRMADO</code> sem o registro da cobrança, embora o método <code>confirmar()</code> tenha <code>@Transactional</code>.</li>
+<li><strong>Retry que não repete:</strong> a equipe trocou a biblioteca Spring Retry pelo <code>@Retryable</code> nativo do Spring 7, e a cotação de frete agora falha na primeira instabilidade.</li>
+<li><strong>Testes que não compilam:</strong> <code>@MockBean</code> sumiu, e o import de <code>@WebMvcTest</code> não é mais encontrado.</li>
+</ol>
+<p>Só o primeiro derrubou a aplicação. Os outros passaram em silêncio: o código parece certo, compila, e o comportamento esperado simplesmente não acontece.</p>
+<p>O que a equipe precisa: entender a causa de cada sintoma, corrigir sem reescrever o serviço e fazer os próximos erros aparecerem cedo, de preferência na subida.</p>
+</section>
+<section class="chapter" id="solution">
+<div class="eyebrow">03 / solução</div>
+<h2>Para cada sintoma, a mesma pergunta: quem atende?</h2>
+<h3><code>@SpringBootApplication</code> e injeção: o que a varredura alcança</h3>
+<p><code>@SpringBootApplication</code> junta três anotações: <code>@SpringBootConfiguration</code>, <code>@EnableAutoConfiguration</code> e <code>@ComponentScan</code>. A varredura começa no <strong>pacote da classe principal</strong> e desce pelos subpacotes. <a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">[1]</a></p>
+<p>A aplicação mora em <code>com.loja.pedidos</code>, e o <code>TransportadoraClient</code> foi criado em <code>com.loja.integracoes</code>, um pacote irmão. A varredura não chega lá. A correção mais simples é mover a classe para baixo de <code>com.loja.pedidos</code>. Listar pacotes extras em <code>scanBasePackages</code> também funciona, mas espalha a regra.</p>
+<p>Para receber dependências, a recomendação do Spring é o <strong>construtor</strong>. Com um construtor só, o <code>@Autowired</code> é dispensável, os campos podem ser <code>final</code> e o teste cria a classe com <code>new</code>, sem subir o Spring. <a href="https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html">[8]</a> <a href="https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html">[9]</a></p>
+<pre class="full-only"><code>@Service
+public class PedidoService {
+  private final ConfirmacaoService confirmacao;   // final: obrigatório
+
+  public PedidoService(ConfirmacaoService confirmacao) {   // sem @Autowired
+    this.confirmacao = confirmacao;
+  }
+}</code></pre>
+<p class="takeaway"><strong>A varredura começa no pacote da classe principal. O que fica fora dele não existe para o Spring.</strong></p>
+<h3><code>@ConfigurationProperties</code>: configuração com tipo, validada na subida</h3>
+<p>O timeout estava em <code>@Value("${frete.timeout-ms:5000}")</code>, repetido em três classes. Ao ajustar o YAML, alguém trocou a chave para <code>frete.timeout</code>. O <code>@Value</code> não encontrou a chave antiga e usou o padrão, 5000, sem avisar. O <code>:5000</code> que parecia proteção escondeu o erro.</p>
+<p><code>@Value</code> serve para um valor isolado e é o único dos dois que avalia SpEL. Para um grupo de chaves, o Spring Boot recomenda <code>@ConfigurationProperties</code>: um objeto com tipo, que um <code>record</code> resolve em poucas linhas. Com <code>@Validated</code>, uma chave ausente ou um valor inválido impede a aplicação de subir. <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">[10]</a></p>
+<pre class="full-only"><code>@ConfigurationProperties("frete")
+@Validated
+public record FreteProperties(
+    @NotNull URI url,
+    @NotNull Duration timeout) {}          // frete.timeout=2s
+
+@SpringBootApplication
+@ConfigurationPropertiesScan               // registra os records de configuração
+public class PedidosApplication { }</code></pre>
+<p class="full-only">Para a validação rodar, uma implementação de Bean Validation precisa estar no classpath, como a que vem com <code>spring-boot-starter-validation</code>. Em um record com um único construtor, o binder usa esse construtor sem precisar de <code>@ConstructorBinding</code>. <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">[10]</a></p>
+<p class="takeaway"><strong>Valor padrão esconde chave errada. Validação na subida mostra.</strong></p>
+<h3><code>@Transactional</code>: só vale quando a chamada passa pelo proxy</h3>
+<p>No <code>PedidoService</code>, o método <code>processar()</code> chamava <code>confirmar()</code>, que tem <code>@Transactional</code>, dentro da mesma classe. Essa chamada usa <code>this</code>, o objeto real, e não passa pelo proxy. A documentação do Spring é direta: no modo proxy, que é o padrão, só chamadas que chegam de fora são interceptadas; a <strong>auto-invocação</strong> não ganha transação, mesmo com a anotação. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a> Sem transação, o pedido gravado antes da falha na cobrança continuou gravado.</p>
+<figure aria-labelledby="sp-caption">
+<video id="sp-video" controls preload="none" playsinline poster="../../assets/spring-proxy-transacao-poster.png" width="960" height="640" aria-describedby="sp-caption"><source src="../../assets/spring-proxy-transacao.mp4" type="video/mp4"><p>Consulte a imagem estática e a descrição abaixo.</p></video>
+<div class="motion-copy"><figcaption id="sp-caption"><strong>Pelo proxy, por fora dele e a correção.</strong> Primeiro, outro bean chama <code>confirmar()</code> e passa pelo proxy, que abre a transação e faz commit ou rollback. Depois, <code>processar()</code> chama <code>this.confirmar()</code> na mesma classe: o proxy fica de fora, a cobrança falha e o pedido continua gravado. No fim, <code>confirmar()</code> vai para <code>ConfirmacaoService</code>; a chamada atravessa o proxy, e a falha desfaz o pedido. <strong>Hipóteses:</strong> API de Pedidos fictícia; proxy de classe, o padrão do Spring Boot; a falha na cobrança é uma exceção de runtime.</figcaption>
+<div class="motion-controls" hidden><button id="play" type="button" aria-controls="sp-video" aria-pressed="false">Reproduzir</button><button id="restart" type="button" aria-controls="sp-video">Repetir do início</button><label>Velocidade <select id="speed" aria-label="Velocidade da animação"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option><option value="2">2×</option></select></label></div><p class="motion-status" id="motion-status" role="status">24 segundos · reprodução manual · uma passagem por vez.</p></div>
+<details class="static-option"><summary>Ver a explicação estática</summary><img class="static-frame" src="../../assets/spring-proxy-transacao-poster.png" width="960" height="640" loading="lazy" alt="Auto-invocação pula o proxy. A caixa Proxy, esmaecida e marcada como fora do caminho de this, repassa processar() para PedidoService, o objeto real. Dentro dele, uma seta laranja liga processar() a confirmar(), anotado com @Transactional, com o rótulo: this.confirmar(), sem passar pelo proxy. Abaixo: pedido gravado como CONFIRMADO; cobrança recusada, exceção; sem transação, nada é desfeito. Resultado: pedido confirmado sem pagamento."></details>
+</figure>
+<p>A correção é fazer a chamada atravessar um bean: mover <code>confirmar()</code> para <code>ConfirmacaoService</code> e chamá-lo pelo bean injetado no <code>PedidoService</code>. <span class="full-only">O proxy também não alcança métodos <code>private</code>; desde o Spring 6, métodos <code>protected</code> e de pacote funcionam em proxies de classe. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></span></p>
+<p>Depois da mudança, um caso ainda deixava o pedido gravado: <code>SaldoInsuficienteException</code> estende <code>Exception</code>. Pela regra padrão, <strong>só <code>RuntimeException</code> e <code>Error</code> desfazem a transação</strong>; exceções verificadas fazem commit. Há duas saídas: declarar <code>@Transactional(rollbackFor = Exception.class)</code> no método ou, desde o Spring 6.2, mudar a regra da aplicação inteira. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></p>
+<pre class="full-only"><code>@Configuration
+@EnableTransactionManagement(rollbackOn = RollbackOn.ALL_EXCEPTIONS)
+class TransacaoConfig { }</code></pre>
+<p class="takeaway"><strong>Quem abre a transação é o proxy. Chamada que não passa por ele não ganha transação.</strong></p>
+<h3><code>@Retryable</code> e <code>@ConcurrencyLimit</code>: novos no Spring 7, desligados por padrão</h3>
+<p>O Spring Framework 7 trouxe para o núcleo <code>@Retryable</code> e <code>@ConcurrencyLimit</code>, do pacote <code>org.springframework.resilience.annotation</code>. <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a> O Spring Boot 4 deixou de gerenciar a versão da biblioteca Spring Retry e recomenda migrar para esse suporte nativo. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
+<p>A equipe trocou o import e apagou o antigo <code>@EnableRetry</code>, sem colocar nada no lugar. Sem quem leia, <code>@Retryable</code> é só metadado, e o método roda uma vez. O Boot não liga o recurso sozinho: a equipe do Spring Boot recusou a autoconfiguração porque habilitar é uma linha. <a href="https://github.com/spring-projects/spring-boot/issues/46916">[11]</a> A linha é <strong><code>@EnableResilientMethods</code></strong> em uma classe <code>@Configuration</code>. <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a></p>
+<pre class="full-only"><code>@Configuration
+@EnableResilientMethods          // sem isto, @Retryable não faz nada
+class ResilienciaConfig { }
+
+@Component
+public class TransportadoraClient {
+  @Retryable(includes = FreteIndisponivelException.class, delay = 500)
+  @ConcurrencyLimit(10)
+  public Cotacao cotar(Pedido pedido) { /* chamada HTTP */ }
+}</code></pre>
+<p>Sem atributos, <code>@Retryable</code> repete qualquer exceção até 3 vezes depois da primeira falha, com 1 segundo entre as tentativas. Vale restringir às falhas temporárias com <code>includes</code>: repetir uma recusa de validação só atrasa o erro. <code>@ConcurrencyLimit</code> limita quantas chamadas simultâneas chegam ao método, o que ajuda com threads virtuais. <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a> Os dois funcionam por proxy, então a regra da auto-invocação vale aqui também.</p>
+<p class="takeaway"><strong>Trocar a anotação não basta. Alguém precisa ligá-la.</strong></p>
+<h3>Testes no Boot 4: <code>@MockitoBean</code> e fatias em módulos</h3>
+<p>O <code>@MockBean</code> do Spring Boot foi marcado como obsoleto no 3.4 e <strong>removido no 4.0</strong>. O substituto é <code>@MockitoBean</code>, e <code>@MockitoSpyBean</code> substitui <code>@SpyBean</code>. Os dois vêm do próprio Spring Framework. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.4-Release-Notes">[12]</a> <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
+<p>O Boot 4 também dividiu a autoconfiguração em módulos por tecnologia. <code>@WebMvcTest</code> agora fica em <code>org.springframework.boot.webmvc.test.autoconfigure</code> e chega pelo <code>spring-boot-starter-webmvc-test</code>; <code>@DataJpaTest</code> chega pelo <code>spring-boot-starter-data-jpa-test</code>. <a href="https://docs.spring.io/spring-boot/appendix/test-auto-configuration/slices.html">[13]</a> <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
+<pre class="full-only"><code>import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+@WebMvcTest(PedidoController.class)    // só a camada web
+class PedidoControllerTest {
+  @Autowired MockMvc mvc;
+  @MockitoBean PedidoService pedidos;  // era @MockBean
+}</code></pre>
+<p class="full-only">Uma diferença de uso: <code>@MockitoBean</code> vai em campos da classe de teste, ou na própria classe com o atributo <code>types</code>, e não em classes <code>@Configuration</code>. Para mocks compartilhados, o guia de migração sugere uma anotação composta. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a> <a href="https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-mockitobean.html">[3]</a></p>
+<p>Na escolha do teste, prefira a fatia ao contexto inteiro: <code>@SpringBootTest</code> sobe a aplicação toda, enquanto <code>@WebMvcTest</code> e <code>@DataJpaTest</code> sobem só a camada testada. <a href="https://docs.spring.io/spring-boot/appendix/test-auto-configuration/slices.html">[13]</a></p>
+<p class="takeaway"><strong>O mock do teste agora vem do Spring Framework: <code>@MockitoBean</code>.</strong></p>
+</section>
+<section class="chapter full-only" id="depth">
+<div class="eyebrow">04 / aprofundamento opcional</div>
+<h2>Detalhes que aparecem em produção e na migração</h2>
+<details><summary><span class="level">Base</span>Por que a auto-invocação escapa do proxy</summary><div class="detail-body">
+<p>No Spring Boot, o padrão é o <strong>proxy de classe</strong> (CGLIB): uma subclasse gerada em tempo de execução que sobrescreve os métodos, faz o trabalho extra e chama o método do objeto real. <a href="https://docs.spring.io/spring-boot/reference/features/aop.html">[14]</a> Os outros beans recebem essa subclasse. Dentro do objeto real, porém, <code>this</code> aponta para ele mesmo, então <code>this.confirmar()</code> nunca passa pela subclasse. Métodos <code>final</code> também ficam de fora, porque a subclasse não consegue sobrescrevê-los.</p>
+<p>A regra vale para toda anotação atendida por proxy: <code>@Transactional</code>, <code>@Async</code>, <code>@Cacheable</code>, <code>@Retryable</code> e <code>@ConcurrencyLimit</code>. As saídas, da mais simples à mais invasiva: mover o método para outro bean; delimitar a transação no código com <code>TransactionTemplate</code>; ou trocar o proxy pelo modo AspectJ, que costura o comportamento no próprio bytecode e intercepta também a auto-invocação. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></p>
+</div></details>
+<details><summary><span class="level">Aplicação</span><code>@Async</code>, <code>@Scheduled</code> e threads virtuais</summary><div class="detail-body">
+<p><code>@Async</code> e <code>@Scheduled</code> também precisam de quem as ligue: <code>@EnableAsync</code> e <code>@EnableScheduling</code>. Sem a primeira, o método “assíncrono” roda na thread de quem chamou; sem a segunda, o método agendado não é registrado. <a href="https://docs.spring.io/spring-boot/reference/features/task-execution-and-scheduling.html">[4]</a></p>
+<p>O executor o Spring Boot já cria. Sem threads virtuais, é um <code>ThreadPoolTaskExecutor</code> com 8 threads de base, que cresce e encolhe conforme a carga. Com Java 21 ou mais novo e <code>spring.threads.virtual.enabled=true</code>, vira um <code>SimpleAsyncTaskExecutor</code> que usa threads virtuais. <a href="https://docs.spring.io/spring-boot/reference/features/task-execution-and-scheduling.html">[4]</a></p>
+<p>Threads virtuais deixam a espera barata, mas não limitam quantas chamadas chegam a um serviço externo. É aí que entra <code>@ConcurrencyLimit</code>: por padrão, as chamadas além do limite esperam a vez; com <code>policy = REJECT</code>, são recusadas. <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a> A edição sobre <a href="001-threads-virtuais.html">threads virtuais e controle de concorrência</a> explica por que liberar a espera e limitar o acesso são problemas diferentes.</p>
+</div></details>
+<details><summary><span class="level">Aplicação</span>Novas no Spring 7: cliente HTTP declarativo e versão de API</summary><div class="detail-body">
+<p><strong><code>@HttpExchange</code></strong> declara um cliente HTTP como interface: cada método com <code>@GetExchange</code> ou <code>@PostExchange</code> vira uma chamada, executada por <code>RestClient</code> ou <code>WebClient</code>. No Spring 7, <code>@ImportHttpServices</code> registra essas interfaces como beans, em grupos, e o Boot 4 configura cada grupo por propriedades. <a href="https://docs.spring.io/spring-framework/reference/integration/rest-clients.html">[15]</a> <a href="https://docs.spring.io/spring-boot/reference/io/rest-client.html">[16]</a></p>
+<pre><code>public interface TransportadoraApi {
+  @PostExchange("/cotacoes")
+  Cotacao cotar(@RequestBody PedidoFrete pedido);
+}
+
+@SpringBootApplication
+@ImportHttpServices(group = "transportadora", types = TransportadoraApi.class)
+public class PedidosApplication { }
+
+// application.properties
+// spring.http.serviceclient.transportadora.base-url=https://frete.example.com</code></pre>
+<p>A <strong>versão de API</strong> virou atributo do mapeamento: <code>@GetMapping(version = "1.1")</code> atende só à versão 1.1, e <code>version = "1.2+"</code> atende à 1.2 e às versões suportadas acima dela, quando não há um mapeamento mais específico. <a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html">[17]</a> No Boot, a origem da versão vem de propriedades, como <code>spring.mvc.apiversion.use.header=X-Version</code>. <a href="https://docs.spring.io/spring-boot/reference/web/servlet.html">[18]</a></p>
+</div></details>
+<details><summary><span class="level">Profundidade</span>Checklist de nomes que mudaram no Boot 4</summary><div class="detail-body">
+<ul>
+<li><code>@MockBean</code> e <code>@SpyBean</code>: removidos; use <code>@MockitoBean</code> e <code>@MockitoSpyBean</code>.</li>
+<li><code>@JsonComponent</code> e <code>@JsonMixin</code>: viraram <code>@JacksonComponent</code> e <code>@JacksonMixin</code>, com a mudança para o Jackson 3.</li>
+<li><code>@EntityScan</code>: mudou para o pacote <code>org.springframework.boot.persistence.autoconfigure</code>.</li>
+<li><code>@Nullable</code>: o Boot passou a usar as anotações do JSpecify, como <code>org.jspecify.annotations.Nullable</code>; ferramentas que checam nulos podem apontar erros novos.</li>
+<li><code>@SpringBootTest</code> com servidor: o <code>TestRestTemplate</code> deixou de vir pronto; use <code>@AutoConfigureTestRestTemplate</code> ou o novo <code>RestTestClient</code>, com <code>@AutoConfigureRestTestClient</code>.</li>
+<li>Spring Retry: o Boot não gerencia mais a versão; quem continuar com a biblioteca precisa declará-la.</li>
+</ul>
+<p>O guia de migração lista o resto. Leia antes de subir a versão, não depois do primeiro erro. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
+</div></details>
+</section>
+<section class="chapter" id="challenge">
+<div class="eyebrow">05 / desafio</div>
+<h2>Proxy, habilitação e rollback</h2>
+<p class="caption">Três camadas para estudo. As respostas começam escondidas; o desafio não diagnostica seu nível profissional.</p>
+<div class="quiz-question" data-question-id="q1"><h3>Base — Uma chamada dentro da mesma classe</h3><p>Em <code>PedidoService</code>, <code>processar()</code> não tem anotação e chama <code>confirmar()</code>, que tem <code>@Transactional</code>. No meio de <code>confirmar()</code>, depois de gravar o pedido, uma <code>RuntimeException</code> é lançada. O que acontece com o pedido?</p><div class="choices" role="group" aria-label="Respostas da pergunta 1" hidden><button class="choice" type="button" data-answer="rollback" aria-pressed="false">A transação de <code>confirmar()</code> desfaz a gravação.</button><button class="choice" type="button" data-answer="no-transaction" aria-pressed="false">Fica gravado: a chamada usou <code>this</code>, não passou pelo proxy e rodou sem transação.</button><button class="choice" type="button" data-answer="startup-error" aria-pressed="false">Nada é gravado: o Spring recusa a auto-invocação e falha na subida.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da base</summary><div class="detail-body"><p><strong>Fica gravado.</strong> A auto-invocação não passa pelo proxy, então não existe transação para desfazer. Mova <code>confirmar()</code> para outro bean ou delimite a transação com <code>TransactionTemplate</code>.</p></div></details></div>
+<div class="quiz-question full-only" data-question-id="q2"><h3>Aplicação — O retry que não repete</h3><p>A equipe trocou o Spring Retry pelo <code>@Retryable</code> do Spring Framework 7 no método <code>cotar()</code> de <code>TransportadoraClient</code>, que o controller chama pelo bean injetado. Em teste, uma falha temporária não é repetida nenhuma vez. Qual é a causa mais provável?</p><div class="choices" role="group" aria-label="Respostas da pergunta 2" hidden><button class="choice" type="button" data-answer="missing-enable" aria-pressed="false">Falta <code>@EnableResilientMethods</code> em uma classe <code>@Configuration</code>.</button><button class="choice" type="button" data-answer="zero-default" aria-pressed="false">O padrão de <code>maxRetries</code> é zero; é preciso informar as tentativas.</button><button class="choice" type="button" data-answer="needs-library" aria-pressed="false">Falta a dependência <code>spring-retry</code>, que o Spring 7 usa por baixo.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da aplicação</summary><div class="detail-body"><p><strong>Falta habilitar.</strong> Sem <code>@EnableResilientMethods</code>, ninguém lê <code>@Retryable</code>, e o método roda uma vez. O padrão é repetir até 3 vezes, e o recurso está no próprio Spring Framework, sem biblioteca extra.</p></div></details></div>
+<div class="quiz-question full-only" data-question-id="q3"><h3>Profundidade — A exceção que não desfaz</h3><p>Depois de mover <code>confirmar()</code> para <code>ConfirmacaoService</code>, o pedido ainda fica gravado quando o método lança <code>SaldoInsuficienteException</code>, que estende <code>Exception</code>. Por quê, e o que corrige?</p><div class="choices" role="group" aria-label="Respostas da pergunta 3" hidden><button class="choice" type="button" data-answer="checked-commit" aria-pressed="false">Exceção verificada não provoca rollback por padrão. Use <code>rollbackFor = Exception.class</code> ou <code>rollbackOn = ALL_EXCEPTIONS</code>.</button><button class="choice" type="button" data-answer="no-proxy" aria-pressed="false">O proxy não foi criado: falta repetir <code>@Transactional</code> na classe <code>ConfirmacaoService</code>.</button><button class="choice" type="button" data-answer="isolation" aria-pressed="false">O isolamento padrão permite ler dados não confirmados; é preciso usar <code>SERIALIZABLE</code>.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da profundidade</summary><div class="detail-body"><p><strong>Regra de rollback.</strong> Por padrão, só <code>RuntimeException</code> e <code>Error</code> desfazem a transação. Declare <code>rollbackFor</code> no método ou, desde o Spring 6.2, use <code>@EnableTransactionManagement(rollbackOn = RollbackOn.ALL_EXCEPTIONS)</code>. A própria documentação recomenda essa troca para quem não depende de commit com exceção de negócio. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></p></div></details></div>
+</section>
+<section class="sources" aria-labelledby="sources-title"><p class="closing">Anotação é um pedido, não uma garantia. Antes de confiar nela, pergunte quem atende.</p><h2 id="sources-title">Fontes para voltar depois</h2><ol>
+<li><a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">Spring Boot Reference · Using the @SpringBootApplication Annotation</a>: as três anotações que ela combina e a varredura a partir do pacote da aplicação.</li>
+<li><a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">Spring Framework Reference · Using @Transactional</a>: modo proxy e auto-invocação, visibilidade dos métodos, regra padrão de rollback e <code>rollbackOn</code> desde a 6.2.</li>
+<li><a href="https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-mockitobean.html">Spring Framework Reference · @MockitoBean and @MockitoSpyBean</a>: substituição de beans por mocks e spies no contexto de teste, em campos ou na classe.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/features/task-execution-and-scheduling.html">Spring Boot Reference · Task Execution and Scheduling</a>: executor autoconfigurado para <code>@EnableAsync</code> e <code>@EnableScheduling</code>, com e sem threads virtuais.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/io/caching.html">Spring Boot Reference · Caching</a>: a infraestrutura de cache só é configurada com <code>@EnableCaching</code>.</li>
+<li><a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">Spring Framework Reference · Resilience Features</a>: <code>@Retryable</code>, <code>@ConcurrencyLimit</code>, padrões de tentativas e <code>@EnableResilientMethods</code>.</li>
+<li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">Spring Boot 4.0 Migration Guide</a>: Java 17, remoção de <code>@MockBean</code>, starters de teste por tecnologia, Jackson 3, <code>@EntityScan</code>, JSpecify e Spring Retry.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html">Spring Boot Reference · Spring Beans and Dependency Injection</a>: recomendação de injeção por construtor e uso de <code>@Autowired</code> com vários construtores.</li>
+<li><a href="https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html">Spring Framework Reference · Dependency Injection</a>: por que a equipe do Spring prefere construtores para dependências obrigatórias.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">Spring Boot Reference · Externalized Configuration</a>: <code>@ConfigurationProperties</code> com records, varredura, validação com <code>@Validated</code> e comparação com <code>@Value</code>.</li>
+<li><a href="https://github.com/spring-projects/spring-boot/issues/46916">spring-boot · Issue #46916, Auto-configure @EnableResilientMethods</a>: pedido de autoconfiguração recusado porque habilitar é uma linha.</li>
+<li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.4-Release-Notes">Spring Boot 3.4 Release Notes</a>: <code>@MockBean</code> e <code>@SpyBean</code> marcados como obsoletos em favor das anotações do Spring Framework.</li>
+<li><a href="https://docs.spring.io/spring-boot/appendix/test-auto-configuration/slices.html">Spring Boot Reference · Test Slices</a>: módulo e pacote de cada fatia de teste, como <code>@WebMvcTest</code> e <code>@DataJpaTest</code>.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/features/aop.html">Spring Boot Reference · Aspect-Oriented Programming</a>: proxies CGLIB como padrão e a propriedade <code>spring.aop.proxy-target-class</code>.</li>
+<li><a href="https://docs.spring.io/spring-framework/reference/integration/rest-clients.html">Spring Framework Reference · REST Clients</a>: HTTP Service Clients com <code>@HttpExchange</code> e grupos com <code>@ImportHttpServices</code>.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/io/rest-client.html">Spring Boot Reference · Calling REST Services</a>: importação de HTTP Services e propriedades <code>spring.http.serviceclient.*</code> por grupo.</li>
+<li><a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html">Spring Framework Reference · Mapping Requests</a>: atributo <code>version</code> com versão fixa e versão base, como <code>"1.2+"</code>.</li>
+<li><a href="https://docs.spring.io/spring-boot/reference/web/servlet.html">Spring Boot Reference · Servlet Web Applications</a>: versionamento de API configurado pelas propriedades <code>spring.mvc.apiversion.*</code>.</li>
+</ol><p class="caption">Fontes consultadas em 12/11/2026, com o Spring Boot 4.1.2 como versão estável e o 4.2 ainda em release candidate. Loja, API de Pedidos, classes e valores são didáticos. O nível descreve a profundidade do artigo, sem diagnosticar a competência do leitor.</p></section>
+<section class="share" id="hashtags" aria-labelledby="share-title"><h2 id="share-title">Hashtags para divulgar</h2><p class="caption">Para a descrição do vídeo no YouTube e para o post no LinkedIn sobre este tema. Cole no fim do texto.</p><div class="share-group"><h3 id="tags-youtube-t">YouTube · descrição do vídeo</h3><p class="share-tags" id="tags-youtube">#SpringBoot #Java #SpringFramework #JavaJVM #Backend #EngenhariaDeSoftware #Programacao #DepoisDoDeploy</p><button class="share-copy" type="button" data-copy="tags-youtube" aria-describedby="tags-youtube-t" hidden>Copiar hashtags</button></div><div class="share-group"><h3 id="tags-linkedin-t">LinkedIn · post</h3><p class="share-tags" id="tags-linkedin">#SpringBoot #Java #SpringFramework #Backend #DepoisDoDeploy</p><button class="share-copy" type="button" data-copy="tags-linkedin" aria-describedby="tags-linkedin-t" hidden>Copiar hashtags</button></div><p class="caption" id="share-status" role="status"></p></section>
+</main>
+<template id="apresentacao" data-tema="Java e JVM · anotações do Spring Boot">
+<section class="slide" data-layout="title">
+<p class="slide-eyebrow">Java e JVM · aplicação prática · iniciante</p>
+<h1>Anotações do Spring Boot</h1>
+<p class="slide-sub">Quem lê, quando age e onde falha.</p>
+<p class="slide-meta">Uma revisão com um exemplo só: a API de Pedidos migrando para o Spring Boot 4.</p>
+<aside class="notes">Apresente o tema como revisão: são anotações que você já usa, vistas pela pergunta “quem atende?”. Explique o formato: cada parte aparece primeiro como texto completo e fecha com uma revisão em cards.</aside>
+</section>
+<section class="slide">
+<h2>O que vamos ver</h2>
+<ol class="slide-list">
+<li data-frag>Conceito: quem lê uma anotação, e quando</li>
+<li data-frag>Problema: cinco sintomas de uma migração</li>
+<li data-frag>Solução: varredura, configuração, transação, retry e testes</li>
+<li data-frag>Em produção: proxy, <code>@Async</code>, novidades do Spring 7 e checklist do Boot 4</li>
+<li data-frag>Desafio</li>
+</ol>
+<aside class="notes">Mostre o roteiro. Avise que tudo gira em torno da mesma API de Pedidos, do Boot 3.3 para o 4.1.</aside>
+</section>
+<section class="slide" data-texto=".hero" data-titulo="Objetivo do estudo"><aside class="notes">Leia o objetivo. A lista de erros no fim é o roteiro da solução.</aside></section>
+
+<section class="slide" data-texto="#concept"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">01 / conceito · revisão</p>
+<h2>Anotação é um pedido. Alguém precisa atender.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Anotação</h3><p>Metadado preso ao código. Sozinha, não executa nada.</p></div>
+<div class="slide-card"><h3>Na subida</h3><p>Varredura, autoconfiguração e binder registram beans e leem a configuração.</p><p class="slide-mono">@Service · @ConfigurationProperties</p></div>
+<div class="slide-card"><h3>A cada chamada</h3><p>Um proxy no lugar do bean age antes e depois do método real.</p><p class="slide-mono">@Transactional · @Async · @Retryable</p></div>
+<div class="slide-card"><h3>No teste</h3><p>O framework de testes do Spring monta um contexto só para o teste.</p><p class="slide-mono">@WebMvcTest · @MockitoBean</p></div>
+<div class="slide-card"><h3>Três perguntas</h3><p>Quem lê? Quando age? O que acontece se ninguém ler?</p></div>
+<div class="slide-card"><h3>Se ninguém ler</h3><p>Muitas vezes, nada: sem erro e sem aviso.</p><p class="slide-mono">@EnableAsync · @EnableCaching · @EnableResilientMethods</p></div>
+</div>
+<aside class="notes">Revise um card por vez. A anotação é só um rótulo; quem age é o Spring, em três momentos: subida, cada chamada e teste. As três perguntas valem para qualquer anotação. Feche no último card: as anotações de proxy com @Enable algo não fazem nada sem ele.</aside>
+</section>
+
+<section class="slide" data-texto="#problem"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">02 / problema · revisão</p>
+<h2>Compilou. Os sintomas vieram depois.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Bean não encontrado</h3><p>O novo cliente da transportadora derruba a subida. O único sintoma barulhento.</p><p class="slide-mono">NoSuchBeanDefinitionException</p></div>
+<div class="slide-card"><h3>Configuração ignorada</h3><p>Timeout mudado para 2 s no YAML; as chamadas seguem esperando 5 s.</p></div>
+<div class="slide-card"><h3>Pedido sem pagamento</h3><p>CONFIRMADO sem cobrança, mesmo com <code>@Transactional</code> em <code>confirmar()</code>.</p></div>
+<div class="slide-card"><h3>Retry que não repete</h3><p>Com o <code>@Retryable</code> do Spring 7, a cotação falha na primeira instabilidade.</p></div>
+<div class="slide-card"><h3>Testes quebrados</h3><p><code>@MockBean</code> sumiu; o import de <code>@WebMvcTest</code> não é encontrado.</p></div>
+</div>
+<aside class="notes">Retome os cinco sintomas. Só o primeiro falha na subida; os outros passam em silêncio, e é isso que os torna caros. A solução segue os três momentos: subida, chamada e teste.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="0"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>A varredura começa no pacote da classe principal.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>@SpringBootApplication</h3><p>Junta <code>@SpringBootConfiguration</code>, <code>@EnableAutoConfiguration</code> e <code>@ComponentScan</code>.</p></div>
+<div class="slide-card"><h3>Alcance da varredura</h3><p>Do pacote da classe principal para baixo. Pacote irmão fica de fora.</p><p class="slide-mono">com.loja.pedidos ✓ · com.loja.integracoes ✗</p></div>
+<div class="slide-card"><h3>Correção</h3><p>Mover a classe para baixo do pacote principal. <code>scanBasePackages</code> espalha a regra.</p></div>
+<div class="slide-card"><h3>Injeção por construtor</h3><p>Com um só construtor, sem <code>@Autowired</code>. Campos <code>final</code>, teste com <code>new</code>.</p></div>
+</div>
+<aside class="notes">O cliente novo estava num pacote irmão, então a varredura não o encontrou. A correção é mover a classe. Aproveite para revisar a injeção por construtor: é a recomendação do Spring, deixa os campos final e o teste dispensa o contexto.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="1"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Valor padrão esconde chave errada.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>@Value com padrão</h3><p>A chave foi renomeada e o padrão entrou em silêncio.</p><p class="slide-mono">${frete.timeout-ms:5000}</p></div>
+<div class="slide-card"><h3>@ConfigurationProperties</h3><p>Grupo de chaves num objeto com tipo. Um <code>record</code> resolve.</p><p class="slide-mono">FreteProperties(URI url, Duration timeout)</p></div>
+<div class="slide-card"><h3>@Validated</h3><p>Chave ausente ou valor inválido impede a aplicação de subir.</p></div>
+<div class="slide-card"><h3>Registro</h3><p><code>@ConfigurationPropertiesScan</code> registra os records de configuração.</p></div>
+<div class="slide-card"><h3>@Value ainda serve</h3><p>Para um valor isolado ou quando é preciso avaliar SpEL.</p></div>
+</div>
+<aside class="notes">O dois-pontos com 5000 parecia proteção, mas escondeu a chave renomeada. Com @ConfigurationProperties e @Validated, o erro aparece na subida, que é o melhor lugar para ele aparecer. @Value continua útil para um valor só ou com SpEL.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="2"></section>
+<section class="slide">
+<p class="slide-eyebrow">03 / solução · animação</p>
+<h2>Pelo proxy, por fora dele e a correção</h2>
+<video class="slide-video" preload="none" playsinline aria-label="Animação: chamada pelo proxy, auto-invocação sem transação e correção com outro bean" poster="../../assets/spring-proxy-transacao-poster.png" width="960" height="640"><source src="../../assets/spring-proxy-transacao.mp4" type="video/mp4"></video>
+<aside class="notes">Tecle P (ou clique no vídeo) para reproduzir e pausar; são 24 segundos. Três momentos: a chamada externa passa pelo proxy; this.confirmar() pula o proxy e o pedido fica sem pagamento; com ConfirmacaoService, a falha desfaz tudo.</aside>
+</section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Quem abre a transação é o proxy.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Auto-invocação</h3><p><code>this.confirmar()</code> usa o objeto real: sem proxy, sem transação.</p></div>
+<div class="slide-card"><h3>Correção</h3><p>Mover <code>confirmar()</code> para outro bean e chamá-lo pelo bean injetado.</p><p class="slide-mono">ConfirmacaoService</p></div>
+<div class="slide-card"><h3>Visibilidade</h3><p><code>private</code> fica de fora; <code>protected</code> e de pacote valem desde o Spring 6.</p></div>
+<div class="slide-card"><h3>Exceção verificada</h3><p>Por padrão, só <code>RuntimeException</code> e <code>Error</code> desfazem. Checked faz commit.</p></div>
+<div class="slide-card"><h3>Rollback em tudo</h3><p><code>rollbackFor</code> no método ou, desde o 6.2, a regra global.</p><p class="slide-mono">rollbackOn = ALL_EXCEPTIONS</p></div>
+</div>
+<aside class="notes">Dois erros na mesma transação. Primeiro, a auto-invocação: a chamada com this não passa pelo proxy. Depois de mover o método, a exceção verificada: por padrão ela faz commit. A documentação recomenda ALL_EXCEPTIONS para quem não depende de commit com exceção de negócio.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="3"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Trocar a anotação não basta. Alguém precisa ligá-la.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>No núcleo do Spring 7</h3><p><code>@Retryable</code> e <code>@ConcurrencyLimit</code>, sem biblioteca extra.</p><p class="slide-mono">org.springframework.<wbr>resilience.<wbr>annotation</p></div>
+<div class="slide-card"><h3>@EnableResilientMethods</h3><p>Sem ele, <code>@Retryable</code> é metadado e o método roda uma vez.</p></div>
+<div class="slide-card"><h3>Padrões</h3><p>Até 3 novas tentativas, 1 segundo entre elas, para qualquer exceção.</p><p class="slide-mono">maxRetries&nbsp;=&nbsp;3 · delay&nbsp;=&nbsp;1000</p></div>
+<div class="slide-card"><h3>includes</h3><p>Repita só falhas temporárias. Recusa de validação só atrasa o erro.</p></div>
+<div class="slide-card"><h3>@ConcurrencyLimit</h3><p>Limita chamadas simultâneas ao método. Ajuda com threads virtuais.</p></div>
+<div class="slide-card"><h3>Spring Retry</h3><p>O Boot 4 não gerencia mais a versão e recomenda o suporte nativo.</p></div>
+</div>
+<aside class="notes">A troca de biblioteca levou o @EnableRetry embora e nada entrou no lugar. O Boot não liga esse recurso sozinho; a equipe recusou a autoconfiguração porque é uma linha. Reforce os padrões e a ideia de repetir só o que é temporário.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="4"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>O mock do teste agora vem do Spring Framework.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>@MockBean</h3><p>Obsoleto no Boot 3.4, removido no 4.0.</p></div>
+<div class="slide-card"><h3>@MockitoBean</h3><p>Substituto do Spring Framework; <code>@MockitoSpyBean</code> substitui <code>@SpyBean</code>.</p></div>
+<div class="slide-card"><h3>Onde usar</h3><p>Em campos da classe de teste, ou na classe com <code>types</code>. Não em <code>@Configuration</code>.</p></div>
+<div class="slide-card"><h3>Fatias em módulos</h3><p><code>@WebMvcTest</code> em pacote novo, pelo <code>spring-boot-starter-webmvc-test</code>.</p></div>
+<div class="slide-card"><h3>Fatia antes do todo</h3><p><code>@SpringBootTest</code> sobe tudo; <code>@WebMvcTest</code> e <code>@DataJpaTest</code>, só a camada.</p></div>
+</div>
+<aside class="notes">Quem pulou do 3.3 para o 4.1 não viu o aviso de obsolescência do 3.4. Troque @MockBean por @MockitoBean e adicione o starter de teste de cada tecnologia. Lembre que a fatia de teste é mais rápida que o contexto inteiro.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="0"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>Por que a auto-invocação escapa do proxy</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Proxy de classe</h3><p>Padrão do Boot: subclasse gerada que envolve os métodos e chama o objeto real.</p><p class="slide-mono">CGLIB</p></div>
+<div class="slide-card"><h3>this</h3><p>Dentro do objeto real, <code>this</code> aponta para ele mesmo, não para a subclasse.</p></div>
+<div class="slide-card"><h3>final</h3><p>Métodos <code>final</code> ficam de fora: a subclasse não os sobrescreve.</p></div>
+<div class="slide-card"><h3>Mesma regra</h3><p>Vale para <code>@Transactional</code>, <code>@Async</code>, <code>@Cacheable</code>, <code>@Retryable</code> e <code>@ConcurrencyLimit</code>.</p></div>
+<div class="slide-card"><h3>Saídas</h3><p>Outro bean, <code>TransactionTemplate</code> ou modo AspectJ, do mais simples ao mais invasivo.</p></div>
+</div>
+<aside class="notes">O proxy é uma subclasse; os outros beans recebem a subclasse, mas o objeto real chama a si mesmo com this. Por isso a regra vale para todas as anotações de proxy. Na dúvida, mova o método para outro bean.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="1"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>@Async, @Scheduled e threads virtuais</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Ligar</h3><p><code>@EnableAsync</code> e <code>@EnableScheduling</code>. Sem elas, nada é assíncrono nem agendado.</p></div>
+<div class="slide-card"><h3>Executor padrão</h3><p><code>ThreadPoolTaskExecutor</code> com 8 threads de base, que cresce e encolhe.</p></div>
+<div class="slide-card"><h3>Threads virtuais</h3><p>Java 21+ e a propriedade ligada: <code>SimpleAsyncTaskExecutor</code>.</p><p class="slide-mono">spring.threads.virtual.enabled=true</p></div>
+<div class="slide-card"><h3>Limite de acesso</h3><p>Espera barata não limita chamadas: <code>@ConcurrencyLimit</code> faz esperar ou recusa.</p></div>
+</div>
+<aside class="notes">As anotações de execução também dependem de um @Enable. O Boot já cria o executor, e com threads virtuais ele muda de tipo. Threads virtuais baratas não protegem o serviço externo; para isso existe @ConcurrencyLimit. A edição de threads virtuais aprofunda essa diferença.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="2"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>Novas no Spring 7: cliente HTTP e versão de API</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>@HttpExchange</h3><p>Cliente HTTP declarado como interface; cada método vira uma chamada.</p><p class="slide-mono">@PostExchange("/cotacoes")</p></div>
+<div class="slide-card"><h3>@ImportHttpServices</h3><p>Registra as interfaces como beans, em grupos configurados por propriedade.</p><p class="slide-mono">spring.http.serviceclient.&lt;grupo&gt;.base-url</p></div>
+<div class="slide-card"><h3>version</h3><p>Versão fixa atende só a ela; a versão base atende também às suportadas acima.</p><p class="slide-mono">version = "1.1" · version = "1.2+"</p></div>
+<div class="slide-card"><h3>Origem da versão</h3><p>No Boot, configurada por propriedade, como um cabeçalho.</p><p class="slide-mono">spring.mvc.apiversion.use.header</p></div>
+</div>
+<aside class="notes">Duas novidades do Spring 7 que viram anotações do dia a dia: o cliente HTTP declarativo, registrado com @ImportHttpServices, e o atributo version nos mapeamentos. No Boot, as duas se configuram por propriedades.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="3"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>Checklist de nomes que mudaram no Boot 4</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Mocks</h3><p><code>@MockBean</code> → <code>@MockitoBean</code>; <code>@SpyBean</code> → <code>@MockitoSpyBean</code>.</p></div>
+<div class="slide-card"><h3>Jackson 3</h3><p><code>@JsonComponent</code> → <code>@JacksonComponent</code>; <code>@JsonMixin</code> → <code>@JacksonMixin</code>.</p></div>
+<div class="slide-card"><h3>@EntityScan</h3><p>Mudou de pacote.</p><p class="slide-mono">org.springframework.boot.<wbr>persistence.<wbr>autoconfigure</p></div>
+<div class="slide-card"><h3>@Nullable</h3><p>JSpecify. Ferramentas que checam nulos podem apontar erros novos.</p><p class="slide-mono">org.jspecify.<wbr>annotations.<wbr>Nullable</p></div>
+<div class="slide-card"><h3>TestRestTemplate</h3><p>Não vem mais pronto com <code>@SpringBootTest</code>: <code>@AutoConfigure<wbr>TestRestTemplate</code>.</p></div>
+<div class="slide-card"><h3>Guia de migração</h3><p>Leia antes de subir a versão, não depois do primeiro erro.</p></div>
+</div>
+<aside class="notes">Use como checklist da migração. A maioria desses itens aparece como erro de compilação, o que é bom: o pior erro é o silencioso. O guia de migração oficial lista o resto.</aside>
+</section>
+
+<section class="slide" data-texto="#challenge"><aside class="notes">Leia a pergunta e as alternativas, dê alguns segundos e avance para revelar a resposta.</aside></section>
+<section class="slide" data-texto=".sources" data-titulo="Fontes para voltar depois" data-rotulo="06 / fontes"><aside class="notes">Indique as fontes: documentação oficial do Spring Boot e do Spring Framework, o guia de migração para o Boot 4 e a issue sobre @EnableResilientMethods.</aside></section>
+<section class="slide" data-layout="statement">
+<p class="slide-quote">Anotação é um pedido, não uma garantia. Antes de confiar nela, pergunte quem atende.</p>
+<p class="slide-meta">Artigo completo, animação e fontes no Depois do Deploy · Java e JVM.</p>
+<aside class="notes">Feche com a frase e convide a abrir o artigo para revisar o mapa e o checklist.</aside>
+</section>
+</template>
+<footer>Depois do Deploy · Uma ideia por vez, com as garantias à vista.</footer>
+</div>
+<script>
+document.getElementById('theme').hidden=false;
+document.querySelector('.reading').hidden=false;
+document.querySelector('.motion-controls').hidden=false;
+document.querySelectorAll('.choices').forEach(el=>el.hidden=false);
+const theme=document.getElementById('theme');
+theme.addEventListener('click',()=>{const light=document.body.classList.toggle('light');theme.textContent=light?'Modo escuro':'Modo claro';theme.setAttribute('aria-pressed',String(light));});
+for(const id of ['short','full'])document.getElementById(id).addEventListener('click',()=>{document.body.classList.toggle('essential',id==='short');document.getElementById('short').setAttribute('aria-pressed',String(id==='short'));document.getElementById('full').setAttribute('aria-pressed',String(id==='full'));});
+const video=document.getElementById('sp-video'),play=document.getElementById('play'),status=document.getElementById('motion-status'),motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+// Os controles nativos mantêm seek e tela cheia, inclusive no celular.
+video.controls=true;
+function playbackState(){const active=!video.paused&&!video.ended;play.textContent=active?'Pausar':'Reproduzir';play.setAttribute('aria-pressed',String(active));}
+function staticStatus(){status.textContent=motionPreference.matches?'Movimento reduzido: imagem inicial mantida; reprodução somente por escolha. Uma passagem por vez.':'24 segundos · reprodução manual · uma passagem por vez.';}
+staticStatus();motionPreference.addEventListener('change',()=>{if(motionPreference.matches)video.pause();staticStatus();});
+play.addEventListener('click',async()=>{if(video.paused){if(video.ended)video.currentTime=0;try{await video.play();}catch{status.textContent='Não foi possível reproduzir. Consulte a explicação estática.';}}else video.pause();});
+document.getElementById('restart').addEventListener('click',()=>{video.pause();video.currentTime=0;status.textContent='Reiniciada e pausada. Escolha Reproduzir para uma nova passagem.';});
+document.getElementById('speed').addEventListener('change',event=>{video.playbackRate=Number(event.target.value);status.textContent='Velocidade '+event.target.selectedOptions[0].textContent+'. Uma passagem por vez.';});
+video.addEventListener('play',playbackState);video.addEventListener('pause',playbackState);video.addEventListener('ended',()=>{playbackState();status.textContent='Passagem concluída. A reprodução não se repete automaticamente.';});
+video.addEventListener('error',()=>{status.textContent='A mídia não carregou. Abra a explicação estática abaixo.';play.disabled=true;});
+const feedback={q1:{correct:'no-transaction',right:'Isso. A chamada com this não passa pelo proxy; sem transação, a gravação feita antes da exceção fica.',wrong:'Quem abre a transação é o proxy, e a chamada interna usa this, o objeto real. Não há transação para desfazer nem erro na subida.'},q2:{correct:'missing-enable',right:'Isso. Sem @EnableResilientMethods, ninguém lê @Retryable, e o método roda uma vez.',wrong:'O padrão é repetir até 3 vezes, e o recurso está no próprio Spring Framework 7. O que falta é ligar o processamento com @EnableResilientMethods.'},q3:{correct:'checked-commit',right:'Isso. Exceções verificadas fazem commit por padrão; rollbackFor ou rollbackOn = ALL_EXCEPTIONS mudam a regra.',wrong:'A chamada já passa pelo proxy, e o isolamento não decide rollback. A causa é a regra padrão: só RuntimeException e Error desfazem a transação.'}};
+document.querySelectorAll('.quiz-question').forEach(question=>{const info=feedback[question.dataset.questionId];question.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{question.querySelectorAll('[data-answer]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));const output=question.querySelector('.feedback');output.hidden=false;output.textContent=button.dataset.answer===info.correct?info.right:info.wrong;}));});
+</script>
+<script>
+document.querySelectorAll('.share-copy').forEach(b=>{b.hidden=false;b.addEventListener('click',async()=>{const s=document.getElementById('share-status'),t=document.getElementById(b.dataset.copy).textContent;try{await navigator.clipboard.writeText(t);s.textContent='Hashtags copiadas.';}catch{s.textContent='Não foi possível copiar. Selecione o texto das hashtags e copie manualmente.';}});});
+</script>
+</body></html>
