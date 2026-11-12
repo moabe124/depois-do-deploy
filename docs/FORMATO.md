@@ -27,6 +27,17 @@ Um documento que o leitor consiga absorver cansado. Um objetivo principal por ed
 - Evitar introduções vagas. Informar o que será estudado no primeiro bloco.
 - Destacar conceitos e garantias, sem transformar parágrafos inteiros em negrito.
 
+## Blocos de código (estilo de editor)
+
+Todo bloco de código aparece como num editor: fundo escuro, barra de título com o nome do arquivo e cores por tipo de trecho (palavra-chave, anotação, texto, comentário, tipo, número). O bloco continua escuro no tema claro; só a impressão usa fundo branco. `npm run check` recusa edições a partir de 12/11/2026 com `<pre>` sem `data-lang` válido.
+
+- **Marcação:** `<pre data-lang="java" data-rotulo="PedidoService.java"><code>…</code></pre>`. O código vai em texto puro, com `&lt;` e `&amp;` escapados; nada de `<span>` à mão.
+- **Linguagens:** `java`, `js`, `ts`, `sql`, `properties`, `yaml`, `json`, `bash`, `http` e `texto` (cálculos e pseudocódigo, sem cores).
+- **Rótulo:** o arquivo de onde o trecho viria (`PedidoService.java`), ou um nome curto do que ele mostra (`Cabeçalho HTTP`, `Cálculo`). Para comparar versões, acrescentar `· antes` e `· depois`. Sem rótulo, a barra mostra o nome da linguagem.
+- **Comentários didáticos:** o comentário aponta o detalhe que o texto explica, como `// o mesmo que this.confirmar(pedido)`. Quando ele é a explicação principal, vai em linha própria, logo acima da linha a que se refere: no celular, comentários no fim de linhas longas caem na linha de baixo e se desligam do código. Mostrar no código o que o texto descreve, inclusive o que está implícito.
+- **Recursos compartilhados:** o build injeta `site/code.css` e `site/code.js` em toda edição com `<pre>`. O script colore a sintaxe sem dependências externas e acrescenta o botão **Copiar**. Sem JavaScript, o bloco mantém a moldura escura e a barra, sem cores.
+- **Celular e slides:** no desktop, linhas longas rolam dentro do bloco, sem quebrar o recuo; no celular e nos slides, quebram, para os comentários não sumirem à direita, e o botão Copiar some. Blocos dentro de uma pergunta do desafio também entram no slide da pergunta.
+
 ## Tipos de conteúdo
 
 A mesma rotina alterna temas e níveis. Cada edição pode ensinar um **conceito**, explorar uma **aplicação prática** ou analisar uma **novidade** do tema. O nível indica a profundidade e os pré-requisitos do texto, inclusive em notícias.

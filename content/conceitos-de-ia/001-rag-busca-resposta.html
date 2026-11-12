@@ -62,7 +62,7 @@
 <details class="static-option"><summary>Ver a explicação estática</summary><img class="static-frame" src="../../assets/rag-busca-resposta-poster.png" width="960" height="640" loading="lazy" alt="Fluxo com RAG. À esquerda, um índice com quatro trechos; Home office seção 3 e Home office seção 4 estão destacados e ligados a uma caixa Contexto enviado, com pergunta mais 2 trechos e a instrução responda só com base neles. Uma seta marcada modelo leva à resposta R$ 150 por mês, fonte: Home office seção 3."></details>
 </figure>
 <p>Em código, o fluxo cabe em poucas linhas. Os nomes são ilustrativos:</p>
-<pre><code>// Fluxo básico de um assistente com RAG
+<pre data-lang="js" data-rotulo="JavaScript · fluxo do assistente"><code>// Fluxo básico de um assistente com RAG
 async function responder(pergunta) {
   const trechos = await indice.buscar(pergunta, { limite: 5 }); // 1. busca
   const contexto = montarContexto(pergunta, trechos);            // 2. contexto

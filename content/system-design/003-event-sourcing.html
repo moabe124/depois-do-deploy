@@ -80,7 +80,7 @@
 <details class="static-option"><summary>Ver a explicação estática</summary><img class="static-frame" src="../../assets/event-sourcing-saldo-poster.png" width="960" height="640" loading="lazy" alt="Fluxo de eventos da carteira 42: número 1, PontosCreditados, mais 1.000; número 2, PontosCreditados, mais 200; número 3, PontosResgatados, menos 400; número 4, PontosExpirados, menos 500. Um colchete reúne os quatro eventos e aponta para o quadro Saldo, projeção, com o valor 300, calculado a partir dos eventos. Abaixo, a nota: o histórico explica o 300: resgate e expiração."></details>
 </figure>
 <p class="full-only">Em código, a ideia central cabe em duas funções. Os nomes são ilustrativos:</p>
-<pre class="full-only"><code>// Estado atual = eventos aplicados em ordem
+<pre class="full-only" data-lang="js" data-rotulo="JavaScript · carteira de pontos"><code>// Estado atual = eventos aplicados em ordem
 function calcularSaldo(eventos) {
   return eventos.reduce((saldo, evento) =&gt; {
     switch (evento.tipo) {

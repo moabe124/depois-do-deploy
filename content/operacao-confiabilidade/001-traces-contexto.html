@@ -34,7 +34,7 @@
 <p>Um <strong>trace</strong> representa o caminho completo de uma operação enquanto ela atravessa processos, redes e filas. A sua unidade básica é o <strong>span</strong>: um trecho nomeado e cronometrado de trabalho, com instante de início, duração, código de status e metadados. <a href="https://opentelemetry.io/docs/concepts/signals/traces/">[1]</a></p>
 <p>Para que trechos gravados em máquinas diferentes formem a mesma árvore, cada operação carrega um <strong>Span Context</strong> imutável. O primeiro trecho sem pai é o <strong>span raiz</strong>; os demais apontam para quem os acionou por meio de um <code>parent_id</code> ou de uma associação causal. <a href="https://opentelemetry.io/docs/concepts/signals/traces/">[1]</a></p>
 <p>Quando a execução cruza a fronteira de um processo, entra a <strong>propagação de contexto</strong>: serializar esse estado na saída (<strong>injeção</strong>) e reconstruí-lo na entrada (<strong>extração</strong>). O padrão <strong>W3C Trace Context</strong> define o cabeçalho <code>traceparent</code> para transportar a identidade da operação de forma interoperável: <a href="https://www.w3.org/TR/trace-context/">[2]</a> <a href="https://opentelemetry.io/docs/concepts/context-propagation/">[3]</a></p>
-<pre><code>traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
+<pre data-lang="http" data-rotulo="Cabeçalho HTTP"><code>traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
              │  │                                │                └── trace-flags (01 = sampled)
              │  │                                └── parent-id (16 hex · span do chamador)
              │  └── trace-id (32 hex · identidade global do trace)
@@ -73,7 +73,7 @@
 </div></details>
 <details><summary><span class="level">Aplicação</span>Injetar e extrair contexto nos cabeçalhos da fila</summary><div class="detail-body">
 <p>Quando o cliente de mensageria não propaga o contexto automaticamente, use a <strong>Propagators API</strong> do OpenTelemetry. O propagador não conhece o protocolo de transporte: ele lê e escreve em um portador (<em>carrier</em>), como o mapa de cabeçalhos da mensagem. <a href="https://opentelemetry.io/docs/specs/otel/context/api-propagators/">[4]</a></p>
-<pre><code>import { context, propagation, trace, SpanKind } from '@opentelemetry/api';
+<pre data-lang="js" data-rotulo="JavaScript · OpenTelemetry"><code>import { context, propagation, trace, SpanKind } from '@opentelemetry/api';
 
 const tracer = trace.getTracer('pedidos');
 

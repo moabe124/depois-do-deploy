@@ -71,7 +71,7 @@
 <p><code>@SpringBootApplication</code> junta três anotações: <code>@SpringBootConfiguration</code>, <code>@EnableAutoConfiguration</code> e <code>@ComponentScan</code>. A varredura começa no <strong>pacote da classe principal</strong> e desce pelos subpacotes. <a href="https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html">[1]</a></p>
 <p>A aplicação mora em <code>com.loja.pedidos</code>, e o <code>TransportadoraClient</code> foi criado em <code>com.loja.integracoes</code>, um pacote irmão. A varredura não chega lá. A correção mais simples é mover a classe para baixo de <code>com.loja.pedidos</code>. Listar pacotes extras em <code>scanBasePackages</code> também funciona, mas espalha a regra.</p>
 <p>Para receber dependências, a recomendação do Spring é o <strong>construtor</strong>. Com um construtor só, o <code>@Autowired</code> é dispensável, os campos podem ser <code>final</code> e o teste cria a classe com <code>new</code>, sem subir o Spring. <a href="https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html">[8]</a> <a href="https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html">[9]</a></p>
-<pre class="full-only"><code>@Service
+<pre class="full-only" data-lang="java" data-rotulo="PedidoService.java"><code>@Service
 public class PedidoService {
   private final ConfirmacaoService confirmacao;   // final: obrigatório
 
@@ -83,7 +83,7 @@ public class PedidoService {
 <h3><code>@ConfigurationProperties</code>: configuração com tipo, validada na subida</h3>
 <p>O timeout estava em <code>@Value("${frete.timeout-ms:5000}")</code>, repetido em três classes. Ao ajustar o YAML, alguém trocou a chave para <code>frete.timeout</code>. O <code>@Value</code> não encontrou a chave antiga e usou o padrão, 5000, sem avisar. O <code>:5000</code> que parecia proteção escondeu o erro.</p>
 <p><code>@Value</code> serve para um valor isolado e é o único dos dois que avalia SpEL. Para um grupo de chaves, o Spring Boot recomenda <code>@ConfigurationProperties</code>: um objeto com tipo, que um <code>record</code> resolve em poucas linhas. Com <code>@Validated</code>, uma chave ausente ou um valor inválido impede a aplicação de subir. <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">[10]</a></p>
-<pre class="full-only"><code>@ConfigurationProperties("frete")
+<pre class="full-only" data-lang="java" data-rotulo="FreteProperties.java · PedidosApplication.java"><code>@ConfigurationProperties("frete")
 @Validated
 public record FreteProperties(
     @NotNull URI url,
@@ -96,22 +96,61 @@ public class PedidosApplication { }</code></pre>
 <p class="takeaway"><strong>Valor padrão esconde chave errada. Validação na subida mostra.</strong></p>
 <h3><code>@Transactional</code>: só vale quando a chamada passa pelo proxy</h3>
 <p>No <code>PedidoService</code>, o método <code>processar()</code> chamava <code>confirmar()</code>, que tem <code>@Transactional</code>, dentro da mesma classe. Essa chamada usa <code>this</code>, o objeto real, e não passa pelo proxy. A documentação do Spring é direta: no modo proxy, que é o padrão, só chamadas que chegam de fora são interceptadas; a <strong>auto-invocação</strong> não ganha transação, mesmo com a anotação. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a> Sem transação, o pedido gravado antes da falha na cobrança continuou gravado.</p>
+<p>No código, o erro é discreto. Repare na linha comentada: em Java, chamar <code>confirmar(pedido)</code> sem nada na frente é o mesmo que escrever <code>this.confirmar(pedido)</code>. O <strong><code>this</code> está lá, só que implícito</strong>, e aponta para o próprio objeto, não para o proxy que o Spring entregou aos outros beans.</p>
+<pre data-lang="java" data-rotulo="PedidoService.java · antes"><code>@Service
+public class PedidoService {
+  public void processar(Pedido pedido) {   // sem @Transactional
+    validar(pedido);
+    // aqui: o mesmo que this.confirmar(pedido)
+    confirmar(pedido);
+  }
+
+  // ignorada nesta chamada: ninguém passou pelo proxy
+  @Transactional
+  public void confirmar(Pedido pedido) {
+    // 1. grava o pedido como CONFIRMADO
+    pedidos.save(pedido.confirmado());
+    // 2. falha: lança CobrancaRecusadaException
+    cobranca.cobrar(pedido);
+  }
+}</code></pre>
 <figure aria-labelledby="sp-caption">
 <video id="sp-video" controls preload="none" playsinline poster="../../assets/spring-proxy-transacao-poster.png" width="960" height="640" aria-describedby="sp-caption"><source src="../../assets/spring-proxy-transacao.mp4" type="video/mp4"><p>Consulte a imagem estática e a descrição abaixo.</p></video>
 <div class="motion-copy"><figcaption id="sp-caption"><strong>Pelo proxy, por fora dele e a correção.</strong> Primeiro, outro bean chama <code>confirmar()</code> e passa pelo proxy, que abre a transação e faz commit ou rollback. Depois, <code>processar()</code> chama <code>this.confirmar()</code> na mesma classe: o proxy fica de fora, a cobrança falha e o pedido continua gravado. No fim, <code>confirmar()</code> vai para <code>ConfirmacaoService</code>; a chamada atravessa o proxy, e a falha desfaz o pedido. <strong>Hipóteses:</strong> API de Pedidos fictícia; proxy de classe, o padrão do Spring Boot; a falha na cobrança é uma exceção de runtime.</figcaption>
 <div class="motion-controls" hidden><button id="play" type="button" aria-controls="sp-video" aria-pressed="false">Reproduzir</button><button id="restart" type="button" aria-controls="sp-video">Repetir do início</button><label>Velocidade <select id="speed" aria-label="Velocidade da animação"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option><option value="2">2×</option></select></label></div><p class="motion-status" id="motion-status" role="status">24 segundos · reprodução manual · uma passagem por vez.</p></div>
 <details class="static-option"><summary>Ver a explicação estática</summary><img class="static-frame" src="../../assets/spring-proxy-transacao-poster.png" width="960" height="640" loading="lazy" alt="Auto-invocação pula o proxy. A caixa Proxy, esmaecida e marcada como fora do caminho de this, repassa processar() para PedidoService, o objeto real. Dentro dele, uma seta laranja liga processar() a confirmar(), anotado com @Transactional, com o rótulo: this.confirmar(), sem passar pelo proxy. Abaixo: pedido gravado como CONFIRMADO; cobrança recusada, exceção; sem transação, nada é desfeito. Resultado: pedido confirmado sem pagamento."></details>
 </figure>
-<p>A correção é fazer a chamada atravessar um bean: mover <code>confirmar()</code> para <code>ConfirmacaoService</code> e chamá-lo pelo bean injetado no <code>PedidoService</code>. <span class="full-only">O proxy também não alcança métodos <code>private</code>; desde o Spring 6, métodos <code>protected</code> e de pacote funcionam em proxies de classe. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></span></p>
+<p>A correção é fazer a chamada atravessar um bean: mover <code>confirmar()</code> para <code>ConfirmacaoService</code> e chamá-lo pelo bean injetado no <code>PedidoService</code>. Agora quem chama é outro objeto, e o que foi injetado nele é o proxy. <span class="full-only">O proxy também não alcança métodos <code>private</code>; desde o Spring 6, métodos <code>protected</code> e de pacote funcionam em proxies de classe. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></span></p>
+<pre data-lang="java" data-rotulo="ConfirmacaoService.java · depois"><code>@Service
+public class ConfirmacaoService {
+
+  @Transactional
+  public void confirmar(Pedido pedido) {
+    pedidos.save(pedido.confirmado());
+    // falhou? o proxy desfaz o save
+    cobranca.cobrar(pedido);
+  }
+}</code></pre>
+<pre data-lang="java" data-rotulo="PedidoService.java · depois"><code>@Service
+public class PedidoService {
+  // recebido pelo construtor (omitido): é o proxy, não o objeto real
+  private final ConfirmacaoService confirmacao;
+
+  public void processar(Pedido pedido) {
+    validar(pedido);
+    // outro objeto: a chamada passa pelo proxy
+    confirmacao.confirmar(pedido);
+  }
+}</code></pre>
 <p>Depois da mudança, um caso ainda deixava o pedido gravado: <code>SaldoInsuficienteException</code> estende <code>Exception</code>. Pela regra padrão, <strong>só <code>RuntimeException</code> e <code>Error</code> desfazem a transação</strong>; exceções verificadas fazem commit. Há duas saídas: declarar <code>@Transactional(rollbackFor = Exception.class)</code> no método ou, desde o Spring 6.2, mudar a regra da aplicação inteira. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></p>
-<pre class="full-only"><code>@Configuration
+<pre class="full-only" data-lang="java" data-rotulo="TransacaoConfig.java"><code>@Configuration
 @EnableTransactionManagement(rollbackOn = RollbackOn.ALL_EXCEPTIONS)
 class TransacaoConfig { }</code></pre>
 <p class="takeaway"><strong>Quem abre a transação é o proxy. Chamada que não passa por ele não ganha transação.</strong></p>
 <h3><code>@Retryable</code> e <code>@ConcurrencyLimit</code>: novos no Spring 7, desligados por padrão</h3>
 <p>O Spring Framework 7 trouxe para o núcleo <code>@Retryable</code> e <code>@ConcurrencyLimit</code>, do pacote <code>org.springframework.resilience.annotation</code>. <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a> O Spring Boot 4 deixou de gerenciar a versão da biblioteca Spring Retry e recomenda migrar para esse suporte nativo. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
 <p>A equipe trocou o import e apagou o antigo <code>@EnableRetry</code>, sem colocar nada no lugar. Sem quem leia, <code>@Retryable</code> é só metadado, e o método roda uma vez. O Boot não liga o recurso sozinho: a equipe do Spring Boot recusou a autoconfiguração porque habilitar é uma linha. <a href="https://github.com/spring-projects/spring-boot/issues/46916">[11]</a> A linha é <strong><code>@EnableResilientMethods</code></strong> em uma classe <code>@Configuration</code>. <a href="https://docs.spring.io/spring-framework/reference/core/resilience.html">[6]</a></p>
-<pre class="full-only"><code>@Configuration
+<pre class="full-only" data-lang="java" data-rotulo="ResilienciaConfig.java · TransportadoraClient.java"><code>@Configuration
 @EnableResilientMethods          // sem isto, @Retryable não faz nada
 class ResilienciaConfig { }
 
@@ -126,7 +165,7 @@ public class TransportadoraClient {
 <h3>Testes no Boot 4: <code>@MockitoBean</code> e fatias em módulos</h3>
 <p>O <code>@MockBean</code> do Spring Boot foi marcado como obsoleto no 3.4 e <strong>removido no 4.0</strong>. O substituto é <code>@MockitoBean</code>, e <code>@MockitoSpyBean</code> substitui <code>@SpyBean</code>. Os dois vêm do próprio Spring Framework. <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.4-Release-Notes">[12]</a> <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
 <p>O Boot 4 também dividiu a autoconfiguração em módulos por tecnologia. <code>@WebMvcTest</code> agora fica em <code>org.springframework.boot.webmvc.test.autoconfigure</code> e chega pelo <code>spring-boot-starter-webmvc-test</code>; <code>@DataJpaTest</code> chega pelo <code>spring-boot-starter-data-jpa-test</code>. <a href="https://docs.spring.io/spring-boot/appendix/test-auto-configuration/slices.html">[13]</a> <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">[7]</a></p>
-<pre class="full-only"><code>import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+<pre class="full-only" data-lang="java" data-rotulo="PedidoControllerTest.java"><code>import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @WebMvcTest(PedidoController.class)    // só a camada web
@@ -152,7 +191,7 @@ class PedidoControllerTest {
 </div></details>
 <details><summary><span class="level">Aplicação</span>Novas no Spring 7: cliente HTTP declarativo e versão de API</summary><div class="detail-body">
 <p><strong><code>@HttpExchange</code></strong> declara um cliente HTTP como interface: cada método com <code>@GetExchange</code> ou <code>@PostExchange</code> vira uma chamada, executada por <code>RestClient</code> ou <code>WebClient</code>. No Spring 7, <code>@ImportHttpServices</code> registra essas interfaces como beans, em grupos, e o Boot 4 configura cada grupo por propriedades. <a href="https://docs.spring.io/spring-framework/reference/integration/rest-clients.html">[15]</a> <a href="https://docs.spring.io/spring-boot/reference/io/rest-client.html">[16]</a></p>
-<pre><code>public interface TransportadoraApi {
+<pre data-lang="java" data-rotulo="TransportadoraApi.java · PedidosApplication.java"><code>public interface TransportadoraApi {
   @PostExchange("/cotacoes")
   Cotacao cotar(@RequestBody PedidoFrete pedido);
 }
@@ -181,7 +220,29 @@ public class PedidosApplication { }
 <div class="eyebrow">05 / desafio</div>
 <h2>Proxy, habilitação e rollback</h2>
 <p class="caption">Três camadas para estudo. As respostas começam escondidas; o desafio não diagnostica seu nível profissional.</p>
-<div class="quiz-question" data-question-id="q1"><h3>Base — Uma chamada dentro da mesma classe</h3><p>Em <code>PedidoService</code>, <code>processar()</code> não tem anotação e chama <code>confirmar()</code>, que tem <code>@Transactional</code>. No meio de <code>confirmar()</code>, depois de gravar o pedido, uma <code>RuntimeException</code> é lançada. O que acontece com o pedido?</p><div class="choices" role="group" aria-label="Respostas da pergunta 1" hidden><button class="choice" type="button" data-answer="rollback" aria-pressed="false">A transação de <code>confirmar()</code> desfaz a gravação.</button><button class="choice" type="button" data-answer="no-transaction" aria-pressed="false">Fica gravado: a chamada usou <code>this</code>, não passou pelo proxy e rodou sem transação.</button><button class="choice" type="button" data-answer="startup-error" aria-pressed="false">Nada é gravado: o Spring recusa a auto-invocação e falha na subida.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da base</summary><div class="detail-body"><p><strong>Fica gravado.</strong> A auto-invocação não passa pelo proxy, então não existe transação para desfazer. Mova <code>confirmar()</code> para outro bean ou delimite a transação com <code>TransactionTemplate</code>.</p></div></details></div>
+<div class="quiz-question" data-question-id="q1"><h3>Base — Uma chamada dentro da mesma classe</h3><p>Os dois métodos estão na mesma classe. O controller chama <code>processar()</code>, e a cobrança lança uma <code>RuntimeException</code> depois que o pedido já foi gravado. O que acontece com o pedido?</p>
+<pre data-lang="java" data-rotulo="PedidoService.java"><code>// sem anotação
+public void processar(Pedido pedido) {
+  // o mesmo que this.confirmar(pedido)
+  confirmar(pedido);
+}
+
+@Transactional
+public void confirmar(Pedido pedido) {
+  // grava o pedido
+  pedidos.save(pedido.confirmado());
+  // lança RuntimeException
+  cobranca.cobrar(pedido);
+}</code></pre>
+<div class="choices" role="group" aria-label="Respostas da pergunta 1" hidden><button class="choice" type="button" data-answer="rollback" aria-pressed="false">A transação de <code>confirmar()</code> desfaz a gravação.</button><button class="choice" type="button" data-answer="no-transaction" aria-pressed="false">Fica gravado: a chamada usou <code>this</code>, não passou pelo proxy e rodou sem transação.</button><button class="choice" type="button" data-answer="startup-error" aria-pressed="false">Nada é gravado: o Spring recusa a auto-invocação e falha na subida.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da base</summary><div class="detail-body"><p><strong>Fica gravado.</strong> A auto-invocação não passa pelo proxy, então não existe transação para desfazer. A forma correta é chamar <code>confirmar()</code> por outro bean, que o Spring injeta já embrulhado no proxy:</p>
+<pre data-lang="java" data-rotulo="PedidoService.java · correto"><code>// confirmar() foi para ConfirmacaoService, com o @Transactional
+private final ConfirmacaoService confirmacao;   // o proxy injetado
+
+public void processar(Pedido pedido) {
+  // outro objeto: a chamada passa pelo proxy, que faz rollback
+  confirmacao.confirmar(pedido);
+}</code></pre>
+<p>Se mover o método não fizer sentido, a alternativa é delimitar a transação no próprio código com <code>TransactionTemplate</code>.</p></div></details></div>
 <div class="quiz-question full-only" data-question-id="q2"><h3>Aplicação — O retry que não repete</h3><p>A equipe trocou o Spring Retry pelo <code>@Retryable</code> do Spring Framework 7 no método <code>cotar()</code> de <code>TransportadoraClient</code>, que o controller chama pelo bean injetado. Em teste, uma falha temporária não é repetida nenhuma vez. Qual é a causa mais provável?</p><div class="choices" role="group" aria-label="Respostas da pergunta 2" hidden><button class="choice" type="button" data-answer="missing-enable" aria-pressed="false">Falta <code>@EnableResilientMethods</code> em uma classe <code>@Configuration</code>.</button><button class="choice" type="button" data-answer="zero-default" aria-pressed="false">O padrão de <code>maxRetries</code> é zero; é preciso informar as tentativas.</button><button class="choice" type="button" data-answer="needs-library" aria-pressed="false">Falta a dependência <code>spring-retry</code>, que o Spring 7 usa por baixo.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da aplicação</summary><div class="detail-body"><p><strong>Falta habilitar.</strong> Sem <code>@EnableResilientMethods</code>, ninguém lê <code>@Retryable</code>, e o método roda uma vez. O padrão é repetir até 3 vezes, e o recurso está no próprio Spring Framework, sem biblioteca extra.</p></div></details></div>
 <div class="quiz-question full-only" data-question-id="q3"><h3>Profundidade — A exceção que não desfaz</h3><p>Depois de mover <code>confirmar()</code> para <code>ConfirmacaoService</code>, o pedido ainda fica gravado quando o método lança <code>SaldoInsuficienteException</code>, que estende <code>Exception</code>. Por quê, e o que corrige?</p><div class="choices" role="group" aria-label="Respostas da pergunta 3" hidden><button class="choice" type="button" data-answer="checked-commit" aria-pressed="false">Exceção verificada não provoca rollback por padrão. Use <code>rollbackFor = Exception.class</code> ou <code>rollbackOn = ALL_EXCEPTIONS</code>.</button><button class="choice" type="button" data-answer="no-proxy" aria-pressed="false">O proxy não foi criado: falta repetir <code>@Transactional</code> na classe <code>ConfirmacaoService</code>.</button><button class="choice" type="button" data-answer="isolation" aria-pressed="false">O isolamento padrão permite ler dados não confirmados; é preciso usar <code>SERIALIZABLE</code>.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da profundidade</summary><div class="detail-body"><p><strong>Regra de rollback.</strong> Por padrão, só <code>RuntimeException</code> e <code>Error</code> desfazem a transação. Declare <code>rollbackFor</code> no método ou, desde o Spring 6.2, use <code>@EnableTransactionManagement(rollbackOn = RollbackOn.ALL_EXCEPTIONS)</code>. A própria documentação recomenda essa troca para quem não depende de commit com exceção de negócio. <a href="https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html">[2]</a></p></div></details></div>
 </section>
@@ -295,7 +356,7 @@ public class PedidosApplication { }
 <p class="slide-eyebrow">03 / solução · revisão</p>
 <h2>Quem abre a transação é o proxy.</h2>
 <div class="slide-cards">
-<div class="slide-card"><h3>Auto-invocação</h3><p><code>this.confirmar()</code> usa o objeto real: sem proxy, sem transação.</p></div>
+<div class="slide-card"><h3>Auto-invocação</h3><p>Chamada na mesma classe usa o objeto real: sem proxy, sem transação.</p><p class="slide-mono">confirmar(p) = this.confirmar(p)</p></div>
 <div class="slide-card"><h3>Correção</h3><p>Mover <code>confirmar()</code> para outro bean e chamá-lo pelo bean injetado.</p><p class="slide-mono">ConfirmacaoService</p></div>
 <div class="slide-card"><h3>Visibilidade</h3><p><code>private</code> fica de fora; <code>protected</code> e de pacote valem desde o Spring 6.</p></div>
 <div class="slide-card"><h3>Exceção verificada</h3><p>Por padrão, só <code>RuntimeException</code> e <code>Error</code> desfazem. Checked faz commit.</p></div>
