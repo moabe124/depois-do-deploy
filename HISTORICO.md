@@ -44,6 +44,18 @@ Timeout não confirma falha. Uma identidade estável, reserva atômica e idempot
 
 ## Java e JVM
 
+### java-jvm-002 — Anotações do Spring Boot: quem lê, quando age e onde falha
+
+- Data: 2026-11-12
+- Nível: iniciante
+- Estado: apresentado
+- Identidade do objetivo: `spring-boot-anotacoes-quem-le-proxy-migracao`
+- Objetivo: Revisar as anotações mais usadas do Spring Boot 4 sabendo, para cada uma, quem a processa e em que momento, e corrigir os erros mais comuns: classe fora da varredura, @Value que esconde chave errada, @Transactional sem transação, @Retryable que não repete e testes que perderam o @MockBean.
+- Conceitos: anotação, varredura de componentes, autoconfiguração, injeção por construtor, @ConfigurationProperties, proxy, auto-invocação, regra de rollback, @Retryable, @ConcurrencyLimit, @MockitoBean, fatias de teste, migração para o Spring Boot 4
+- Edição: [HTML](content/java-jvm/002-spring-boot-anotacoes.html)
+
+Aplicação prática (revisão pedida pelo leitor): a API de Pedidos migra do Spring Boot 3.3 para o 4.1 e mostra cinco sintomas, quatro deles silenciosos. Apresenta a anotação como pedido que alguém precisa atender, na subida, a cada chamada ou no teste, com um mapa de quem lê cada uma. Corrige a varredura a partir do pacote da classe principal e a injeção por construtor; troca @Value espalhado por @ConfigurationProperties com record e @Validated; explica a auto-invocação que pula o proxy de @Transactional e o commit com exceção verificada (rollbackFor e rollbackOn desde o Spring 6.2); habilita o @Retryable nativo do Spring 7 com @EnableResilientMethods; e migra os testes para @MockitoBean e as fatias em módulos do Boot 4. Aprofundamentos opcionais tratam o proxy de classe e this, @Async e @Scheduled com threads virtuais e @ConcurrencyLimit, @HttpExchange com @ImportHttpServices, versionamento de API e um checklist de nomes que mudaram no Boot 4.
+
 ### java-jvm-001 — Threads virtuais: libere a espera, controle a concorrência
 
 - Data: 2026-10-13
