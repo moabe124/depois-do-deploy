@@ -1,0 +1,18 @@
+/* Blocos de código com aparência de editor (docs/FORMATO.md › Blocos de código).
+   Marcação: <pre data-lang="java" data-rotulo="PedidoService.java"><code>…</code></pre>.
+   Sem JavaScript, o bloco já aparece com a moldura e a barra; code.js acrescenta cores e o botão Copiar. */
+:root{--code-bg:#141719;--code-bar:#1f2528;--code-line:#394146;--code-ink:#d7d9d5;--code-label:#aab1b4;--tk-comentario:#8d969a;--tk-texto:#b9d89a;--tk-palavra:#93c0e6;--tk-anotacao:#e7b28c;--tk-numero:#d4b3e6;--tk-tipo:#a6cdbb;--tk-funcao:#e6d595;--tk-chave:#93c0e6}
+/* O bloco continua escuro no tema claro, como num editor; só a impressão troca para fundo branco. */
+pre[data-lang]{position:relative;display:flex;flex-direction:column;margin:26px 0;padding:0;background:var(--code-bg);color:var(--code-ink);border:1px solid var(--code-line);border-radius:10px;overflow:hidden;font:15px/1.65 ui-monospace,'Cascadia Code',Consolas,monospace;white-space:pre;overflow-wrap:normal;tab-size:2}
+pre[data-lang]::before{content:attr(data-rotulo);display:block;box-sizing:border-box;padding:10px 104px 10px 74px;min-height:42px;font:600 13px/22px 'Segoe UI',Arial,sans-serif;color:var(--code-label);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:1px solid var(--code-line);background:radial-gradient(circle at 20px 50%,#e7867a 5.5px,transparent 6.5px),radial-gradient(circle at 39px 50%,#e7c27a 5.5px,transparent 6.5px),radial-gradient(circle at 58px 50%,#8fca8f 5.5px,transparent 6.5px),var(--code-bar)}
+pre[data-lang]>code{display:block;min-width:0;padding:16px 20px 18px;overflow-x:auto;font-size:1em;overflow-wrap:normal;white-space:inherit}
+pre[data-lang] .tk-comentario{color:var(--tk-comentario);font-style:italic}pre[data-lang] .tk-texto{color:var(--tk-texto)}pre[data-lang] .tk-palavra{color:var(--tk-palavra)}pre[data-lang] .tk-anotacao{color:var(--tk-anotacao)}pre[data-lang] .tk-numero{color:var(--tk-numero)}pre[data-lang] .tk-tipo{color:var(--tk-tipo)}pre[data-lang] .tk-funcao{color:var(--tk-funcao)}pre[data-lang] .tk-chave{color:var(--tk-chave)}
+.code-copy{position:absolute;top:5px;right:8px;min-height:32px;padding:3px 12px;font:13px/1.2 'Segoe UI',Arial,sans-serif;color:var(--code-label);background:transparent;border:1px solid var(--code-line);border-radius:6px;cursor:pointer}.code-copy:hover{color:var(--code-ink)}.code-copy:focus-visible{outline:3px solid var(--orange,#e7b28c);outline-offset:2px}
+/* No celular, as linhas quebram para os comentários didáticos não sumirem à direita. */
+@media(max-width:700px){pre[data-lang]{font-size:14px;margin:22px 0}pre[data-lang]>code{padding:14px 16px 16px;white-space:pre-wrap;overflow-wrap:anywhere}}
+@media print{pre[data-lang]{--code-bg:#fff;--code-bar:#f3f3f3;--code-line:#ccc;--code-ink:#202820;--code-label:#505850;--tk-comentario:#5a615b;--tk-texto:#3d6a1c;--tk-palavra:#1d5a86;--tk-anotacao:#96502b;--tk-numero:#76398b;--tk-tipo:#2f5a44;--tk-funcao:#6a4f00;--tk-chave:#1d5a86;white-space:pre-wrap}.code-copy{display:none!important}}
+/* Apresentação: sem rolagem nem botão na gravação; as linhas longas quebram. */
+.deck .code-copy{display:none}
+.deck .slide-texto-corpo pre[data-lang]{padding:0;background:var(--code-bg);border-color:var(--code-line);white-space:pre-wrap}
+.deck .slide-texto-corpo pre[data-lang]::before{padding:7px 18px 7px 70px;min-height:36px;font-size:14px;line-height:22px}
+.deck .slide-texto-corpo pre[data-lang]>code{font-size:14px;line-height:1.35;padding:10px 18px 12px;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere}

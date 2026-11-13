@@ -8,6 +8,9 @@ const PRESENTATION_SINCE = '2026-10-31';
 const REVIEW_CARDS_SINCE = '2026-11-09';
 // Edições a partir desta data precisam das hashtags de divulgação (docs/FORMATO.md).
 const HASHTAGS_SINCE = '2026-11-04';
+// Edições a partir desta data marcam cada bloco de código com a linguagem, para o estilo de editor (docs/FORMATO.md).
+const CODE_EDITOR_SINCE = '2026-11-12';
+const CODE_LANGS = ['java','js','ts','sql','properties','yaml','json','bash','http','texto'];
 const HASHTAG = /^#[\p{L}\p{N}_]+$/u;
 export const readCatalog =() => JSON.parse(readFileSync(path.join(root, 'content/catalog.json'), 'utf8'));
 export function validate(catalog = readCatalog()) {
@@ -76,6 +79,9 @@ export function validate(catalog = readCatalog()) {
         assert(tags.every(tag=>HASHTAG.test(tag)) && new Set(tags.map(tag=>tag.toLowerCase())).size===tags.length, `Hashtag inválida ou repetida em ${network}: ${lesson.id}`);
         assert(html.includes(`id="tags-${network}">${tags.join(' ')}</p>`), `Hashtags de ${network} do HTML diferem do catálogo: ${lesson.id}`);
       }
+    }
+    if(lesson.date>=CODE_EDITOR_SINCE){
+      for(const [tag] of html.matchAll(/<pre\b[^>]*>/g))assert(CODE_LANGS.includes(tag.match(/data-lang="([^"]+)"/)?.[1]), `Bloco de código sem data-lang válido (${CODE_LANGS.join(', ')}): ${lesson.id}`);
     }
     for(const [,id] of html.matchAll(/data-texto="#([^"]+)"/g))assert(html.includes(`id="${id}"`), `Slide de texto aponta para seção inexistente: ${lesson.id}/#${id}`);
     assert(/<html lang="pt-BR">/.test(html) && /<title>.+<\/title>/.test(html), `Metadados ausentes: ${lesson.id}`);

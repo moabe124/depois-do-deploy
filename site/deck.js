@@ -43,7 +43,7 @@ if(template?.content.querySelector('.slide')&&typeof HTMLDialogElement==='functi
     if(el.matches('.quiz-question')){
       const itens=[],titulo=el.querySelector('h3');
       if(titulo)itens.push({el:limpar(titulo),quebra:true,manter:true});
-      for(const p of el.querySelectorAll(':scope > p:not(.feedback)'))itens.push({el:limpar(p)});
+      for(const p of el.querySelectorAll(':scope > p:not(.feedback), :scope > pre'))itens.push({el:limpar(p)});
       const opcoes=[...el.querySelectorAll('[data-answer]')];
       if(opcoes.length){const ol=document.createElement('ol');ol.className='slide-options';opcoes.forEach((botao,i)=>{const li=document.createElement('li'),letra=document.createElement('b');letra.textContent=String.fromCharCode(65+i);li.append(letra,...limpar(botao).childNodes);ol.append(li);});itens.push({el:ol});}
       const resposta=el.querySelector('details .detail-body');

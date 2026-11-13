@@ -69,7 +69,7 @@
 </div></details>
 <details><summary><span><span class="level">Aplicação</span>Como manter pedido e itens juntos na prática?</span></summary><div class="detail-body">
 <p>Sem buckets, podemos distribuir as duas tabelas por <code>tenant_id</code>, com um mapa compatível. A consulta então explicita a empresa nas duas tabelas:</p>
-<pre><code>SELECT p.id, i.produto_id, i.quantidade
+<pre data-lang="sql" data-rotulo="SQL"><code>SELECT p.id, i.produto_id, i.quantidade
 FROM pedidos p
 JOIN itens i
   ON i.tenant_id = p.tenant_id

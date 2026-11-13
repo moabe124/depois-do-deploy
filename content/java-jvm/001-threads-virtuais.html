@@ -68,7 +68,7 @@
 </div></details>
 <details><summary><span class="level">Aplicação</span>Adquirir, chamar e devolver — inclusive na falha</summary><div class="detail-body">
 <p>O trecho abaixo pertence a <strong>uma instância compartilhada</strong> de cliente da API. <code>chamada</code> é uma operação síncrona com seus próprios timeouts de conexão e resposta. O método é chamado de dentro de uma thread virtual.</p>
-<pre><code>private final Semaphore vagasApi = new Semaphore(20);
+<pre data-lang="java" data-rotulo="Java"><code>private final Semaphore vagasApi = new Semaphore(20);
 
 public &lt;T&gt; T consultar(Callable&lt;T&gt; chamada) throws Exception {
     if (!vagasApi.tryAcquire(100, TimeUnit.MILLISECONDS)) {
@@ -82,7 +82,7 @@ public &lt;T&gt; T consultar(Callable&lt;T&gt; chamada) throws Exception {
 }</code></pre>
 <p>Importe <code>Callable</code>, <code>Semaphore</code>, <code>TimeUnit</code> e <code>TimeoutException</code> de <code>java.util.concurrent</code>. O <code>finally</code> só é alcançado depois da aquisição bem-sucedida. Assim, uma falha antes de obter vaga não inventa uma permissão; uma falha da chamada devolve a vaga.</p>
 <p>Se a aquisição for interrompida, o método propaga <code>InterruptedException</code>. Quem capturar essa exceção deve respeitar o cancelamento; não continuar a operação como se tivesse adquirido uma vaga. <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Semaphore.html">[4]</a></p>
-<pre><code>try (var tarefas = Executors.newVirtualThreadPerTaskExecutor()) {
+<pre data-lang="java" data-rotulo="Java"><code>try (var tarefas = Executors.newVirtualThreadPerTaskExecutor()) {
     var resultado = tarefas.submit(() -&gt;
         clienteCompartilhado.consultar(() -&gt; buscarCotacao()));
     System.out.println(resultado.get());
