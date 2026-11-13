@@ -1,0 +1,20 @@
+Sem spec: o agente decide sozinho.
+Cada dúvida vira um palpite silencioso.
+Prompt · “adicione cancelamento com reembolso”
+cancelar após o despacho? · palpite: sim
+devolver o frete? · palpite: não
+gateway em timeout? · palpite: tenta de novo
+✓ código pronto, testes verdes
+✗ revisão: reembolso em dobro no timeout
+Com spec: dúvidas antes do código.
+O clarify transforma cada marcador em decisão.
+spec.md · NEEDS CLARIFICATION → só antes do despacho · frete devolvido · chave de idempotência
+clarify · plan · tasks · implement
+✓ decisões gravadas na spec antes do plano
+Converge: ficou como combinado?
+Compara código e spec; só acrescenta tarefas.
+implement → converge → tasks.md · nova passada
+1ª passada: 2 lacunas → +2 tarefas
+2ª passada: 0 lacunas
+✓ Converged
+Cenário didático · API de Pedidos fictícia · fluxo do Spec Kit simplificado

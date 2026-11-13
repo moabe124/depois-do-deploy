@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Entenda por que o Spec-Driven Development se apoia em fundamentos antigos de engenharia, aplique o fluxo do GitHub Spec Kit da constituição ao converge e saiba quando o processo compensa e quando vira papelada.">
+<title>Depois do Deploy · SDD com o Spec Kit: especifique antes que o agente adivinhe</title>
+<style>
+:root{color-scheme:dark;--paper:#191d20;--ink:#d7d9d5;--muted:#aab1b4;--line:#394146;--card:#22292b;--green:#a6cdbb;--soft:#293631;--orange:#e7b28c}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--paper);color:var(--ink);font:20px/1.7 'Segoe UI',Arial,sans-serif}body.light{color-scheme:light;--paper:#f5f2e9;--ink:#262c28;--muted:#62685f;--line:#d6d8ca;--card:#fffdf7;--green:#375746;--soft:#e4ebdf;--orange:#98532e}a{color:var(--green);text-underline-offset:4px}button,select,input{font:inherit}button,select,input[type=number]{color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;min-height:44px;padding:8px 12px}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:4px}.wrap{width:min(1060px,calc(100% - 64px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-bottom:1px solid var(--line)}.brand{font-size:18px;font-weight:650}.brand i{display:inline-block;width:13px;height:13px;background:var(--green);border-radius:50%;margin-right:10px}.theme{font-size:14px;border-radius:28px}.hero{padding:52px 0 34px;max-width:850px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(36px,4.8vw,56px);line-height:1.12;letter-spacing:-1.8px;margin:18px 0 24px;font-weight:650}h1 em{font-style:normal;color:var(--green)}.dek{font-size:21px;line-height:1.6;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:13px;margin-top:22px}.draft{font-size:13px;color:var(--muted);margin:18px 0 0}.reading{border-block:1px solid var(--line);padding:16px 0;display:flex;gap:18px;align-items:center;justify-content:space-between;font-size:14px}.reading p{margin:0;color:var(--muted)}.switch{display:flex;gap:6px;flex-shrink:0}.switch button{font-size:14px}.switch button[aria-pressed=true]{background:var(--green);color:var(--paper);border-color:var(--green)}.article{max-width:740px;margin:auto;padding-top:38px}.chapter{border-bottom:1px solid var(--line);padding-bottom:30px;margin-bottom:34px}h2{font-size:28px;line-height:1.35;letter-spacing:-.5px;font-weight:600;margin:10px 0 20px}h3{font-size:22px;line-height:1.4}p{margin:0 0 28px}strong{font-weight:600}code,pre,.number{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}code{font-size:.88em;overflow-wrap:anywhere}pre{font-size:16px;line-height:1.8;background:var(--card);padding:20px;white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--line);border-radius:7px}.takeaway{border-left:2px solid var(--green);padding-left:18px;margin-top:28px}.caption,figcaption,.motion-status{font-size:14px;line-height:1.65;color:var(--muted)}figure{margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}video,.static-frame{display:block;width:100%;height:auto;aspect-ratio:3/2;background:#191d20}.motion-copy{padding:18px 20px}.motion-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0 10px;font-size:14px}.motion-controls label{display:flex;align-items:center;gap:8px}.motion-status{margin:0}.static-option{padding:0 20px}.static-option img{margin:10px 0 20px}details{border-top:1px solid var(--line);padding:15px 0}summary{font-size:18px;line-height:1.55;cursor:pointer;min-height:44px;padding-block:7px}summary::marker{color:var(--green)}.level{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);display:block}.detail-body{padding-top:15px;font-size:19px}.table-wrap{overflow-x:auto;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:16px;line-height:1.65;text-align:left}caption{text-align:left;color:var(--muted);font-size:14px;margin-bottom:12px}th,td{border-bottom:1px solid var(--line);padding:12px 10px;vertical-align:top}thead th{color:var(--green)}tbody th{font-weight:600}.steps{padding-left:24px}.steps li{padding-left:6px;margin-bottom:16px}.choices{display:grid;gap:9px;margin:18px 0}.choice{text-align:left;font-size:17px;padding:12px 16px}.choice[aria-pressed=true]{background:var(--soft);border-color:var(--green)}.feedback{font-size:17px;background:var(--soft);padding:16px;margin-bottom:20px}.calculator{border:1px solid var(--line);border-radius:8px;padding:20px;background:var(--card)}.inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px}.inputs label{font-size:15px;display:flex;flex-direction:column;gap:6px}.inputs input{width:100%}.inputs input[type=range]{accent-color:var(--green);min-height:44px}.results{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}.results p{margin:0;font-size:14px}.results output{display:block;font:600 28px/1.4 'Segoe UI',Arial,sans-serif;color:var(--green);font-variant-numeric:tabular-nums}.sources{font-size:15px;line-height:1.7;padding-bottom:28px}.sources li{margin-bottom:14px}.share{border-top:1px solid var(--line);padding:22px 0 30px}.share h2{font-size:22px;margin:0 0 6px}.share-group{margin-top:18px}.share-group h3{font-size:16px;margin:0 0 6px;color:var(--muted);font-weight:600}.share-tags{margin:0 0 8px;font-size:17px;line-height:1.9;word-spacing:6px;overflow-wrap:anywhere}.share-copy{font-size:14px}.closing{border-left:2px solid var(--green);padding-left:18px;font-size:25px;line-height:1.45}.essential .full-only{display:none}footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:13px}blockquote{margin:20px 0;padding-left:18px;border-left:2px solid var(--green)}blockquote p{font-size:19px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:700px){.wrap{width:calc(100% - 36px)}.hero{padding-top:34px}body{font-size:18px}.dek{font-size:19px}h1{letter-spacing:-1px}h2{font-size:25px}.reading{display:block}.switch{margin-top:12px;flex-wrap:wrap}.article{padding-top:30px}.detail-body{font-size:18px}.motion-copy{padding:16px}.motion-controls label{flex-wrap:wrap}pre{font-size:15px;padding:16px}table{font-size:14px}th,td{padding:10px 7px}.inputs,.results{grid-template-columns:1fr}.calculator{padding:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{--paper:#fff;--ink:#202820;--muted:#505850;--line:#ddd;--card:#fff;--green:#284f38;font-size:11pt}.wrap{width:100%}.theme,.reading,.motion-controls,.share-copy,video,.choices,.feedback,.calculator{display:none!important}.essential .full-only{display:block}.article{max-width:100%}.hero{padding-top:20px}h1{font-size:28pt}.sources a{overflow-wrap:anywhere}}
+
+.quiz-question+.quiz-question{margin-top:36px;padding-top:22px;border-top:1px solid var(--line)}td.number,th.number{text-align:right;white-space:nowrap}
+.table-wrap code{overflow-wrap:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><i aria-hidden="true"></i>Depois do Deploy</div><button class="theme" id="theme" type="button" aria-pressed="false" hidden>Modo claro</button></header>
+<section class="hero" aria-labelledby="title">
+<div class="eyebrow">Conceitos de IA / aplicação prática</div>
+<h1 id="title">SDD com o Spec Kit: <em>especifique antes que o agente adivinhe.</em></h1>
+<p class="dek"><strong>Objetivo:</strong> entender por que escrever a especificação antes de delegar a um agente de IA se apoia em fundamentos antigos de engenharia, aplicar o fluxo do GitHub Spec Kit, da constituição ao <code>converge</code>, e reconhecer quando o processo compensa e quando vira papelada.</p>
+<div class="meta"><span>Intermediário · para quem já programa com agentes de IA</span><span>13 de novembro de 2026</span><span>Essencial · 7 min</span><span>Completa · 16 min + animação</span></div>
+</section>
+<section class="reading" aria-label="Preferência de leitura" hidden><p><strong>Escolha o ritmo de hoje.</strong> O essencial cobre o conceito, o problema, o fluxo do Spec Kit e a primeira pergunta.</p><div class="switch" role="group" aria-label="Tempo disponível"><button id="short" type="button" aria-pressed="false">Essencial · 7 min</button><button id="full" type="button" aria-pressed="true">Completa · 16 min</button></div></section>
+<noscript><p class="caption">A leitura e as respostas recolhíveis funcionam sem JavaScript. A animação tem controles nativos e uma imagem estática.</p></noscript>
+<main class="article">
+<section class="chapter" id="concept">
+<div class="eyebrow">01 / conceito</div>
+<h2>Um estagiário brilhante, rápido e sem memória</h2>
+<h3>O que é SDD</h3>
+<p>Imagine que chegou ao time um estagiário fora da curva. Ele escreve código mais rápido do que qualquer pessoa da equipe, não reclama de tarefa repetitiva e topa refatorar um módulo inteiro às três da manhã. Só que ele tem duas manias. A primeira é nunca perguntar nada: diante de uma dúvida, ele escolhe a resposta que parece mais provável e segue em frente, cheio de confiança. A segunda é esquecer tudo no fim do expediente, de modo que no dia seguinte ele chega sem lembrar do que vocês combinaram na véspera.</p>
+<p>Quem programa com agentes de IA já trabalhou com esse estagiário. O modelo de linguagem preenche cada lacuna com o palpite mais plausível, e cada sessão começa do zero, sabendo apenas o que está no repositório e o que você escreveu no prompt. Não é defeito de caráter; é o jeito como a ferramenta funciona. E é justamente para tirar o melhor dela que existe o <strong>Spec-Driven Development</strong>, ou <strong>SDD</strong>.</p>
+<p>A ideia cabe numa frase: antes de pedir código, você escreve uma <strong>especificação</strong> (o que deve ser construído, para quem, por quê e como saber que ficou pronto), e é ela, não a conversa, que guia o agente. A spec vira o <strong>contrato de entrada</strong> do trabalho: o agente lê, pergunta o que estiver ambíguo, planeja a partir dela e, no fim, tem a entrega conferida contra ela. Com o estagiário, seria trocar a explicação apressada no corredor por um briefing por escrito.</p>
+<h3>Spec não é documentação</h3>
+<p>Isso não quer dizer “escrever documentação antes”. Documentação descreve o que já existe; a spec descreve uma intenção que ainda vai virar código, e por isso precisa ser <strong>verificável</strong>: cada requisito tem de permitir dizer, no fim, se foi cumprido ou não. “A busca deve ser rápida” não passa nesse teste, porque ninguém consegue reprovar a entrega com ela. “A busca responde em até 300 ms para 95% das consultas” passa.</p>
+<p class="full-only">Também não existe um único jeito de levar a spec a sério. Birgitta Böckeler, engenheira da Thoughtworks, separou três níveis. No <strong>spec-first</strong>, a spec é escrita antes e guia aquela tarefa. No <strong>spec-anchored</strong>, ela continua no repositório depois da entrega e evolui junto com a funcionalidade. No <strong>spec-as-source</strong>, só a spec é editada por humanos, e o código é sempre regenerado a partir dela. <a href="https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">[1]</a></p>
+<p>A ferramenta deste artigo é o <strong>GitHub Spec Kit</strong>, kit de código aberto que o GitHub lançou em 2025 e que chegou à versão 1.0 em agosto de 2026. <a href="https://github.com/github/spec-kit">[2]</a> <a href="https://github.github.io/spec-kit/overview/history.html">[3]</a> Ele não escreve código sozinho. O que ele faz é instalar comandos no agente que você já usa (Copilot, Claude Code, Gemini CLI e dezenas de outros), e esses comandos conduzem o trabalho por etapas, cada uma deixando um arquivo Markdown no repositório. O agente continua o mesmo; muda a ordem da conversa.</p>
+<p class="takeaway"><strong>O agente não lê mente; lê contexto. SDD é escrever esse contexto antes que ele adivinhe.</strong></p>
+</section>
+<section class="chapter" id="problem">
+<div class="eyebrow">02 / problema</div>
+<h2>“Adicione cancelamento com reembolso.” O que poderia dar errado?</h2>
+<p>Voltemos à API de Pedidos, a mesma loja on-line de outras edições. A tarefa da semana parece simples, e o prompt sai num fôlego só: “adicione cancelamento de pedido com reembolso”. Em poucos minutos, o agente devolve um endpoint, um serviço, uma migração de banco e uma bateria de testes, todos verdes. Tem cara de dia produtivo.</p>
+<p>O problema mora nas perguntas que ninguém fez. O pedido pode ser cancelado depois de despachado? O reembolso devolve o frete? E se o gateway de pagamento não responder a tempo, o cancelamento fica pela metade, ou o agente tenta de novo e reembolsa duas vezes? Quem leu a edição sobre <a href="../system-design/001-idempotencia.html">idempotência</a> reconhece o risco. Para cada uma dessas lacunas, o agente escolheu a resposta mais provável, e ninguém ficou sabendo, porque <strong>palpite não gera aviso</strong>.</p>
+<p>Os testes verdes não salvam ninguém aqui. Eles foram escritos pelo mesmo estagiário, a partir dos mesmos palpites, e por isso confirmam que o código faz o que o agente imaginou, não o que o negócio precisava. Na semana seguinte, quando outra pessoa pedir uma mudança nessa funcionalidade, uma sessão nova, sem memória da anterior, pode chutar diferente. O resultado é um sistema coerente por dentro e errado por fora.</p>
+<p>Há ainda uma armadilha mais sutil, que é a sensação de velocidade. Num experimento controlado da organização de pesquisa METR, em 2025, desenvolvedores experientes levaram 19% mais tempo para concluir tarefas usando IA, embora tenham saído convencidos de que estavam 20% mais rápidos. <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">[4]</a> A própria METR avisa que o resultado não vale para todo mundo e que as ferramentas melhoraram desde então <a href="https://metr.org/blog/2026-02-24-uplift-update/">[5]</a>, mas a lição continua de pé: o que <em>parece</em> rápido não serve de medida.</p>
+<p>O time precisa, então, de três coisas: descobrir as dúvidas <strong>antes</strong> do código, registrar as decisões num lugar que a próxima sessão também leia e conferir a entrega contra o que foi pedido, e não contra o que foi imaginado.</p>
+</section>
+<section class="chapter" id="solution">
+<div class="eyebrow">03 / solução</div>
+<h2>Decidir antes de delegar</h2>
+<h3>Por que funciona: engenharia antiga com roupa nova</h3>
+<p>Antes de abrir o terminal, vale encarar a desconfiança natural: isso não é só mais uma moda de IA? A melhor resposta é olhar de onde vêm as peças. Quase nada no SDD foi inventado em 2025. O que mudou foi o leitor da especificação, que deixou de ser só gente e passou a incluir um agente.</p>
+<p>Em 1987, Fred Brooks escreveu que a parte mais difícil de construir software é decidir com precisão o que construir. <a href="https://doi.org/10.1109/MC.1987.1663532">[6]</a> Décadas de engenharia de requisitos depois, a norma ISO/IEC/IEEE 29148 lista o que faz um requisito ser bom (sem ambiguidade, completo, verificável) <a href="https://www.iso.org/standard/72089.html">[7]</a>, e a notação EARS, criada na Rolls-Royce para os requisitos do controle de motores de avião, oferece um molde de frase para chegar lá: “quando X, o sistema deve Y”. <a href="https://alistairmavin.com/ears/">[8]</a> Pré e pós-condições vêm do Design by Contract, de Bertrand Meyer <a href="https://doi.org/10.1109/2.161279">[9]</a>; critérios de aceitação que se executam, do BDD e do TDD; decisões registradas junto com o motivo, dos ADRs e dos design docs. <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">[10]</a> A tabela mostra onde cada ideia reaparece no Spec Kit.</p>
+<div class="table-wrap"><table><caption>De onde vêm as peças do Spec Kit</caption><thead><tr><th scope="col">Ideia clássica</th><th scope="col">De onde vem</th><th scope="col">Onde aparece no Spec Kit</th></tr></thead><tbody>
+<tr><th scope="row">O difícil é decidir o que construir</th><td>Brooks, 1987</td><td><code>specify</code> fala do quê e do porquê, sem tecnologia</td></tr>
+<tr><th scope="row">Requisito sem ambiguidade e verificável</th><td>ISO/IEC/IEEE 29148, EARS</td><td>Marcador <code>[NEEDS CLARIFICATION]</code>, checklist e <code>clarify</code></td></tr>
+<tr><th scope="row">Pré e pós-condições explícitas</th><td>Design by Contract</td><td>Pasta <code>contracts/</code> e testes de contrato</td></tr>
+<tr><th scope="row">Aceitação que se executa</th><td>BDD e TDD</td><td>Cenários Dado/Quando/Então; teste antes do código</td></tr>
+<tr><th scope="row">Decisão registrada com o motivo</th><td>ADRs, design docs</td><td><code>plan.md</code> e <code>research.md</code></td></tr>
+<tr><th scope="row">Regras que valem para toda tarefa</th><td>Princípios de arquitetura</td><td><code>constitution.md</code> e os portões do plano</td></tr>
+<tr><th scope="row">Entrega conferida contra o pedido</th><td>Verificação e rastreabilidade</td><td><code>analyze</code> e <code>converge</code></td></tr>
+</tbody></table></div>
+<p>E há evidência recente de que essas ideias continuam funcionando quando quem lê é um modelo. Quando ele pode fazer perguntas sobre um pedido ambíguo antes de gerar código, a taxa de acerto sobe de forma consistente <a href="https://arxiv.org/abs/2310.10996">[11]</a>; quando um agente escreve as pré e pós-condições de uma função antes de criar os testes, ele encontra mais bugs reais. <a href="https://arxiv.org/abs/2608.17177">[12]</a> Os números e os limites desses estudos estão no aprofundamento, e é bom que estejam lá: a mesma régua que sustenta os pilares também mostra o que ainda não foi medido.</p>
+<p class="takeaway"><strong>Quase nada no SDD é novo. Novo é quem lê a especificação.</strong></p>
+<h3>O fluxo, parte 1: constituição, spec e esclarecimento</h3>
+<p>Com a desconfiança respondida, dá para pôr a mão na massa. O Spec Kit se instala pelo terminal, e o resto acontece no chat do agente, um comando por vez. <a href="https://github.com/github/spec-kit">[2]</a> A grafia exata dos comandos muda conforme o agente (<code>/speckit.specify</code> em uns, <code>/speckit-specify</code> em outros), mas a sequência é sempre esta:</p>
+<pre data-lang="bash" data-rotulo="Terminal · uma vez por projeto"><code>uv tool install specify-cli
+specify init loja-pedidos --integration copilot</code></pre>
+<pre data-lang="texto" data-rotulo="Chat do agente · o fluxo do cancelamento"><code>/speckit.constitution Testes antes do código; toda chamada externa tem timeout.
+/speckit.specify Cliente cancela o pedido pelo app e recebe o reembolso.
+/speckit.clarify
+/speckit.plan Spring Boot 4, PostgreSQL, gateway com chave de idempotência.
+/speckit.tasks
+/speckit.analyze
+/speckit.implement
+# repetir implement e converge até o relatório dizer "Converged"
+/speckit.converge</code></pre>
+<p>O primeiro comando do chat cria um arquivo que você escreve uma vez por projeto: a <strong>constituição</strong>. Pense nela como o manual da casa que o estagiário recebe no primeiro dia, com as regras que valem para qualquer tarefa, como “teste antes do código”, “nada de abstração sem necessidade” ou “toda chamada externa tem timeout”. Os passos seguintes consultam esse manual e, no plano, ele vira uma lista de portões a cumprir.</p>
+<p>Com a casa arrumada, chega a tarefa. Em vez do prompt de um fôlego só, você roda <code>/speckit.specify</code> e descreve o que quer e por quê, sem falar de tecnologia. O agente devolve um <code>spec.md</code> com histórias de usuário, cenários de aceitação no formato Dado/Quando/Então e, o que mais importa, marcadores <code>[NEEDS CLARIFICATION]</code> em tudo o que ele <em>teria</em> chutado. O template do Spec Kit é explícito quanto a isso: se o pedido não diz, marque; não adivinhe. <a href="https://github.com/github/spec-kit/blob/main/spec-driven.md">[13]</a></p>
+<pre data-lang="texto" data-rotulo="spec.md · trecho traduzido"><code>Cenário 1: Dado um pedido PAGO e ainda não despachado,
+           quando o cliente pede o cancelamento,
+           então o pedido fica CANCELADO e o reembolso é solicitado.
+
+FR-003: O sistema DEVE recusar o cancelamento de pedido despachado.
+        [NEEDS CLARIFICATION: e o pedido em separação no estoque?]
+FR-004: O reembolso DEVE devolver o valor pago.
+        [NEEDS CLARIFICATION: o frete entra no reembolso?]</code></pre>
+<p>Cada marcador é o estagiário levantando a mão. O passo seguinte, <code>/speckit.clarify</code>, transforma esses marcadores em perguntas objetivas, uma de cada vez, e grava suas respostas de volta na spec. É aqui que as dúvidas do cancelamento aparecem, quando ainda não existe nenhuma linha de código para desfazer. Não por acaso, o Technology Radar da Thoughtworks, relatório semestral sobre o que seus times usam em projetos reais, passou a recomendar em novembro de 2026, no anel “Trial”, a técnica de deixar o agente entrevistar você antes de agir. <a href="https://www.thoughtworks.com/radar/techniques/grilling">[14]</a></p>
+<p class="takeaway"><strong>Cada marcador respondido é um palpite que não virou código.</strong></p>
+<h3>O fluxo, parte 2: plano, tarefas, implementação e convergência</h3>
+<p>Só depois que o <em>quê</em> está acertado entra o <em>como</em>. No <code>/speckit.plan</code>, você informa a stack e as restrições, e o agente produz o <code>plan.md</code> com as decisões técnicas e seus motivos, acompanhado de arquivos de apoio: <code>research.md</code> com as alternativas avaliadas, <code>data-model.md</code>, a pasta <code>contracts/</code> com os contratos da API e um <code>quickstart.md</code> com os cenários de validação. <a href="https://github.com/github/spec-kit/blob/main/spec-driven.md">[13]</a> Antes de entrar nos detalhes, o plano passa pelos portões da constituição, e qualquer regra furada precisa de justificativa por escrito.</p>
+<p>Do plano saem as tarefas. O <code>/speckit.tasks</code> gera um <code>tasks.md</code> em ordem de dependência, com os testes antes da implementação e a marca <code>[P]</code> nas tarefas que podem correr em paralelo. Com tudo escrito, vale rodar o <code>/speckit.analyze</code>, que não altera nada: ele cruza constituição, spec, plano e tarefas atrás de contradições e lacunas, como um requisito sem tarefa ou uma tarefa sem requisito, e devolve um relatório.</p>
+<pre data-lang="texto" data-rotulo="tasks.md · trecho traduzido"><code>- [ ] T010 [P] [US1] Teste de contrato: POST /pedidos/{id}/cancelamento
+- [ ] T011 [P] [US1] Teste de integração: pedido despachado não cancela
+- [ ] T020 [US1] CancelamentoService com chave de idempotência no reembolso
+- [ ] T021 [US1] Endpoint de cancelamento (depende de T020)</code></pre>
+<p>Só então o <code>/speckit.implement</code> executa as tarefas. E é aqui que entra a peça que fecha o ciclo: o <code>/speckit.converge</code>, acrescentado ao Spec Kit em 2026, compara o código com a spec, o plano e as tarefas. Ele não mexe em código; quando encontra uma lacuna, apenas acrescenta tarefas novas ao <code>tasks.md</code>. Você roda implement e converge de novo, cada passada encontra menos itens, e o ciclo termina quando o relatório diz <code>Converged</code>. <a href="https://github.github.io/spec-kit/reference/agentic-sdd.html">[15]</a> É o estagiário conferindo a entrega contra o briefing, com a diferença de que a conferência agora é um passo do processo, e não um favor.</p>
+<figure aria-labelledby="sdd-caption">
+<video id="sdd-video" controls preload="none" playsinline poster="../../assets/sdd-duas-rotas-poster.png" width="960" height="640" aria-describedby="sdd-caption"><source src="../../assets/sdd-duas-rotas.mp4" type="video/mp4"><p>Consulte a imagem estática e a descrição abaixo.</p></video>
+<div class="motion-copy"><figcaption id="sdd-caption"><strong>Duas rotas para o mesmo pedido.</strong> Na primeira, o prompt vai direto ao agente, que responde sozinho às três dúvidas do cancelamento; o código sai com testes verdes, e a revisão encontra um reembolso em dobro. Na segunda, as mesmas dúvidas aparecem como marcadores na spec, são respondidas no <code>clarify</code> e só então viram plano, tarefas e código. No fim, o <code>converge</code> acrescenta duas tarefas, e a segunda passada termina em <code>Converged</code>. <strong>Hipóteses:</strong> API de Pedidos fictícia; fluxo do Spec Kit simplificado, sem constituição nem <code>analyze</code>.</figcaption>
+<div class="motion-controls" hidden><button id="play" type="button" aria-controls="sdd-video" aria-pressed="false">Reproduzir</button><button id="restart" type="button" aria-controls="sdd-video">Repetir do início</button><label>Velocidade <select id="speed" aria-label="Velocidade da animação"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option><option value="2">2×</option></select></label></div><p class="motion-status" id="motion-status" role="status">24 segundos · reprodução manual · uma passagem por vez.</p></div>
+<details class="static-option"><summary>Ver a explicação estática</summary><img class="static-frame" src="../../assets/sdd-duas-rotas-poster.png" width="960" height="640" loading="lazy" alt="Com spec: dúvidas antes do código. À esquerda, o arquivo spec.md lista três dúvidas do cancelamento, cada uma já decidida em verde: cancelar após despacho, só antes do despacho; devolver o frete, frete devolvido; gateway em timeout, chave de idempotência. À direita, os passos clarify, plan, tasks e implement aparecem acesos. Abaixo: decisões gravadas na spec antes do plano. Nota: cada dúvida respondida é um palpite a menos."></details>
+</figure>
+<p class="takeaway"><strong>O <code>converge</code> é a pergunta “ficou como combinamos?” transformada em comando.</strong></p>
+<h3>Onde você entra: revisar a intenção antes do código</h3>
+<p>Com tanto comando encadeado, dá vontade de apertar enter em sequência e ir buscar um café. O Spec Kit pede o contrário: o README orienta a rodar um passo por vez e revisar o resultado antes de seguir. <a href="https://github.com/github/spec-kit">[2]</a> A razão é de custo. Enquanto o engano está na spec, corrigi-lo custa uma linha de Markdown; se ele passar adiante, se espalha com toda a disciplina do processo e vira plano, tarefa, teste e código, tudo perfeitamente coerente com o engano.</p>
+<p>Por isso, seu tempo de revisão rende mais nos dois primeiros portões. Na spec, a pergunta é “é isto que o negócio quer?”, e vale ler os cenários de aceitação em voz alta, de preferência com quem entende do negócio. No plano, a pergunta passa a ser “estas decisões fazem sentido aqui?”: a biblioteca escolhida, o modelo de dados, o tratamento de falhas. Quando a revisão do código chegar, ela fica mais curta, porque você já sabe o que esperar dele.</p>
+<p class="full-only">Vale só um aviso honesto: no Spec Kit, essas aprovações são um combinado, não uma trava. Nada impede o agente de seguir sem você, e uma comparação publicada em outubro observou que nenhuma das ferramentas testadas registrava a aprovação de um jeito que o código pudesse exigir. <a href="https://felipefontoura.com/articles/spec-driven-development-tools-compared/">[16]</a> Se o time precisa de garantia, ela vem do mesmo lugar de sempre: pull request revisado, CI e testes de contrato.</p>
+<p class="takeaway"><strong>Revise a intenção antes de revisar a implementação.</strong></p>
+<h3>Quando o processo vira papelada</h3>
+<p>Todo esse ritual tem custo, e seria desonesto vendê-lo como regra para qualquer mudança. A própria Böckeler conta que, ao testar uma ferramenta de SDD num bug pequeno, recebeu quatro histórias de usuário e dezesseis critérios de aceitação, o que ela comparou a usar uma marreta para quebrar uma noz. <a href="https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">[1]</a> Ninguém precisa de constituição, spec e plano para trocar a cor de um botão.</p>
+<p>Uma regra prática ajuda a decidir: quanto mais <strong>decisões em aberto</strong> a tarefa tem, mais o fluxo completo compensa. Funcionalidade nova com regra de negócio, como o cancelamento, pede o fluxo inteiro. Bug com causa conhecida pede o caminho curto, e o próprio Spec Kit oferece para isso a extensão <code>bug</code>, que avalia a causa, corrige e verifica o sintoma original <a href="https://github.com/github/spec-kit">[2]</a>; um prompt específico com um teste que falha também resolve. Já a exploração e o protótipo descartável dispensam spec, porque ali o palpite do agente é bem-vindo.</p>
+<p>O outro custo é o volume. Cada funcionalidade deixa uma pasta com vários arquivos, e Markdown gerado por IA tem uma qualidade perigosa: parece pronto. Em novembro de 2026, o Radar da Thoughtworks colocou em “Caution” a proliferação de documentação gerada por IA, citando o Spec Kit pelo nome, e lembrou que esses arquivos ocupam o contexto do agente e podem piorar o código que ele gera. <a href="https://www.thoughtworks.com/radar/techniques/ai-driven-documentation-sprawl">[17]</a> O remédio é tratar o Markdown como artefato de primeira classe: podar, consolidar e apagar o que envelheceu, com o mesmo cuidado que se dá ao código.</p>
+<p class="takeaway"><strong>Quanto mais decisões em aberto, mais spec. Quanto menos, mais prompt.</strong></p>
+</section>
+<section class="chapter full-only" id="depth">
+<div class="eyebrow">04 / aprofundamento opcional</div>
+<h2>Mercado, evidências e críticas</h2>
+<details><summary><span class="level">Base</span>Quem está usando, e o que as estrelas não dizem</summary><div class="detail-body">
+<p>Um bom termômetro para saber se SDD é moda passageira é olhar quem apostou produto nele. A lista é longa, e o curioso é que a mesma ideia aparece em cada empresa com um nome diferente:</p>
+<div class="table-wrap"><table><caption>A mesma ideia, em empresas diferentes</caption><thead><tr><th scope="col">Quem</th><th scope="col">O que existe</th><th scope="col">Como ler</th></tr></thead><tbody>
+<tr><th scope="row">GitHub e Microsoft</th><td>Spec Kit: 1.0 em agosto e 1.4 em novembro de 2026 <a href="https://github.github.io/spec-kit/overview/history.html">[3]</a> <a href="https://developer.microsoft.com/blog/spec-driven-development-ai-native-engineering/">[18]</a></td><td>Relato do próprio fornecedor</td></tr>
+<tr><th scope="row">AWS</th><td>Kiro: IDE com requisitos, design e tarefas, em EARS <a href="https://kiro.dev/docs/specs/">[19]</a></td><td>Produto inteiro no método</td></tr>
+<tr><th scope="row">Google</th><td>Conductor (Gemini CLI): spec e plano antes do código <a href="https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/">[20]</a></td><td>Mesmo princípio, outro nome</td></tr>
+<tr><th scope="row">OpenAI</th><td>ExecPlans: um <code>PLANS.md</code> vivo, atualizado pelo Codex <a href="https://developers.openai.com/cookbook/articles/codex_exec_plans">[21]</a></td><td>Plano vivo, sem framework</td></tr>
+<tr><th scope="row">Anthropic</th><td>Claude Code: entrevista até escrever o <code>SPEC.md</code> <a href="https://code.claude.com/docs/en/best-practices">[22]</a></td><td>Spec leve, sem cerimônia</td></tr>
+<tr><th scope="row">Thoughtworks</th><td>Radar: Spec Kit em Assess, OpenSpec em Trial <a href="https://www.thoughtworks.com/radar/languages-and-frameworks/github-spec-kit">[23]</a> <a href="https://www.thoughtworks.com/radar/tools">[24]</a></td><td>Experiência de campo</td></tr>
+</tbody></table></div>
+<p>E as estrelas? Em 13 de novembro de 2026, o repositório do Spec Kit tinha cerca de 149,7 mil estrelas e 13,4 mil forks, segundo a API do GitHub. É um número que impressiona e que prova pouco, porque estrela mede curiosidade, não uso em produção nem resultado. O sinal mais forte está em outro lugar: GitHub, AWS e Google chegaram, cada um pelo seu caminho, à mesma conclusão de que a intenção precisa estar escrita antes do código.</p>
+</div></details>
+<details><summary><span class="level">Aplicação</span>O que está comprovado, e o que ainda não está</summary><div class="detail-body">
+<p>Para defender o SDD sem exagero, ajuda separar as afirmações pela força da evidência que as sustenta. Repare como a força cai à medida que a afirmação cresce:</p>
+<div class="table-wrap"><table><caption>Afirmações sobre SDD e a força de cada evidência</caption><thead><tr><th scope="col">Afirmação</th><th scope="col">Evidência</th><th scope="col">Força</th></tr></thead><tbody>
+<tr><th scope="row">Perguntar antes ajuda</th><td>ClarifyGPT (2023): o GPT-4 foi de 68,0% para 75,8% de acerto na 1ª tentativa, média de 4 benchmarks <a href="https://arxiv.org/abs/2310.10996">[11]</a></td><td>Experimento em benchmark</td></tr>
+<tr><th scope="row">Contrato antes acha bugs</th><td>Tufano e colegas (2026), bugs reais de produção do Google: +9,8 pontos na detecção <a href="https://arxiv.org/abs/2608.17177">[12]</a></td><td>Experimento em uma empresa</td></tr>
+<tr><th scope="row">Spec melhor, menos correção</th><td>EPIC (2026), 114 repositórios: 11,8% de commits de correção com spec melhor, 20,4% com pior <a href="https://arxiv.org/abs/2610.07534">[25]</a></td><td>Correlação, não causa</td></tr>
+<tr><th scope="row">Agente erra a intenção</th><td>20.574 sessões reais: 91,49% dos desalinhamentos resolvidos exigiram correção do usuário <a href="https://arxiv.org/abs/2605.29442">[26]</a></td><td>Estudo observacional</td></tr>
+<tr><th scope="row">Fluxo completo vence</th><td>Testes com uma tarefa e um modelo, como o de outubro: 13 de 13 critérios, 473 s, US$ 2,84 <a href="https://felipefontoura.com/articles/spec-driven-development-tools-compared/">[16]</a></td><td>Uma amostra só</td></tr>
+</tbody></table></div>
+<p>A leitura honesta fica assim: os <strong>pilares</strong> do SDD (esclarecer antes, explicitar contratos, conferir contra o pedido) têm evidência de que funcionam também com modelos. O <strong>processo completo</strong>, com todas as etapas, ainda não tem um estudo controlado que o compare às alternativas. A pesquisa está só começando, e o primeiro workshop acadêmico dedicado ao tema, o SpecOps, acontece em 2026, junto da conferência SPLASH. <a href="https://arxiv.org/abs/2608.17177">[12]</a> Dizer isso não enfraquece a tese; é exatamente o que separa engenharia de achismo.</p>
+</div></details>
+<details><summary><span class="level">Aplicação</span>Spec Kit em um projeto que já existe</summary><div class="detail-body">
+<p>A maioria dos times não começa do zero, e o Spec Kit tem um guia próprio para projetos existentes. <a href="https://github.github.io/spec-kit/how-to/existing-projects.html">[27]</a> O caminho que costuma funcionar começa por uma constituição enxuta: versões das tecnologias, padrões de código, estrutura do repositório e as poucas regras que são de fato inegociáveis. Times da Thoughtworks que usaram o Spec Kit em sistemas legados descreveram uma constituição útil exatamente assim e relataram também o efeito contrário: contexto acrescentado sem parar incha as instruções e piora as respostas do agente. <a href="https://www.thoughtworks.com/radar/languages-and-frameworks/github-spec-kit">[23]</a></p>
+<p>O segundo ajuste é decidir o destino das specs depois da entrega. Por padrão, cada funcionalidade vira uma pasta numerada, como <code>specs/003-cancelamento/</code>, que é uma fotografia daquele momento. Depois de dezenas de pastas, o agente passa a redescobrir o sistema lendo fotografias antigas. Quem quer specs vivas, o nível spec-anchored, consolida o comportamento por capacidade (“pedidos”, “pagamentos”) e trata a pasta da funcionalidade como rascunho da mudança; a comunidade já publica extensões e relatos nessa direção. <a href="https://www.alfredo-perez.dev/blog/2026-10-15-living-specs">[28]</a></p>
+<p>Por fim, convém lembrar que o Spec Kit virou plataforma. Presets adaptam templates e terminologia, por exemplo para exigir rastreabilidade regulatória nos planos; extensões acrescentam comandos e integrações; workflows automatizam a sequência. Os catálogos da comunidade não são auditados, e o próprio README pede que você leia o código de um componente antes de instalá-lo. <a href="https://github.com/github/spec-kit">[2]</a></p>
+</div></details>
+<details><summary><span class="level">Profundidade</span>As críticas sérias, e como responder a elas</summary><div class="detail-body">
+<p>O SDD tem críticos competentes, e conhecer os argumentos deles melhora a prática. O primeiro argumento lembra a história: nos anos 2000, o desenvolvimento orientado a modelos (MDD) prometeu gerar código a partir de diagramas e tropeçou na rigidez. Böckeler aponta que o spec-as-source arrisca somar a rigidez do MDD à imprevisibilidade dos modelos de linguagem. <a href="https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">[1]</a> A resposta prática é ficar no spec-first ou no spec-anchored, em que o código continua sendo o artefato que roda e passa por revisão.</p>
+<p>O segundo argumento é o <strong>não determinismo</strong>: a mesma spec, entregue duas vezes, gera código diferente. <a href="https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">[1]</a> Um estudo pequeno de 2026 mediu essa variação entre sessões e mostrou que exigir que cada linha de código cite o requisito de onde veio permite detectar automaticamente a maioria das invenções do modelo, ao custo de um código ainda menos parecido de uma sessão para outra. <a href="https://arxiv.org/abs/2606.30689">[29]</a> Ou seja, a spec não torna o agente previsível; ela torna o desvio <strong>verificável</strong>, que é o que importa na hora de revisar.</p>
+<p>O terceiro é o <strong>custo de revisão</strong>. Ler páginas de Markdown repetitivo cansa mais do que ler código, e Böckeler admitiu preferir revisar código. <a href="https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">[1]</a> Aqui a resposta é editorial: personalizar os templates para gerar menos arquivos e menos texto, como fizeram os times citados pelo Radar <a href="https://www.thoughtworks.com/radar/languages-and-frameworks/github-spec-kit">[23]</a>, e podar o que o agente escreveu a mais. O quarto argumento, a aprovação que nenhum código obriga a cumprir, já apareceu na solução, e a resposta também: ancorar o processo nos mecanismos que já têm dentes, como PR, CI e testes de contrato.</p>
+</div></details>
+</section>
+<section class="chapter" id="challenge">
+<div class="eyebrow">05 / desafio</div>
+<h2>Spec, prompt ou nenhum dos dois?</h2>
+<p class="caption">Três camadas para estudo. As respostas começam escondidas; o desafio não diagnostica seu nível profissional.</p>
+<div class="quiz-question" data-question-id="q1"><h3>Base — O CEP com hífen</h3><p>Um formulário do app quebra quando o CEP chega com hífen. A causa já foi encontrada: uma expressão regular que não aceita o caractere. Qual caminho faz mais sentido?</p><div class="choices" role="group" aria-label="Respostas da pergunta 1" hidden><button class="choice" type="button" data-answer="full-flow" aria-pressed="false">O fluxo completo: constituição, spec, clarify, plan, tasks, implement e converge.</button><button class="choice" type="button" data-answer="short-path" aria-pressed="false">O caminho curto: um prompt específico com um teste que reproduz o erro, ou a extensão <code>bug</code> do Spec Kit.</button><button class="choice" type="button" data-answer="no-test" aria-pressed="false">Pedir ao agente que corrija sem teste, já que a mudança é de uma linha.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da base</summary><div class="detail-body"><p><strong>O caminho curto.</strong> Com a causa conhecida, quase não sobram decisões em aberto, e o fluxo completo seria a marreta para quebrar a noz. Dispensar o teste é o erro oposto, porque é o teste que mostra que o bug sumiu e que ele não volta na próxima mudança.</p></div></details></div>
+<div class="quiz-question full-only" data-question-id="q2"><h3>Aplicação — O marcador na véspera da entrega</h3><p>O <code>spec.md</code> do cancelamento ainda traz <code>[NEEDS CLARIFICATION: o frete entra no reembolso?]</code>, e a sprint termina amanhã. O que fazer?</p><div class="choices" role="group" aria-label="Respostas da pergunta 2" hidden><button class="choice" type="button" data-answer="let-agent" aria-pressed="false">Seguir para o plano e deixar o agente escolher a opção mais comum no mercado.</button><button class="choice" type="button" data-answer="decide-first" aria-pressed="false">Levar a pergunta a quem decide, registrar a resposta na spec com o <code>clarify</code> e só então planejar.</button><button class="choice" type="button" data-answer="delete-marker" aria-pressed="false">Apagar o marcador para o <code>analyze</code> não reclamar e resolver na revisão do código.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da aplicação</summary><div class="detail-body"><p><strong>Decidir antes de planejar.</strong> O marcador existe justamente para que a decisão seja de uma pessoa, e não um palpite do agente. Deixá-lo escolher devolve o problema do início do artigo, e apagar o marcador só esconde a dúvida até ela reaparecer, mais cara, no código revisado.</p></div></details></div>
+<div class="quiz-question full-only" data-question-id="q3"><h3>Profundidade — O argumento das estrelas</h3><p>Num debate, alguém diz: “o Spec Kit tem quase 150 mil estrelas no GitHub, então está provado que SDD funciona”. Qual é a resposta mais rigorosa?</p><div class="choices" role="group" aria-label="Respostas da pergunta 3" hidden><button class="choice" type="button" data-answer="proven" aria-pressed="false">Concordar: com tanta adoção, o mercado já validou o método.</button><button class="choice" type="button" data-answer="pillars" aria-pressed="false">Estrelas medem interesse. Os pilares (esclarecer, explicitar contratos, conferir) têm evidência; o processo completo ainda não tem estudo controlado.</button><button class="choice" type="button" data-answer="hype" aria-pressed="false">Discordar: sem estudo controlado do processo completo, SDD é só moda.</button></div><p class="feedback" role="status" hidden></p><details><summary>Ver resposta da profundidade</summary><div class="detail-body"><p><strong>Separar popularidade de evidência.</strong> Estrela não mede resultado, então não prova que o método funciona. Mas a ausência de estudo sobre o processo inteiro também não transforma o método em moda, porque os pilares têm evidência própria. A resposta rigorosa sustenta o que foi medido e diz, sem constrangimento, o que ainda falta medir.</p></div></details></div>
+</section>
+<section class="sources" aria-labelledby="sources-title"><p class="closing">Especificar é decidir antes de delegar. O agente executa o que está escrito; o que não está, ele adivinha.</p><h2 id="sources-title">Fontes para voltar depois</h2><ol>
+<li><a href="https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">Birgitta Böckeler · Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl</a> (martinfowler.com, out./2025): os níveis spec-first, spec-anchored e spec-as-source e as críticas de revisão, tamanho e não determinismo.</li>
+<li><a href="https://github.com/github/spec-kit">GitHub · Spec Kit</a>: instalação, processos de SDD, correção de bugs e avaliação de ideias, extensões, presets e o aviso sobre catálogos da comunidade.</li>
+<li><a href="https://github.github.io/spec-kit/overview/history.html">Spec Kit · Project history</a>: criação em 2025, versão 1.0 em 21/08/2026, chegada do <code>converge</code> e a extensão do Azure Cosmos DB.</li>
+<li><a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR · Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a>: o experimento com 16 desenvolvedores, 19% mais lentos e convencidos do contrário.</li>
+<li><a href="https://metr.org/blog/2026-02-24-uplift-update/">METR · We are Changing our Developer Productivity Experiment Design</a>: os dados de 2026, o ganho provável e os efeitos de seleção que enfraquecem a medida.</li>
+<li><a href="https://doi.org/10.1109/MC.1987.1663532">Frederick P. Brooks · No Silver Bullet: Essence and Accidents of Software Engineering</a> (IEEE Computer, 1987): decidir o que construir como a parte mais difícil.</li>
+<li><a href="https://www.iso.org/standard/72089.html">ISO/IEC/IEEE 29148 · Requirements engineering</a>: características de um bom requisito, como não ambíguo, completo e verificável.</li>
+<li><a href="https://alistairmavin.com/ears/">Alistair Mavin · EARS, Easy Approach to Requirements Syntax</a>: os moldes de frase criados na Rolls-Royce, publicados em 2009.</li>
+<li><a href="https://doi.org/10.1109/2.161279">Bertrand Meyer · Applying “Design by Contract”</a> (IEEE Computer, 1992): pré-condições, pós-condições e invariantes.</li>
+<li><a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">Michael Nygard · Documenting Architecture Decisions</a> (2011): o registro de decisão de arquitetura com contexto e consequências.</li>
+<li><a href="https://arxiv.org/abs/2310.10996">Mu e colegas · ClarifyGPT: Empowering LLM-based Code Generation with Intention Clarification</a> (arXiv, 2023): perguntas de esclarecimento antes de gerar código.</li>
+<li><a href="https://arxiv.org/abs/2608.17177">Tufano e colegas · Grounding AI Agents in Contracts: An Empirical Evaluation of Spec-Driven Test Generation</a> (SpecOps 2026): contratos antes dos testes, com bugs de produção do Google.</li>
+<li><a href="https://github.com/github/spec-kit/blob/main/spec-driven.md">Spec Kit · Specification-Driven Development</a>: a metodologia, os templates que proíbem adivinhar, os artefatos do plano e a constituição.</li>
+<li><a href="https://www.thoughtworks.com/radar/techniques/grilling">Thoughtworks Technology Radar · Grilling</a> (nov./2026, Trial): o agente entrevista você antes de agir.</li>
+<li><a href="https://github.github.io/spec-kit/reference/agentic-sdd.html">Spec Kit · Referência dos comandos de SDD</a>: ordem dos comandos, o que cada um produz e o funcionamento do <code>converge</code>.</li>
+<li><a href="https://felipefontoura.com/articles/spec-driven-development-tools-compared/">Felipe Fontoura · OpenSpec vs. Superpowers vs. Spec Kit</a> (out./2026): comparação com a mesma tarefa, o mesmo modelo e os mesmos critérios de aceitação.</li>
+<li><a href="https://www.thoughtworks.com/radar/techniques/ai-driven-documentation-sprawl">Thoughtworks Technology Radar · AI-driven documentation sprawl</a> (nov./2026, Caution): o excesso de Markdown gerado por IA e o remédio de podar.</li>
+<li><a href="https://developer.microsoft.com/blog/spec-driven-development-ai-native-engineering/">Microsoft Developer Blog · Spec-Driven Development: A Spec-First Approach to AI-Native Engineering</a> (jun./2026): a visão do fornecedor e casos internos.</li>
+<li><a href="https://kiro.dev/docs/specs/">Kiro · Specs</a>: specs de funcionalidade e de bug, design, tarefas e execução em paralelo.</li>
+<li><a href="https://developers.googleblog.com/conductor-introducing-context-driven-development-for-gemini-cli/">Google Developers Blog · Conductor: Introducing context-driven development for Gemini CLI</a> (dez./2025): spec e plano no repositório, revisados antes do código.</li>
+<li><a href="https://developers.openai.com/cookbook/articles/codex_exec_plans">OpenAI Cookbook · Using PLANS.md for multi-hour problem solving</a>: o ExecPlan como documento vivo para tarefas longas.</li>
+<li><a href="https://code.claude.com/docs/en/best-practices">Claude Code · Best practices</a>: a entrevista até escrever o <code>SPEC.md</code> e a revisão contra a spec.</li>
+<li><a href="https://www.thoughtworks.com/radar/languages-and-frameworks/github-spec-kit">Thoughtworks Technology Radar · GitHub Spec Kit</a> (abr./2026, Assess): constituição, uso em sistemas legados e o alerta sobre instruções inchadas.</li>
+<li><a href="https://www.thoughtworks.com/radar/tools">Thoughtworks Technology Radar · Tools</a> (vol. 35, nov./2026): OpenSpec em Trial e a cautela com Markdown gerado em excesso.</li>
+<li><a href="https://arxiv.org/abs/2610.07534">Claudino e colegas · The EPIC Framework for Spec-Driven Development</a> (arXiv, 2026): 114 repositórios avaliados pela ISO/IEC/IEEE 29148 e 40 práticas.</li>
+<li><a href="https://arxiv.org/abs/2605.29442">Tang e colegas · How Coding Agents Fail Their Users</a> (arXiv, 2026): desalinhamento entre desenvolvedor e agente em 20.574 sessões reais.</li>
+<li><a href="https://github.github.io/spec-kit/how-to/existing-projects.html">Spec Kit · Existing projects</a>: como começar o fluxo em um projeto com código.</li>
+<li><a href="https://www.alfredo-perez.dev/blog/2026-10-15-living-specs">Alfredo Perez · Living Specs in SpecKit</a> (out./2026): specs por capacidade, detecção de divergência e sincronização.</li>
+<li><a href="https://arxiv.org/abs/2606.30689">Subham Panda · Citation Discipline in Spec-Driven Development</a> (arXiv, 2026): determinismo e detecção automática de invenções com citação de requisitos.</li>
+</ol><p class="caption">Fontes consultadas em 13/11/2026, com o Spec Kit 1.4.0 (10/11/2026) como versão mais recente. Estrelas e forks lidos na API do GitHub na mesma data. A loja, a API de Pedidos, os trechos de spec e as tarefas são didáticos, adaptados dos templates do Spec Kit. O nível descreve a profundidade do artigo, sem diagnosticar a competência do leitor.</p></section>
+<section class="share" id="hashtags" aria-labelledby="share-title"><h2 id="share-title">Hashtags para divulgar</h2><p class="caption">Para a descrição do vídeo no YouTube e para o post no LinkedIn sobre este tema. Cole no fim do texto.</p><div class="share-group"><h3 id="tags-youtube-t">YouTube · descrição do vídeo</h3><p class="share-tags" id="tags-youtube">#SpecDrivenDevelopment #SpecKit #DesenvolvimentoComIA #AgentesDeIA #EngenhariaDeSoftware #EngenhariaDeRequisitos #ConceitosDeIA #DepoisDoDeploy</p><button class="share-copy" type="button" data-copy="tags-youtube" aria-describedby="tags-youtube-t" hidden>Copiar hashtags</button></div><div class="share-group"><h3 id="tags-linkedin-t">LinkedIn · post</h3><p class="share-tags" id="tags-linkedin">#SpecDrivenDevelopment #SpecKit #DesenvolvimentoComIA #EngenhariaDeSoftware #DepoisDoDeploy</p><button class="share-copy" type="button" data-copy="tags-linkedin" aria-describedby="tags-linkedin-t" hidden>Copiar hashtags</button></div><p class="caption" id="share-status" role="status"></p></section>
+</main>
+<template id="apresentacao" data-tema="Conceitos de IA · SDD com o Spec Kit">
+<section class="slide" data-layout="title">
+<p class="slide-eyebrow">Conceitos de IA · aplicação prática · intermediário</p>
+<h1>SDD com o Spec Kit</h1>
+<p class="slide-sub">Especifique antes que o agente adivinhe.</p>
+<p class="slide-meta">Um exemplo do começo ao fim: o cancelamento com reembolso na API de Pedidos.</p>
+<aside class="notes">Apresente a tese logo de saída: os pilares do SDD são engenharia antiga e verificável; o processo completo ainda está sendo medido, e dizer isso é o que separa método de moda. Explique o formato: cada parte aparece primeiro como texto completo e fecha com uma revisão em cards.</aside>
+</section>
+<section class="slide">
+<h2>O que vamos ver</h2>
+<ol class="slide-list">
+<li data-frag>Conceito: o estagiário brilhante, rápido e sem memória</li>
+<li data-frag>Problema: cancelamento com reembolso, num prompt só</li>
+<li data-frag>Solução: por que funciona, o fluxo do Spec Kit, onde revisar e quando não usar</li>
+<li data-frag>Aprofundamento: mercado, evidências, projetos existentes e críticas</li>
+<li data-frag>Desafio</li>
+</ol>
+<aside class="notes">Mostre o roteiro. Avise que o mesmo cenário atravessa o artigo inteiro: a tarefa de cancelamento com reembolso, primeiro sem spec e depois com o Spec Kit.</aside>
+</section>
+<section class="slide" data-texto=".hero" data-titulo="Objetivo do estudo"><aside class="notes">Leia o objetivo. Destaque as três partes: por que funciona, como aplicar e quando não vale a pena.</aside></section>
+
+<section class="slide" data-texto="#concept"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">01 / conceito · revisão</p>
+<h2>O agente não lê mente; lê contexto.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Estagiário brilhante</h3><p>Rápido e incansável, mas nunca pergunta e esquece tudo a cada sessão.</p></div>
+<div class="slide-card"><h3>SDD</h3><p>Escrever a especificação antes do código e deixar que ela guie o agente.</p></div>
+<div class="slide-card"><h3>Spec verificável</h3><p>Cada requisito permite dizer, no fim, se foi cumprido.</p><p class="slide-mono">até 300 ms para 95% das consultas</p></div>
+<div class="slide-card"><h3>Três níveis</h3><p>Spec-first, spec-anchored e spec-as-source.</p></div>
+<div class="slide-card"><h3>Spec Kit</h3><p>Comandos no seu agente que conduzem o trabalho por etapas, em Markdown.</p><p class="slide-mono">/speckit.specify</p></div>
+</div>
+<aside class="notes">Retome a analogia: o modelo preenche lacunas com o palpite mais plausível e não lembra da sessão anterior. A spec é o briefing por escrito. Diferencie spec de documentação: spec descreve uma intenção e precisa ser verificável. Os três níveis vêm de Birgitta Böckeler; o Spec Kit hoje é essencialmente spec-first.</aside>
+</section>
+
+<section class="slide" data-texto="#problem"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">02 / problema · revisão</p>
+<h2>Palpite não gera aviso.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Prompt de um fôlego</h3><p>“Adicione cancelamento com reembolso”: código e testes verdes em minutos.</p></div>
+<div class="slide-card"><h3>Perguntas não feitas</h3><p>Cancelar após o despacho? Devolver o frete? E o gateway em timeout?</p></div>
+<div class="slide-card"><h3>Testes do mesmo autor</h3><p>Confirmam os palpites do agente, não a regra do negócio.</p></div>
+<div class="slide-card"><h3>Sessão sem memória</h3><p>A próxima conversa pode chutar diferente.</p></div>
+<div class="slide-card"><h3>Sensação de velocidade</h3><p>METR 2025: 19% mais lentos, convencidos de estar 20% mais rápidos.</p></div>
+</div>
+<aside class="notes">O sistema ficou coerente por dentro e errado por fora. Os testes verdes não ajudam porque nasceram dos mesmos palpites. Feche com as três necessidades: descobrir dúvidas antes do código, registrar decisões e conferir a entrega contra o pedido.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="0"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Quase nada no SDD é novo. Novo é quem lê.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Brooks, 1987</h3><p>O difícil é decidir com precisão o que construir.</p></div>
+<div class="slide-card"><h3>Requisito verificável</h3><p>ISO/IEC/IEEE 29148 e o molde de frase EARS.</p><p class="slide-mono">quando X, o sistema deve Y</p></div>
+<div class="slide-card"><h3>Contratos</h3><p>Pré e pós-condições do Design by Contract viram a pasta de contratos.</p><p class="slide-mono">contracts/</p></div>
+<div class="slide-card"><h3>Decisão com motivo</h3><p>ADRs e design docs reaparecem no plano e na pesquisa.</p><p class="slide-mono">plan.md · research.md</p></div>
+<div class="slide-card"><h3>Evidência com modelos</h3><p>Perguntar antes e escrever contratos antes melhoram o resultado.</p></div>
+</div>
+<aside class="notes">Esta é a resposta ao “é só moda?”. Cada peça do Spec Kit tem um antepassado conhecido na engenharia de software. O que mudou foi o leitor da especificação. Os estudos com modelos ficam no aprofundamento, com números e limites.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="1"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Cada marcador respondido é um palpite a menos.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Constituição</h3><p>O manual da casa: regras que valem para qualquer tarefa.</p><p class="slide-mono">/speckit.constitution</p></div>
+<div class="slide-card"><h3>Spec</h3><p>O quê e o porquê, sem tecnologia, com cenários Dado/Quando/Então.</p><p class="slide-mono">/speckit.specify</p></div>
+<div class="slide-card"><h3>Marcador de dúvida</h3><p>O agente marca o que teria chutado, em vez de chutar.</p><p class="slide-mono">[NEEDS CLARIFICATION]</p></div>
+<div class="slide-card"><h3>Clarify</h3><p>Cada marcador vira pergunta, e a resposta volta para a spec.</p><p class="slide-mono">/speckit.clarify</p></div>
+<div class="slide-card"><h3>Entrevista antes de agir</h3><p>Técnica que o Radar da Thoughtworks pôs em Trial em novembro de 2026.</p></div>
+</div>
+<aside class="notes">Mostre o marcador como o estagiário levantando a mão. As dúvidas do cancelamento aparecem aqui, quando ainda não existe código para desfazer. Lembre que a grafia dos comandos muda conforme o agente.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="2"></section>
+<section class="slide">
+<p class="slide-eyebrow">03 / solução · animação</p>
+<h2>Duas rotas para o mesmo pedido</h2>
+<video class="slide-video" preload="none" playsinline aria-label="Animação: sem spec, o agente responde sozinho às dúvidas; com spec, elas são respondidas no clarify antes do código, e o converge confere a entrega" poster="../../assets/sdd-duas-rotas-poster.png" width="960" height="640"><source src="../../assets/sdd-duas-rotas.mp4" type="video/mp4"></video>
+<aside class="notes">Tecle P (ou clique no vídeo) para reproduzir e pausar; são 24 segundos. Primeiro, o prompt direto: três palpites silenciosos e um reembolso em dobro na revisão. Depois, as mesmas dúvidas viram marcadores, são decididas no clarify e só então viram plano, tarefas e código. No fim, o converge acrescenta duas tarefas e a segunda passada termina em Converged.</aside>
+</section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Ficou como combinamos?</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Plano</h3><p>O como: decisões técnicas com motivo, contratos e modelo de dados.</p><p class="slide-mono">plan.md · contracts/</p></div>
+<div class="slide-card"><h3>Tarefas</h3><p>Em ordem de dependência, testes antes; [P] marca as paralelas.</p><p class="slide-mono">tasks.md</p></div>
+<div class="slide-card"><h3>Analyze</h3><p>Só lê: procura requisito sem tarefa e tarefa sem requisito.</p></div>
+<div class="slide-card"><h3>Implement</h3><p>Executa as tarefas do <code>tasks.md</code>.</p></div>
+<div class="slide-card"><h3>Converge</h3><p>Compara código e spec, só acrescenta tarefas e repete até convergir.</p><p class="slide-mono">Converged</p></div>
+</div>
+<aside class="notes">O quê veio antes; agora entra o como. Reforce que o analyze não altera nada e que o converge não mexe em código: ele só acrescenta tarefas, e cada passada encontra menos itens. É a conferência contra o briefing virando passo do processo.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="3"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Revise a intenção antes da implementação.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Um passo por vez</h3><p>O Spec Kit pede revisar cada resultado antes de seguir.</p></div>
+<div class="slide-card"><h3>Engano na spec</h3><p>Barato enquanto está na spec; caro depois de virar plano e código.</p></div>
+<div class="slide-card"><h3>Dois portões</h3><p>Na spec: é isto que o negócio quer? No plano: estas decisões cabem aqui?</p></div>
+<div class="slide-card"><h3>Combinado, não trava</h3><p>Nada obriga a aprovação. A garantia vem de PR, CI e testes de contrato.</p></div>
+</div>
+<aside class="notes">O processo espalha o engano com toda a disciplina: tudo fica coerente com o erro. Por isso o tempo de revisão rende mais na spec e no plano, e a revisão do código encurta. Seja honesto sobre o limite: a aprovação é um combinado.</aside>
+</section>
+
+<section class="slide" data-texto="#solution" data-parte="4"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">03 / solução · revisão</p>
+<h2>Quanto mais decisões em aberto, mais spec.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Marreta e noz</h3><p>Bug pequeno no fluxo completo virou 4 histórias e 16 critérios.</p></div>
+<div class="slide-card"><h3>Fluxo completo</h3><p>Funcionalidade nova com regra de negócio, como o cancelamento.</p></div>
+<div class="slide-card"><h3>Caminho curto</h3><p>Bug com causa conhecida: extensão <code>bug</code> ou prompt com teste que falha.</p></div>
+<div class="slide-card"><h3>Sem spec</h3><p>Exploração e protótipo descartável: ali o palpite é bem-vindo.</p></div>
+<div class="slide-card"><h3>Documentação demais</h3><p>Em Caution no Radar: podar, consolidar e apagar o que envelheceu.</p></div>
+</div>
+<aside class="notes">A régua é o número de decisões em aberto. E o volume de Markdown é um custo real: ocupa o contexto do agente e pode piorar o código. Trate a spec como código: revise, faça a poda e apague o que envelheceu.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="0"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>A mesma ideia, em empresas diferentes.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>GitHub e Microsoft</h3><p>Spec Kit: versão 1.0 em agosto e 1.4 em novembro de 2026.</p></div>
+<div class="slide-card"><h3>AWS</h3><p>Kiro: uma IDE organizada em requisitos, design e tarefas, com EARS.</p></div>
+<div class="slide-card"><h3>Google</h3><p>Conductor: spec e plano por trilha, revisados antes do código.</p></div>
+<div class="slide-card"><h3>OpenAI e Anthropic</h3><p>Um plano vivo no repositório; entrevista até escrever o SPEC.md.</p><p class="slide-mono">PLANS.md · SPEC.md</p></div>
+<div class="slide-card"><h3>Estrelas</h3><p>Cerca de 150 mil medem curiosidade, não resultado.</p></div>
+</div>
+<aside class="notes">O sinal forte não são as estrelas, e sim empresas diferentes chegando à mesma conclusão por caminhos próprios. Lembre que os casos da Microsoft são relatos do próprio fornecedor.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="1"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>Pilares comprovados, processo em medição.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Perguntar antes</h3><p>ClarifyGPT: o GPT-4 foi de 68,0% para 75,8% de acerto.</p></div>
+<div class="slide-card"><h3>Contratos antes</h3><p>Bugs reais do Google: +9,8 pontos na detecção.</p></div>
+<div class="slide-card"><h3>Spec melhor</h3><p>11,8% contra 20,4% de commits de correção. Correlação, não causa.</p></div>
+<div class="slide-card"><h3>Intenção errada</h3><p>91,49% dos desalinhamentos pediram correção explícita do usuário.</p></div>
+<div class="slide-card"><h3>Fluxo completo</h3><p>Só comparações com uma tarefa e um modelo: anedota bem medida.</p></div>
+</div>
+<aside class="notes">Mostre como a força da evidência cai à medida que a afirmação cresce. Os pilares têm estudos; o processo inteiro ainda não. Dizer isso é o que separa engenharia de achismo.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="2"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>Constituição enxuta, specs vivas.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Constituição enxuta</h3><p>Versões, padrões, estrutura e poucas regras inegociáveis.</p></div>
+<div class="slide-card"><h3>Instruções inchadas</h3><p>Contexto acumulado sem poda piora as respostas do agente.</p></div>
+<div class="slide-card"><h3>Specs vivas</h3><p>Consolidar por capacidade, não por pasta de funcionalidade.</p><p class="slide-mono">specs/003-cancelamento/</p></div>
+<div class="slide-card"><h3>Plataforma</h3><p>Presets, extensões e workflows. Leia o código antes de instalar.</p></div>
+</div>
+<aside class="notes">Em projeto existente, comece pela constituição curta. Depois decida o destino das specs: fotografias por funcionalidade envelhecem, specs por capacidade evoluem com o sistema.</aside>
+</section>
+
+<section class="slide" data-texto="#depth" data-parte="3"></section>
+<section class="slide slide-resumo">
+<p class="slide-eyebrow">04 / aprofundamento · revisão</p>
+<h2>A spec torna o desvio verificável.</h2>
+<div class="slide-cards">
+<div class="slide-card"><h3>Sombra do MDD</h3><p>Spec-as-source arrisca somar rigidez e imprevisibilidade.</p></div>
+<div class="slide-card"><h3>Não determinismo</h3><p>A mesma spec gera código diferente; citar requisitos expõe os desvios.</p></div>
+<div class="slide-card"><h3>Custo de revisão</h3><p>Templates mais enxutos e poda do texto gerado.</p></div>
+<div class="slide-card"><h3>Aprovação sem dentes</h3><p>PR, CI e testes de contrato dão a garantia.</p></div>
+</div>
+<aside class="notes">Os críticos são competentes, e cada crítica tem uma resposta prática. A principal: a spec não torna o agente previsível, mas torna o desvio verificável, que é o que importa na revisão.</aside>
+</section>
+
+<section class="slide" data-texto="#challenge"><aside class="notes">Leia a pergunta e as alternativas, dê alguns segundos e avance para revelar a resposta.</aside></section>
+<section class="slide" data-texto=".sources" data-titulo="Fontes para voltar depois" data-rotulo="06 / fontes"><aside class="notes">Indique as fontes primárias: o repositório e a documentação do Spec Kit, o artigo de Birgitta Böckeler, o Radar da Thoughtworks e os estudos de 2023 a 2026.</aside></section>
+<section class="slide" data-layout="statement">
+<p class="slide-quote">Especificar é decidir antes de delegar. O agente executa o que está escrito; o que não está, ele adivinha.</p>
+<p class="slide-meta">Artigo completo, animação e fontes no Depois do Deploy · Conceitos de IA.</p>
+<aside class="notes">Feche com a frase e convide a abrir o artigo para conferir as tabelas de evidência e de mercado.</aside>
+</section>
+</template>
+<footer>Depois do Deploy · Uma ideia por vez, com as garantias à vista.</footer>
+</div>
+<script>
+document.getElementById('theme').hidden=false;
+document.querySelector('.reading').hidden=false;
+document.querySelector('.motion-controls').hidden=false;
+document.querySelectorAll('.choices').forEach(el=>el.hidden=false);
+const theme=document.getElementById('theme');
+theme.addEventListener('click',()=>{const light=document.body.classList.toggle('light');theme.textContent=light?'Modo escuro':'Modo claro';theme.setAttribute('aria-pressed',String(light));});
+for(const id of ['short','full'])document.getElementById(id).addEventListener('click',()=>{document.body.classList.toggle('essential',id==='short');document.getElementById('short').setAttribute('aria-pressed',String(id==='short'));document.getElementById('full').setAttribute('aria-pressed',String(id==='full'));});
+const video=document.getElementById('sdd-video'),play=document.getElementById('play'),status=document.getElementById('motion-status'),motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+// Os controles nativos mantêm seek e tela cheia, inclusive no celular.
+video.controls=true;
+function playbackState(){const active=!video.paused&&!video.ended;play.textContent=active?'Pausar':'Reproduzir';play.setAttribute('aria-pressed',String(active));}
+function staticStatus(){status.textContent=motionPreference.matches?'Movimento reduzido: imagem inicial mantida; reprodução somente por escolha. Uma passagem por vez.':'24 segundos · reprodução manual · uma passagem por vez.';}
+staticStatus();motionPreference.addEventListener('change',()=>{if(motionPreference.matches)video.pause();staticStatus();});
+play.addEventListener('click',async()=>{if(video.paused){if(video.ended)video.currentTime=0;try{await video.play();}catch{status.textContent='Não foi possível reproduzir. Consulte a explicação estática.';}}else video.pause();});
+document.getElementById('restart').addEventListener('click',()=>{video.pause();video.currentTime=0;status.textContent='Reiniciada e pausada. Escolha Reproduzir para uma nova passagem.';});
+document.getElementById('speed').addEventListener('change',event=>{video.playbackRate=Number(event.target.value);status.textContent='Velocidade '+event.target.selectedOptions[0].textContent+'. Uma passagem por vez.';});
+video.addEventListener('play',playbackState);video.addEventListener('pause',playbackState);video.addEventListener('ended',()=>{playbackState();status.textContent='Passagem concluída. A reprodução não se repete automaticamente.';});
+video.addEventListener('error',()=>{status.textContent='A mídia não carregou. Abra a explicação estática abaixo.';play.disabled=true;});
+const feedback={q1:{correct:'short-path',right:'Isso. Com a causa conhecida, sobram poucas decisões em aberto; o teste que reproduz o erro garante que ele não volta.',wrong:'O fluxo completo seria a marreta para quebrar a noz, e corrigir sem teste deixa sem prova de que o bug sumiu. Com causa conhecida, o caminho curto com teste basta.'},q2:{correct:'decide-first',right:'Isso. O marcador existe para que a decisão seja de uma pessoa, registrada na spec antes do plano.',wrong:'Deixar o agente escolher devolve o palpite silencioso, e apagar o marcador só esconde a dúvida até ela voltar, mais cara, no código.'},q3:{correct:'pillars',right:'Isso. Estrela mede interesse; os pilares têm evidência, e o processo completo ainda precisa ser medido.',wrong:'Estrela não prova resultado, mas a falta de estudo sobre o processo inteiro também não apaga a evidência dos pilares. A resposta rigorosa separa as duas coisas.'}};
+document.querySelectorAll('.quiz-question').forEach(question=>{const info=feedback[question.dataset.questionId];question.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{question.querySelectorAll('[data-answer]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));const output=question.querySelector('.feedback');output.hidden=false;output.textContent=button.dataset.answer===info.correct?info.right:info.wrong;}));});
+</script>
+<script>
+document.querySelectorAll('.share-copy').forEach(b=>{b.hidden=false;b.addEventListener('click',async()=>{const s=document.getElementById('share-status'),t=document.getElementById(b.dataset.copy).textContent;try{await navigator.clipboard.writeText(t);s.textContent='Hashtags copiadas.';}catch{s.textContent='Não foi possível copiar. Selecione o texto das hashtags e copie manualmente.';}});});
+</script>
+</body></html>

@@ -74,6 +74,18 @@ Nenhuma edição apresentada.
 
 ## Conceitos de IA
 
+### conceitos-de-ia-002 — SDD com o Spec Kit: especifique antes que o agente adivinhe
+
+- Data: 2026-11-13
+- Nível: intermediario
+- Estado: apresentado
+- Identidade do objetivo: `sdd-spec-kit-intencao-verificavel`
+- Objetivo: Entender por que escrever a especificação antes de delegar a um agente de IA se apoia em fundamentos antigos de engenharia, aplicar o fluxo do GitHub Spec Kit, da constituição ao converge, e reconhecer quando o processo compensa e quando vira papelada.
+- Conceitos: Spec-Driven Development, especificação verificável, spec-first, spec-anchored e spec-as-source, GitHub Spec Kit, constituição, [NEEDS CLARIFICATION], clarify, plano e contratos, tarefas paralelizáveis, analyze, converge, EARS, Design by Contract, proliferação de documentação gerada por IA, evidência versus popularidade
+- Edição: [HTML](content/conceitos-de-ia/002-sdd-spec-kit.html)
+
+Aplicação prática (pedida pelo leitor, que usa o Spec Kit no trabalho): o agente de IA é apresentado como um estagiário brilhante que nunca pergunta e esquece tudo a cada sessão, e o Spec-Driven Development como o briefing por escrito que guia esse agente, com spec verificável e os níveis spec-first, spec-anchored e spec-as-source. Na API de Pedidos, o prompt “adicione cancelamento com reembolso” gera código e testes verdes que confirmam palpites silenciosos (despacho, frete, gateway em timeout), e o estudo da METR mostra que a sensação de velocidade engana. A solução mostra de onde vêm as peças (Brooks, ISO/IEC/IEEE 29148, EARS, Design by Contract, BDD/TDD, ADRs) e percorre o fluxo do Spec Kit 1.4: constituição, specify com [NEEDS CLARIFICATION], clarify, plan, tasks, analyze, implement e converge; depois, onde revisar (spec e plano) e quando o processo vira papelada, com o alerta do Radar da Thoughtworks sobre documentação gerada em excesso. Aprofundamentos opcionais tratam quem usa no mercado (GitHub/Microsoft, AWS Kiro, Google Conductor, OpenAI, Anthropic, Thoughtworks), uma tabela de evidências separando pilares comprovados do processo ainda em medição, o uso em projetos existentes com specs vivas e as críticas sérias (MDD, não determinismo, custo de revisão, aprovação sem trava).
+
 ### conceitos-de-ia-001 — RAG: o assistente consulta seus documentos antes de responder
 
 - Data: 2026-10-30

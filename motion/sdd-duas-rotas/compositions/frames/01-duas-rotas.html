@@ -1,0 +1,97 @@
+<template>
+<style>
+*{box-sizing:border-box}[data-composition-id="01-duas-rotas"]{position:relative;width:100%;height:100%;overflow:hidden;font-family:sans-serif;color:#d7d9d5}.clip{position:absolute;inset:0;width:100%;height:100%}.ground{background:#191d20}.stage{position:absolute;inset:0}#phase-spec,#phase-converge{opacity:0}.heading{position:absolute;left:42px;top:32px;width:876px;margin:0;font-size:42px;line-height:1.22;font-weight:600;letter-spacing:-1px}.subhead{position:absolute;left:42px;top:94px;width:876px;margin:0;font-size:28px;line-height:1.38;color:#a6cdbb}.box{position:absolute;background:#22292b;border:2px solid #697a74;border-radius:10px;padding:12px 14px}.box p{margin:0;white-space:nowrap}.box-title{font-size:22px;line-height:1.4;font-weight:600}.box-sub{font-size:20px;line-height:1.4;color:#aab1b4}.box .free{white-space:normal}.pill{position:absolute;height:46px;background:#191d20;border:2px solid #697a74;border-radius:8px;display:flex;align-items:center;padding:0 14px;font-size:20px;line-height:1.3;white-space:nowrap}.guess{position:absolute;margin:0;height:46px;display:flex;align-items:center;font-size:20px;line-height:1.3;color:#e7b28c;white-space:nowrap;opacity:0}.spec-q{position:absolute;margin:0;font-size:20px;line-height:1.35;white-space:nowrap}.mark{position:absolute;margin:0;font-size:20px;line-height:1.35;white-space:nowrap;color:#e7b28c}.decision{position:absolute;margin:0;font-size:20px;line-height:1.35;white-space:nowrap;color:#a6cdbb;opacity:0}.step{position:absolute;left:650px;width:268px;height:48px;background:#191d20;border:2px solid #697a74;border-radius:8px;display:flex;align-items:center;padding:0 16px;font-size:22px;line-height:1.3;color:#aab1b4;white-space:nowrap}.row{position:absolute;left:42px;width:876px;margin:0;font-size:22px;line-height:1.35;white-space:nowrap;opacity:0}.row.bad{color:#e7b28c}.row.good{color:#a6cdbb}.note{position:absolute;left:42px;top:548px;width:876px;margin:0;font-size:28px;line-height:1.35;color:#a6cdbb}.footline{position:absolute;left:42px;top:604px;width:876px;margin:0;font-size:20px;line-height:1.3;color:#aab1b4}.loop-label{position:absolute;margin:0;font-size:20px;line-height:1.3;color:#aab1b4;white-space:nowrap;opacity:0}.connector{position:absolute;inset:0;width:960px;height:640px;pointer-events:none}.connector path{fill:none;stroke:#a6cdbb;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.connector path.warn-stroke{stroke:#e7b28c}
+</style>
+<div data-hf-id="hf-sd00" id="sd-diagram" data-composition-id="01-duas-rotas" data-width="960" data-height="640" data-duration="24">
+<div data-hf-id="hf-sd03" id="diagram-ground" class="clip ground" data-start="0" data-duration="24" data-track-index="0"></div>
+<div data-hf-id="hf-sd04" id="diagram-routes" class="clip" data-start="0" data-duration="24" data-track-index="1">
+<section data-hf-id="hf-sd10" class="stage" id="phase-prompt">
+<h1 data-hf-id="hf-sd11" class="heading">Sem spec: o agente decide sozinho.</h1>
+<p data-hf-id="hf-sd12" class="subhead">Cada dúvida vira um palpite silencioso.</p>
+<svg data-hf-id="hf-sd13" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-sd14" id="a-arrow" d="M294 249 L334 249 M326 241 L334 249 L326 257" /></svg>
+<div data-hf-id="hf-sd15" class="box" id="a-prompt" style="left:42px;top:170px;width:250px;height:158px"><p data-hf-id="hf-sd16" class="box-title">Prompt</p><p data-hf-id="hf-sd17" class="box-sub free">“adicione cancelamento com reembolso”</p></div>
+<div data-hf-id="hf-sd18" class="pill" id="a-q1" style="left:340px;top:170px;width:296px">cancelar após o despacho?</div>
+<div data-hf-id="hf-sd19" class="pill" id="a-q2" style="left:340px;top:226px;width:296px">devolver o frete?</div>
+<div data-hf-id="hf-sd20" class="pill" id="a-q3" style="left:340px;top:282px;width:296px">gateway em timeout?</div>
+<p data-hf-id="hf-sd21" class="guess" id="a-g1" style="left:656px;top:170px">palpite: sim</p>
+<p data-hf-id="hf-sd22" class="guess" id="a-g2" style="left:656px;top:226px">palpite: não</p>
+<p data-hf-id="hf-sd23" class="guess" id="a-g3" style="left:656px;top:282px">palpite: tenta de novo</p>
+<p data-hf-id="hf-sd24" class="row" id="a-row1" style="top:376px">✓ código pronto, testes verdes</p>
+<p data-hf-id="hf-sd25" class="row bad" id="a-row2" style="top:416px">✗ revisão: reembolso em dobro no timeout</p>
+<p data-hf-id="hf-sd26" class="note" id="a-note">O prompt vai direto ao agente.</p>
+</section>
+<section data-hf-id="hf-sd40" class="stage" id="phase-spec">
+<h1 data-hf-id="hf-sd41" class="heading">Com spec: dúvidas antes do código.</h1>
+<p data-hf-id="hf-sd42" class="subhead">O clarify transforma cada marcador em decisão.</p>
+<div data-hf-id="hf-sd43" class="box" id="b-spec" style="left:42px;top:160px;width:570px;height:236px"><p data-hf-id="hf-sd44" class="box-title" style="color:#a6cdbb">spec.md</p></div>
+<p data-hf-id="hf-sd45" class="spec-q" id="b-q1" style="left:62px;top:214px">cancelar após despacho?</p>
+<p data-hf-id="hf-sd46" class="spec-q" id="b-q2" style="left:62px;top:274px">devolver o frete?</p>
+<p data-hf-id="hf-sd47" class="spec-q" id="b-q3" style="left:62px;top:334px">gateway em timeout?</p>
+<p data-hf-id="hf-sd48" class="mark" id="b-m1" style="left:330px;top:214px">NEEDS CLARIFICATION</p>
+<p data-hf-id="hf-sd49" class="mark" id="b-m2" style="left:330px;top:274px">NEEDS CLARIFICATION</p>
+<p data-hf-id="hf-sd50" class="mark" id="b-m3" style="left:330px;top:334px">NEEDS CLARIFICATION</p>
+<p data-hf-id="hf-sd51" class="decision" id="b-d1" style="left:330px;top:214px">✓ só antes do despacho</p>
+<p data-hf-id="hf-sd52" class="decision" id="b-d2" style="left:330px;top:274px">✓ frete devolvido</p>
+<p data-hf-id="hf-sd53" class="decision" id="b-d3" style="left:330px;top:334px">✓ chave de idempotência</p>
+<div data-hf-id="hf-sd54" class="step" id="b-s1" style="top:160px">clarify</div>
+<div data-hf-id="hf-sd55" class="step" id="b-s2" style="top:222px">plan</div>
+<div data-hf-id="hf-sd56" class="step" id="b-s3" style="top:284px">tasks</div>
+<div data-hf-id="hf-sd57" class="step" id="b-s4" style="top:346px">implement</div>
+<p data-hf-id="hf-sd58" class="row good" id="b-row1" style="top:436px">✓ decisões gravadas na spec antes do plano</p>
+<p data-hf-id="hf-sd59" class="note" id="b-note">As mesmas dúvidas viram marcadores na spec.</p>
+</section>
+<section data-hf-id="hf-sd70" class="stage" id="phase-converge">
+<h1 data-hf-id="hf-sd71" class="heading">Converge: ficou como combinado?</h1>
+<p data-hf-id="hf-sd72" class="subhead">Compara código e spec; só acrescenta tarefas.</p>
+<svg data-hf-id="hf-sd73" class="connector" viewBox="0 0 960 640" aria-hidden="true"><path data-hf-id="hf-sd74" id="c-arrow1" d="M294 236 L370 236 M362 228 L370 236 L362 244" /><path data-hf-id="hf-sd75" id="c-arrow2" d="M640 236 L690 236 M682 228 L690 236 L682 244" /><path data-hf-id="hf-sd76" id="c-return" class="warn-stroke" d="M808 286 L808 318 L166 318 L166 290 M158 298 L166 290 L174 298" /></svg>
+<div data-hf-id="hf-sd77" class="box" id="c-impl" style="left:42px;top:186px;width:250px;height:98px"><p data-hf-id="hf-sd78" class="box-title">implement</p><p data-hf-id="hf-sd79" class="box-sub">executa tasks.md</p></div>
+<div data-hf-id="hf-sd80" class="box" id="c-conv" style="left:374px;top:186px;width:264px;height:98px"><p data-hf-id="hf-sd81" class="box-title" style="color:#a6cdbb">converge</p><p data-hf-id="hf-sd82" class="box-sub">compara com a spec</p></div>
+<div data-hf-id="hf-sd83" class="box" id="c-tasks" style="left:694px;top:186px;width:224px;height:98px"><p data-hf-id="hf-sd84" class="box-title">tasks.md</p><p data-hf-id="hf-sd85" class="box-sub">+ tarefas novas</p></div>
+<p data-hf-id="hf-sd86" class="loop-label" id="c-loop" style="left:350px;top:326px">nova passada</p>
+<p data-hf-id="hf-sd87" class="row bad" id="c-row1" style="top:378px">1ª passada: 2 lacunas → +2 tarefas</p>
+<p data-hf-id="hf-sd88" class="row" id="c-row2" style="top:418px">2ª passada: 0 lacunas</p>
+<p data-hf-id="hf-sd89" class="row good" id="c-row3" style="top:458px">✓ Converged</p>
+<p data-hf-id="hf-sd90" class="note" id="c-note">Depois do implement, o converge confere a entrega.</p>
+</section>
+<p data-hf-id="hf-sd99" class="footline">Cenário didático · API de Pedidos fictícia · fluxo do Spec Kit simplificado</p>
+</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+const enter=(target,time,x=-18,y=0)=>tl.fromTo(target,{opacity:0,x,y},{opacity:1,x:0,y:0,duration:0.6,ease:'power2.out'},time);
+const draw=(id,time)=>{const p=document.querySelector(id);const n=p.getTotalLength();p.style.strokeDasharray=String(n);tl.fromTo(p,{strokeDashoffset:n,opacity:0},{strokeDashoffset:0,opacity:1,duration:0.6,ease:'none'},time);};
+const pulse=(target,color,time)=>tl.fromTo(target,{borderColor:color},{borderColor:'#697a74',duration:0.9,ease:'power1.out',immediateRender:false},time);
+const show=(target,time)=>tl.fromTo(target,{opacity:0,y:10},{opacity:1,y:0,duration:0.5,ease:'power2.out'},time);
+const swap=(from,to,time)=>{tl.to(from,{opacity:0,duration:0.4,ease:'power1.out'},time);tl.fromTo(to,{opacity:0,x:-8},{opacity:1,x:0,duration:0.5,ease:'power2.out',immediateRender:false},time+0.2);};
+const lit=(target,time)=>tl.to(target,{color:'#a6cdbb',borderColor:'#a6cdbb',duration:0.4,ease:'power1.out'},time);
+// Estado 1: sem spec, o prompt vai direto ao agente, e cada dúvida recebe um palpite sem aviso
+enter('#a-prompt',0.3);draw('#a-arrow',1.0);enter('#a-q1',1.3);enter('#a-q2',1.5);enter('#a-q3',1.7);
+show('#a-g1',2.6);pulse('#a-q1','#e7b28c',2.6);show('#a-g2',3.2);pulse('#a-q2','#e7b28c',3.2);show('#a-g3',3.8);pulse('#a-q3','#e7b28c',3.8);
+show('#a-row1',5.0);show('#a-row2',6.4);
+tl.set('#phase-prompt',{opacity:0},8.5);tl.set('#phase-spec',{opacity:1},8.5);
+// Estado 2: as mesmas dúvidas viram marcadores na spec, são decididas no clarify e só então viram plano, tarefas e código
+enter('#b-spec',8.7);enter('#b-q1',9.0,0,10);enter('#b-m1',9.0,0,10);enter('#b-q2',9.3,0,10);enter('#b-m2',9.3,0,10);enter('#b-q3',9.6,0,10);enter('#b-m3',9.6,0,10);
+enter('#b-s1',9.9,18);enter('#b-s2',10.0,18);enter('#b-s3',10.1,18);enter('#b-s4',10.2,18);
+lit('#b-s1',10.8);swap('#b-m1','#b-d1',11.2);swap('#b-m2','#b-d2',11.8);swap('#b-m3','#b-d3',12.4);
+lit('#b-s2',13.2);lit('#b-s3',13.7);lit('#b-s4',14.2);show('#b-row1',14.6);
+tl.set('#phase-spec',{opacity:0},17);tl.set('#phase-converge',{opacity:1},17);
+// Estado 3: o converge compara o código com a spec e só acrescenta tarefas; a segunda passada termina em Converged
+enter('#c-impl',17.2);enter('#c-conv',17.4);enter('#c-tasks',17.6);
+draw('#c-arrow1',18.1);pulse('#c-conv','#a6cdbb',18.5);draw('#c-arrow2',19.1);
+show('#c-row1',19.6);pulse('#c-tasks','#e7b28c',19.6);
+draw('#c-return',20.3);show('#c-loop',20.5);pulse('#c-impl','#a6cdbb',20.9);pulse('#c-conv','#a6cdbb',21.4);
+show('#c-row2',21.8);show('#c-row3',22.4);pulse('#c-conv','#a6cdbb',22.4);
+const sequence=[
+{t:0,aNote:'O prompt vai direto ao agente.',bNote:'As mesmas dúvidas viram marcadores na spec.',cNote:'Depois do implement, o converge confere a entrega.'},
+{t:2.6,aNote:'Cada dúvida recebe um palpite, sem aviso.'},
+{t:5.0,aNote:'Os testes confirmam os palpites, não o negócio.'},
+{t:10.8,bNote:'O clarify pergunta; a resposta volta para a spec.'},
+{t:13.2,bNote:'Cada dúvida respondida é um palpite a menos.'},
+{t:19.6,cNote:'Lacuna vira tarefa nova; o código não é tocado.'},
+{t:22.4,cNote:'A entrega é conferida contra a spec, não o palpite.'}
+];
+const fields=[['a-note','aNote'],['b-note','bNote'],['c-note','cNote']];
+const driver={time:0};tl.to(driver,{time:24,duration:24,ease:'none',onUpdate:()=>{const s={};for(const item of sequence)if(driver.time>=item.t)Object.assign(s,item);for(const [id,key] of fields)document.getElementById(id).textContent=s[key];}},0);
+window.__timelines['01-duas-rotas']=tl;
+</script>
+</template>
